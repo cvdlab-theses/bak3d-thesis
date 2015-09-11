@@ -1,0 +1,12 @@
+.DS_Store
+thesis.aux
+thesis.bbl
+thesis.blg
+thesis.out
+thesis.run.xml
+thesis.toc
+thesis-blx.bib
+*.bcf
+*.lof
+*.log
+*.pdf
