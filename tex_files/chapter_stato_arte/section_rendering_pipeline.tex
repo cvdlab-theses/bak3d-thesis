@@ -1,0 +1,94 @@
+\section{Rendering pipeline}
+\label{sec:chapter_stato_arte_rendering_pipeline}
+
+Il processo di generazione di immagini 2D dato un insieme di oggetti 3D, delle fonti di luce, e delle texture, si decompone in una successione di passi di elaborazione; tale successione è detta pipeline di rendering. Nella visione più elementare di questa pipeline è possibile individuare tre fasi: Applicazione, Geometria, Rasterizzazione.
+Ognuna di queste fasi è essa stessa una pipeline i cui passi possono essere parallelizzati, o anch’essi messi in pipeline. La velocità complessiva del processo viene determinata dal passo più lento della pipeline, ed è espressa in immagini renderizzate per secondo (FPS).
+
+A differenza delle vecchie pipeline di rendering, dove tutto il processo viene eseguito sulla CPU, l’odierna fruibilità di un hardware dedicato all’accelerazione grafica consente di spostare su di esso l’esecuzione di alcuni passi. Infatti, mentre lo stadio Applicazione è sviluppato interamente in software e fatto girare sulla CPU, gli stadi Geometria e Rasterizzazione sono eseguiti sull’unita di processamento grafico (GPU).
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_pipeline.png}\hfill
+ \caption[Pipeline di rendering]{Pipeline di rendering}
+ \label{fig:stato_arte_pipeline}
+\end{figure}
+
+Il livello applicazione è quello più flessibile; infatti lo sviluppatore ne ha pieno controllo, e ne può modificare l’implementazione. I cambiamenti fatti a questo livello possono incidere sulle performance dei livelli che seguono. 
+Questa prima fase ha due compiti fondamentali: gestire gli input che possono provenire da più sorgenti, come tastiera o mouse, ed inviare allo step successivo la posizione della camera, le informazioni sulle luci presenti nella scena, e le primitive di rendering; quest’ ultime rappresentano la descrizione in punti, spigoli e triangoli, delle entità geometriche presenti nella scena e sono il dato di input fondamentale per gli hardware grafici. 
+Come esempio pratico si può fare riferimento all’editor che verrà mostrato più avanti in questo elaborato: tale strumento consente di selezionare e muovere oggetti o parti di esso; in questo caso il livello Applicazione si occupa di tradurre il movimento del mouse nella corrispondente matrice di rotazione da applicare all’oggetto che si è scelto di ruotare. Inoltre questo livello si occuperà, ad ogni ciclo di rendering, di inviare allo stadio Geometria la posizione della camera, le informazioni sulle luci, e le primitive di rendering dei modelli presenti nella scena.\\
+
+Il livello Geometria è dove vengono effettuate la maggior parte delle operazioni su vertici e triangoli. A differenza del livello Applicazione, questo secondo stadio si può decomporre in una successione di sotto-processi:
+Inizialmente ad ogni oggetto della scena è associato un sistema di riferimento in coordinate modello, rispetto al quale l’oggetto appare immobile. Per posizionare ed orientare ogni oggetto nello stesso sistema di riferimento, è necessario applicare ad ognuno una trasformazione del modello, la quale opererà sui vertici e sulle normali di questo per posizionarlo nel sistema di riferimento in coordinate mondo, unico per ogni modello, rispetto al quale gli oggetti appariranno posizionati ed orientati in base alle trasformazioni di modello applicate. Siccome al processo di render partecipano solo gli oggetti che la camera vede, bisogna applicare un’ulteriore trasformazione alla camera e a tutti i modelli della scena. Tale trasformazione porta tutti gli oggetti della scena da un sistema di riferimento in coordinate mondo, ad uno in coordinate camera. In questo nuovo sistema di riferimento la camera è posizionata nell’origine, e punta verso le z negative, con l’asse y che punta verso l’alto, e l’asse x orientata verso destra. Entrambe le trasformate mostrate sono implementate mediante una matrice 4x4. 
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_view_transform.png}\hfill
+ \caption[Trasformazione della vista]{Trasformazione della vista}
+ \label{fig:stato_arte_trasfvista}
+\end{figure}
+
+Forma e posizione degli oggetti non sono l’unico aspetto chiave per un rendering realistico; infatti anche le informazioni sui materiali di ogni oggetto, così come l’effetto di ogni fonte luminosa nella scena, risultano fondamentali. 
+Il processo di determinazione di un effetto luminoso su di una superficie composta da un certo materiale è detta shading. Tale processo consiste nel calcolo di una equazione di shading in corrispondenza dei vertici dell’oggetto; ogni vertice può memorizzare diverse informazioni, come la posizione dello stesso, una normale, un colore, o qualsiasi altra informazione necessaria al calcolo dell’equazione, il cui risultato può essere, ad esempio, un colore, un vettore o una coordinata di una texture. E’ importante che il calcolo delle equazioni di shading venga fatto in un sistema di riferimento comune a tutti gli oggetti, in modo che le relazione tra oggetti, camera, e luci, siano preservate. 
+Dopo lo shading, il processo di rendering si occupa della trasformazione del volume di vista percepito dalla camera, in un cubo unitario detto volume di vista canonico.
+Tipicamente vengono usati due metodi di proiezione: ortografica e prospettica.
+In quella ortografica il volume di vista appare come un parallelepipedo rettagolo, e la proprietà fondamentale è che le linee parallele rimangono tali dopo la trasformazione.
+Nella proiezione prospettica invece viene simulato il modo in cui noi percepiamo la dimensione degli oggetti: tanto più un oggetto si allontana dalla camera, tanto più sarà piccolo dopo la proiezione. In questo caso le linee parallele convergono all’orizzonte, e il volume di vista è rappresentato come una piramide tronca con base rettangolare.
+Un oggetto che subisce una delle due proiezioni  si dice appartenente al sistema di riferimento con coordinate normalizzate della camera. 
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_projections.png}\hfill
+ \caption[Proiezione prospettica ed ortogonale]{Volume di vista nella proiezione ortografica (a sinistra), e prospettica (a destra)}
+ \label{fig:stato_arte_trasfvista}
+\end{figure}
+
+A questo punto, dato un volume di vista, sappiamo quali sono le primitive di rendering da dare in pasto alla fase di rasterizzazione, dove verrano finalmente disegnate su schermo.
+Se una primitiva risiede all’interno del volume passerà allo stadio successivo, così come verrà ignorata se presente al di fuori di esso. Per quanto riguarda le primitive che si trovano parzialmente all’interno del volume di vista c’è bisogno di un ulteriore passo di elaborazione, detto clipping. La trasformazione in coordinate camera, e la proiezione, fanno si che il clipping possa essere fatto con riferimento ad un volume di vista rappresentato da un cubo unitario: questo vuol dire che che se ad esempio abbiamo un spigolo con un vertice nel volume di vista e con l’altro fuori, è sufficiente calcolare un nuovo vertice nell’intersezione tra lo spigolo ed il cubo unitario, scartando così il vertice esterno.\\
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_clipping.png}\hfill
+ \caption[Clipping]{Clipping}
+ \label{fig:stato_arte_clipping}
+\end{figure}
+
+A questo punto le primitive nel volume di vista, le quali sono ancora descritte in coordinate a tre dimensioni, sono passate alla fase di mappatura su schermo. 
+Nella mappatura le coordinate x,y di ogni primitiva sono trasformate in coordinate di schermo, mentre la z non subisce alcuna mappatura.
+Le coordinate di schermo insieme alla z costituiscono le coordinate di finestra, le quali vengono passate alla fase di rasterizzazione.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_mapping.png}\hfill
+ \caption[Mappatura su schermo]{Mappatura su schermo delle primitive nel volume di vista}
+ \label{fig:stato_arte_mapping}
+\end{figure}
+
+A questo punto le coordinate di finestra, insieme alle informazioni di shading associate ad ogni vertice, vengono convertite in pixel sullo schermo. Anche qui, come nella fase Geometria, si può decomporre il processo in più passi:
+
+Vi è una fase iniziale di computazione di informazioni necessarie alla fase successiva; tali informazioni saranno utili, ad esempio, per l’interpolazione dei dati di shading computati nella fase Geometria.
+Per ogni pixel vengono individuati dei frammenti, ovvero porzioni di pixel posizionate all’interno di un triangolo. Le proprietà di ogni frammento sono generate mediante interpolazione dei dati memorizzati sui vertici del triangolo di cui fa parte. 
+Tali proprietà includono:
+
+\begin{itemize}
+\item Profondità del frammento: l’interpolazione della coordinata (di finestra) z sui vertici del triangolo di cui il frammento fa parte;
+\item Dati di shading calcolati nella fase Geometria;
+\end{itemize}
+
+I dati di shading interpolati sono necessari al calcolo dello shading sui frammenti di pixel, il cui risultato è un colore da dare in input alla fase successiva.
+In quest’ultima fase del processo di rasterizzazione vengono dapprima memorizzate le informazioni di ogni pixel in un buffer di colori, detto pixel buffer, ovvero un array dove ogni elemento è un pixel con un informazione a 3 componenti di colore: rosso, verde e blu.
+A questo punto il colore ottenuto dallo shading sui frammenti di pixel ed il colore memorizzato nel buffer sono combinati.
+Tale buffer deve contenere il colore relativo alle primitive di scena visibili dal punto di vista della camera. 
+Per individuare quali oggetti sono visibili e quali non lo sono all’interno della scena viene fatto uso di un ulteriore buffer, detto z-buffer. Questo buffer ha stesse dimensioni e forma del pixel buffer, e per ogni pixel viene memorizzata la distanza tra la camera e la primitiva di rendering più vicina ad essa. Il funzionamento dello z-buffer è il seguente: 
+Quando una primitiva deve essere renderizzata su un determinato pixel, il valore z tra la primitiva e il pixel del piano immagine della camera viene confrontato con quello memorizzato nello z buffer:
+
+\begin{itemize}
+\item Se il nuovo valore z è più piccolo di quello memorizzato nel buffer, allora la nuova primitiva è più vicina alla camera di quanto lo fosse quella relativa al valore di z memorizzato nel buffer. A questo punto vengono aggiornati z-buffer e pixel buffer, entrambi nella stessa posizione: il primo con il nuovo valore z, il secondo con il colore relativo alla nuova primitiva da renderizzare. 
+\item Se invece il nuovo valore z è più grande di quello memorizzato nel buffer, non vi è alcun aggiornamento.
+\end{itemize}
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_z_buffer.png}\hfill
+ \caption[Z-buffer]{Z-buffer}
+ \label{fig:stato_arte_z_buffer}
+\end{figure}
