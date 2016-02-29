@@ -92,3 +92,7 @@ Quando una primitiva deve essere renderizzata su un determinato pixel, il valore
  \caption[Z-buffer]{Z-buffer}
  \label{fig:stato_arte_z_buffer}
 \end{figure}
+
+Z-buffer è sicuramente un algoritmo molto semplice, e dalla complessità computazionale ridotta; infatti essa cresce linearmente con il numero di primitive da renderizzare (O(n)). Le primitive, nella maggior parte dei casi, sono renderizzabili in qualsiasi ordine. Tuttavia ciò non vale per alcune primitive, come quelle trasparenti. In questo caso è necessario impartire un ordinamento: per prima cosa si renderizzano tutte le primitive opache, in ordine qualsiasi, dopodichè si passa a quelle trasparenti, in ordine dalla più distante, alla più vicina. 
+Se per le primitive trasparenti non fosse seguito questo ordinamento sarebbe impossibile miscelare i colori di più oggetti posizionati uno di fronte all’altro. Questo si rende necessario per via del comportamento dello z-buffer insieme al pixel-buffer.
+Quando ad esempio viene osservato un filtro trasparente rosso di fronte ad un oggetto opaco blu, l’ occhio miscela insieme i due colori permettendo di osservare una tonalità magenta nella porzione in cui i due oggetti sono sovrapposti.
