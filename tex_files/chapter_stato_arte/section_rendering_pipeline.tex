@@ -5,7 +5,7 @@ Il processo di generazione di immagini 2D dato un insieme di oggetti 3D, delle f
 Ognuna di queste fasi è essa stessa una pipeline i cui passi possono essere parallelizzati, o anch’essi messi in pipeline. La velocità complessiva del processo viene determinata dal passo più lento della pipeline, ed è espressa in immagini renderizzate per secondo (FPS).
 
 A differenza delle vecchie pipeline di rendering, dove tutto il processo viene eseguito sulla CPU, l’odierna fruibilità di un hardware dedicato all’accelerazione grafica consente di spostare su di esso l’esecuzione di alcuni passi. Infatti, mentre lo stadio Applicazione è sviluppato interamente in software e fatto girare sulla CPU, gli stadi Geometria e Rasterizzazione sono eseguiti sull’unita di processamento grafico (GPU).
-
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_pipeline.png}\hfill
@@ -19,7 +19,7 @@ Come esempio pratico si può fare riferimento all’editor che verrà mostrato p
 
 Il livello Geometria è dove vengono effettuate la maggior parte delle operazioni su vertici e triangoli. A differenza del livello Applicazione, questo secondo stadio si può decomporre in una successione di sotto-processi:
 Inizialmente ad ogni oggetto della scena è associato un sistema di riferimento in coordinate modello, rispetto al quale l’oggetto appare immobile. Per posizionare ed orientare ogni oggetto nello stesso sistema di riferimento, è necessario applicare ad ognuno una trasformazione del modello, la quale opererà sui vertici e sulle normali di questo per posizionarlo nel sistema di riferimento in coordinate mondo, unico per ogni modello, rispetto al quale gli oggetti appariranno posizionati ed orientati in base alle trasformazioni di modello applicate. Siccome al processo di render partecipano solo gli oggetti che la camera vede, bisogna applicare un’ulteriore trasformazione alla camera e a tutti i modelli della scena. Tale trasformazione porta tutti gli oggetti della scena da un sistema di riferimento in coordinate mondo, ad uno in coordinate camera. In questo nuovo sistema di riferimento la camera è posizionata nell’origine, e punta verso le z negative, con l’asse y che punta verso l’alto, e l’asse x orientata verso destra. Entrambe le trasformate mostrate sono implementate mediante una matrice 4x4. 
-
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_view_transform.png}\hfill
@@ -34,7 +34,7 @@ Tipicamente vengono usati due metodi di proiezione: ortografica e prospettica.
 In quella ortografica il volume di vista appare come un parallelepipedo rettagolo, e la proprietà fondamentale è che le linee parallele rimangono tali dopo la trasformazione.
 Nella proiezione prospettica invece viene simulato il modo in cui noi percepiamo la dimensione degli oggetti: tanto più un oggetto si allontana dalla camera, tanto più sarà piccolo dopo la proiezione. In questo caso le linee parallele convergono all’orizzonte, e il volume di vista è rappresentato come una piramide tronca con base rettangolare.
 Un oggetto che subisce una delle due proiezioni  si dice appartenente al sistema di riferimento con coordinate normalizzate della camera. 
-
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_projections.png}\hfill
@@ -44,7 +44,7 @@ Un oggetto che subisce una delle due proiezioni  si dice appartenente al sistema
 
 A questo punto, dato un volume di vista, sappiamo quali sono le primitive di rendering da dare in pasto alla fase di rasterizzazione, dove verrano finalmente disegnate su schermo.
 Se una primitiva risiede all’interno del volume passerà allo stadio successivo, così come verrà ignorata se presente al di fuori di esso. Per quanto riguarda le primitive che si trovano parzialmente all’interno del volume di vista c’è bisogno di un ulteriore passo di elaborazione, detto clipping. La trasformazione in coordinate camera, e la proiezione, fanno si che il clipping possa essere fatto con riferimento ad un volume di vista rappresentato da un cubo unitario: questo vuol dire che che se ad esempio abbiamo un spigolo con un vertice nel volume di vista e con l’altro fuori, è sufficiente calcolare un nuovo vertice nell’intersezione tra lo spigolo ed il cubo unitario, scartando così il vertice esterno.\\
-
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_clipping.png}\hfill
@@ -55,7 +55,7 @@ Se una primitiva risiede all’interno del volume passerà allo stadio successiv
 A questo punto le primitive nel volume di vista, le quali sono ancora descritte in coordinate a tre dimensioni, sono passate alla fase di mappatura su schermo. 
 Nella mappatura le coordinate x,y di ogni primitiva sono trasformate in coordinate di schermo, mentre la z non subisce alcuna mappatura.
 Le coordinate di schermo insieme alla z costituiscono le coordinate di finestra, le quali vengono passate alla fase di rasterizzazione.
-
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_mapping.png}\hfill
