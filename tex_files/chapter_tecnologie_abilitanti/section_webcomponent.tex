@@ -1,0 +1,65 @@
+\section{Web component e Polymer}
+\label{sec:chapter_tecnologie_abilitanti_webcomp_poly}
+
+Al giorno d’oggi le applicazioni web sono molto complesse: è fondamentale trovare il modo corretto di suddividere lo sviluppo dell’applicazione in più componenti non sovrapposte, in modo che il team di sviluppo operi in maniera più efficiente. 
+Ogni componente del sistema deve garantire la proprietà di isolamento, per nascondere la propria complessità agli altri componenti.
+Un buon isolamento tra componenti rende il software più manutenibile e semplice da sviluppare.
+Inizialmente la complessità delle applicazioni web veniva gestita lato server, isolando l’applicazione in più pagine web; questo obbligava l’utente a dover navigare molte pagine sul browser.
+Con l’avvento di tecniche come AJAX, che hanno semplificato la realizzazione di single page applications, gli utenti hanno cominciato a fruire di una esperienza d’uso più fluida, simile a quella che si ha con le applicazioni desktop. 
+La logica delle applicazione lato client, che spesso è anche più complessa di quella lato server, può essere isolata all’interno di una singola pagina web o documento mediante i web component.
+
+I web component sono un’ insieme di tecnologie prodotte da  Google e approvate dal W3C che consentono la creazione di widget, ovvero elementi html che includono logica di funzionamento e stile, che possono essere importate in documenti o applicazioni web. Da una widget viene separata ogni responsabilità che ha a che fare con altre widget; di conseguenza ogni elemento non dipende dai dettagli implementativi degli altri elementi. Sono possibili dipendenze solo tra le interfacce esposte dalle widget. 
+Assegnare le responsabilità in questo modo permette al modello a componenti di soddisfare la proprietà di incapsulamento.
+Inoltre la fruibilità di elementi html facilmente integrabili nell’applicazione permette alle componenti di interagire in modo semplice tra loro; in questo modo è soddisfatta anche la proprietà di interoperabilità tra componenti.
+Questi web component sono parte del browser, quindi non hanno bisogno di librerie esterne per essere usati, ma basta includerli aggiungendo un tag nella pagina html. 
+Una widget è portabile e gode di un elevata riusabilità; inoltre all’interno di una widget è possibile effettuare tutto ciò che è consentito dai linguaggi html, css e JavaScript. 
+L’obiettivo principale dei web component è cambiare il modo in cui le applicazioni web vengono create, consentendo agli sviluppatori di estendere il vocabolario HTML creando nuovi elementi HTML riusabili. Questa aggiunta permette agli sviluppatori di interfacciarsi a più alto livello con lo sviluppo di applicazioni web, definibili mediante aggregazione di più componenti.
+Quando si parla di web components in verità si parla di quattro tecnologie differenti, le quali insieme forniscono tutti gli strumenti necessari per creare i propri componenti.
+Tali tecnologie sono: Custom Elements, Templates, HTML Imports e Shadow DOM. 
+
+\subsection{Custom elements}
+\label{sec:chapter_tecnologie_abilitanti_custom_elements}
+
+La tecnologia custom element permette di creare nuovi elementi HTML all’interno del DOM del browser; ogni elemento racchiude logica di funzionamento, stile CSS e un tag HTML necessario per importare l’elemento nelle applicazioni web. 
+Nonostante questi elementi facciano parte dei web components, possono essere utilizzati anche come entità separate. Uno dei motivi per cui è stata creata la tecnologia Custom Elements è la possibilità di introdurre le lifecycle callbacks, che consentono di associare specifici comportamenti ad un elemento HTML durante il suo ciclo di vita. Ad esempio è possibile istruire un elemento HTML sul comportamento che deve assumere nel momento in cui viene inserito nel DOM, e su quello che deve assumere quando viene rimosso dal DOM. 
+Per registrare un nuovo elemento HTML nel browser si usa il metodo \texttt{Document.registerElement()}, e il nuovo elemento utilizzerà di default l’interfaccia HTMLElement; se invece l’elemento non viene registrato sul browser, userà l’interfaccia HTMLUnknownElement. E’ anche possibile creare un elemento HTML come estensione di un elemento nativo, come \texttt{<button>}; in questo caso però non sarà possibile includere l’estensione nel DOM come elemento a se stante, ma sempre insieme all’elemento nativo che estende; ad esempio l’inclusione sarà \texttt{<button is=”my button”>} e non \texttt{<my-button>} .
+I vantaggi apportati dalla tecnologia custom elements sono:
+\begin{enumerate}
+\item Definizione e creazione di nuovi elementi HTML/DOM.
+\item Estendere la logica funzionale di elementi nativi mediante nuovi elementi.
+\item Racchiudere tutte le funzionalità di un nuovo elemento in un tag.
+\item Estendere le API degli elementi del DOM nativi.
+\item Estrema utilità nelle Single Page Applications.
+\end{enumerate}
+A questo punto verrà mostrato come è possibile creare un nuovo custom element utilizzando ad esempio le classi di JavaScript 6.
+Per prima cosa viene definita la classe, la cui struttura è tipicamente la seguente:
+\begin{lstlisting}
+class MyButton extends HTMLElement {    
+/* E possibile estendere 
+   qualsiasi altro elemento o classe */
+/* Costruisco le proprieta dell'elemento 
+   esteso, ovvero HTMLElement */     
+   constructor() {          
+      super();                         
+   }   								  
+/* Qui vengono definite quelle necessarie 
+   tra le quattro lifecycle callbacks offerte:
+   createdCallback(){ . . } 
+   attachedCallback(){ . . } 
+   detachedCallback(){ . . } 
+   attributeChangedCallback() { . . } */
+/* Qui vengono definiti i metodi getters e setters:
+   set ...{ . . } 
+   get ...{ . . } */
+}
+\end{lstlisting}
+Come discusso in precedenza, le lifecycle callback risultano uno strumento utile nella definizione di un custom element, Lo sviluppatore può decidere di implementare una delle quatto callback disponibili:
+\begin{itemize}
+\item \emph {createdCallback} - Il comportamento dell’elemento quando viene registrato.
+\item \emph {attachedCallback} - Il comportamento dell’elemento quando viene inserito nel DOM.
+\item \emph {detachedCallback} - Il comportamento dell’elemento quando viene rimosso dal DOM.
+\item \emph {attributeChangedCallback(attributeName)} - il comportamento dell’elemento quando un suo attributo viene modificato.
+\end{itemize}
+\emph{createdCallback} viene invocata in modo sincrono alla creazione dell’elemento, le altre callback sono invece chiamate in modo asincrono. Le callback asincrone solitamente sfruttano \texttt{MutationObserver} per mettersi in ascolto dei cambiamenti sul DOM; questo consente alle callbacks di essere invocate prima di altri elementi come layout, stile, o altri eventi; in questo modo si evitano problemi, come il caricamento di contenuto senza stile, prima che la callbacks abbiano modo di reagire alle modifiche sul DOM.
+
+
