@@ -22,8 +22,13 @@ Un oggetto viene detto convesso se comunque vengono presi due punti che gli appa
 \end{figure}
 
 L’env map viene utilizzata ancora oggi nei videogiochi moderni permettendo di alleggerire notevolmente il carico computazionale del rendering real-time per la realizzazione di superfici riflettenti o rifrangenti.
-
-FOTO WATCH DOGS /THE ORDER (PIU' CHIARA)
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=0.5\linewidth]{images/chapter_stato_arte/stato_arte_wd_to.png}\hfill
+ \caption[Le env map nei videogiochi]{Le env map sono tutt'oggi di ampio utilizzo in ambiente videoludico.}
+ \label{fig:stato_arte_wd_to}
+\end{figure}
 
 Videogiochi recenti quali Watch Dogs (a sinistra) e The Order: 1886 (a destra) ne fanno ampio utilizzo in quanto questa tecnica permette di ottenere un frame-rate costante anche in presenza di effetti complessi di riflessione e rifrazione. Siccome la texture utilizzata durante l’algoritmo di env-map è precomputata e rimane fissa, non è possibile però ottenere la riflessione/rifrazione dinamica di oggetti o personaggi in movimento (in entrambe le figure è possibile notare come  il personaggio in movimento non venga riflesso). Compromesso comunque accettabile in quanto il calcolo real-time di questi effetti potrebbe provocare una drastica diminuzione del frame-rate.
 Nel presente lavoro di tesi l’utilizzo delle env-map ben si addiceva al contesto di lavoro preso in riferimento. Le scene di interni di appartamenti risultano infatti fisse nel tempo,  cosa che ha permesso di sfruttare questa tecnica per mantenere costanti le prestazioni dell’ applicazione anche in presenza di molti effetti di riflessione e rifrazione.
