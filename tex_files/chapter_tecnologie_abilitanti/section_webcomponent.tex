@@ -30,7 +30,7 @@ I vantaggi apportati dalla tecnologia custom elements sono:
 \end{enumerate}
 A questo punto verrà mostrato come è possibile creare un nuovo custom element utilizzando ad esempio le classi di JavaScript 6.
 Per prima cosa viene definita la classe, la cui struttura è tipicamente la seguente:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 class MyButton extends HTMLElement {    
 /* E possibile estendere 
    qualsiasi altro elemento o classe */
@@ -59,7 +59,7 @@ Come discusso in precedenza, le lifecycle callback risultano uno strumento utile
 \end{itemize}
 \emph{createdCallback} viene invocata in modo sincrono alla creazione dell’elemento, le altre callback sono invece chiamate in modo asincrono. Le callback asincrone solitamente sfruttano \texttt{MutationObserver} per mettersi in ascolto dei cambiamenti sul DOM; questo consente alle callbacks di essere invocate prima di altri elementi come layout, stile, o altri eventi; in questo modo si evitano problemi, come il caricamento di contenuto senza stile, prima che la callbacks abbiano modo di reagire alle modifiche sul DOM.
 Per la definizione di metodi o proprietà, possono essere utilizzati dei metodi getter e setter:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 set properties(prop) {
      this.mybutton_text = prop.text;
 }
@@ -69,21 +69,21 @@ get text() {
 }
 \end{lstlisting}
 Una volta definite le callback e i getter e setter è possibile attivare il nuovo elemento, utilizzando il metodo \texttt{Document.registerElement()}:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var mybutton = document.registerElement("my-button", MyButton);
 \end{lstlisting}
 A questo punto il nuovo elemento si può includere nel documento HTML, usando direttamente i tag:
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 <my-button></my-button>
 \end{lstlisting}
 oppure in Javascript:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var custom_button = new MyButton
 document.getElementById("something").appendChild(custom_button)
 \end{lstlisting}
 E’ possibile associare uno stile al nuovo elemento in due modi:
 Specificandolo nell’implementazione della lifecycle callback \emph{createCallback} :
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 createdCallback(){ 
      this.innerHTML = ""+ 
          " <style> "+ " p { color: orange; } "+ " </style> "+ 
@@ -93,7 +93,7 @@ createdCallback(){
 }
 \end{lstlisting}
 Oppure utilizzando un file css standard:
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 my-button > p { 
 background-color:#FFA500;
 }
@@ -101,13 +101,13 @@ background-color:#FFA500;
 
 \textbf{HTML imports} è un modo per importare e riusare documenti HTML in altri documenti HTML. Come il tag \texttt{<script>} permette di iniettare codice Javascript nelle pagine, così HTML imports permettere di iniettare intere risorse HTML. In particolare HTML imports permette di importare dei custom element da URL esterni. In generale si può dire che HTML imports è il meccanismo di pacchettizzazione per le tecnologie Web Components.
 Per importare una risorsa HTML si inserisce nel documento il tag \texttt{<link>} come mostrato dall’esempio:
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 <link rel="import" href="myfile.html">
 \end{lstlisting}
 
 L’elemento HTML \textbf{<template>} è un meccanismo per mantenere nel DOM un contenuto HTML lato client che non viene renderizzato quando la pagina viene caricata, ma che può essere successivamente istanziato a tempo di esecuzione usando JavaScript. Un template può essere visto come un frammento di contenuto che viene memorizzato per un successivo uso all’interno del documento. Durante il caricamento della pagina il parser del browser processerà comunque il contenuto del \texttt{<template>} , ma solo per assicurarsi che il contenuto sia valido, dopodichè tale contenuto non verrà renderizzato.
 Per creare un elemento \texttt{<template>} , basta definire il template content e racchiuderlo tra i tag \texttt{<template>} :
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 <template id="mytemplate">
   <img src="" alt="great image">
   <div class="comment"></div>
@@ -121,7 +121,7 @@ Se incluso in un elemento template, un contenuto HTML gode delle seguenti propri
 \item Il template può essere posizionato ovunque all’interno di \texttt{<head>}, \texttt{<body>}, o \texttt{<frameset>}, e può includere qualsiasi tipo di contenuto ammissibile nei tre tag sopra citati. Può essere posizionato anche come figlio di una \texttt{<table>} o di una \texttt{<select>}. 
 \end{itemize}
 Per utilizzare un template bisogna attivarlo. Il modo più semplice per farlo è creare un clone della proprietà .content del template mediante \texttt{document.importNode()}. la proprietà \texttt{.content} è un \texttt{DocumentFragment} di sola lettura, contenente il template content. Una volta appeso al DOM, il clone si attiva.
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var t = document.querySelector('#mytemplate');
 var clone = document.importNode(t.content, true);
 document.body.appendChild(clone);
@@ -134,27 +134,27 @@ Nella tecnologia shadow DOM un nodo può esprimere tre diversi tipi di alberi: \
 Al Light DOM e allo shadow DOM si può anche fare riferimento con il nome logical DOM; questo è il DOM con cui lo sviluppatore interagisce. Il composed DOM è ciò che il browser vede, e che usa per renderizzare i pixel su schermo.
 \\
 Il light DOM di un custom element viene visto dall’utente finale come un normale sottoalbero. Quindi può accedervi per chiedere informazioni usando \texttt{.childNodes}, \texttt{.children}, \texttt{.innerHTML} o qualsiasi altro metodo o proprietà di un comune sottoalbero.
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 <custom-element>
   <p>something hidden from end user</p>
   <h1>Hello World</h1>
 </custom-element>
 \end{lstlisting}
 Un elemento custom può definire uno shadow DOM associando un nodo shadow root a se stesso. Lo shadow DOM è interno all’elemento e celato all’utente finale. I suoi nodi non sono figli del custom element. Un nodo shadow root viene definito in questo modo:
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 #shadow-root
   <!-- tutto cio che viene definito qui dentro andra
   	   nello shadow DOM del custom element -->
   <p>something hidden from end user</p>
 \end{lstlisting}
 E un tipico utilizzo per associarne uno ad un custom element:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var cel = document.getElementById('custom-element');
 var shadow = cel.createShadowRoot();
 document.body.appendChild(cel);
 \end{lstlisting}
 Il composed DOM è ciò che il browser renderizza. Per il rendering, il light DOM viene distribuito nello shadow DOM per creare il composed DOM; nel nostro esempio il composed DOM avrà questo aspetto:
-\begin{lstlisting}[language=HTML5,label={custom_el_code}]
+\begin{lstlisting}[language=html,label={custom_el_code}]
 <custom-element>
   <p>something hidden from end user</p>
   <h1>Hello World</h1>
@@ -225,7 +225,7 @@ A questo punto verranno mostrate le principali funzionalità offerte da Polymer 
 Per registrare un nuovo elemento nel browser si usa la funzione Polymer. La registrazione, di cui  prevede l’associazione di un tag riconoscitivo dell’elemento ad un prototipo, nel quale poter aggiungere metodi e proprietà all’elemento. La funzione Polymer prende come argomento un oggetto che definisce il prototipo dell’elemento, e restituisce un costruttore che può essere usato per istanziare l’elemento.
 Inoltre la funzione definisce la catena prototipale per il nuovo elemento, collegandolo al prototipo base di Polymer, da cui eredita le funzioni in esso definite; questo esula lo sviluppare dal dover definire egli stesso una catena prototipale.
 Il protitopo deve avere la proprietà is che specifica il tag HTML del nuovo elemento creato. Attualmente Polymer supporta l’estensione solamente di elementi HTML nativi, come \texttt{<input>} o \texttt{<button>}. Per estendere un elemento HTML nativo si inserisce nel prototipo la proprietà extends associata al tag dell’elemento che si vuole estendere. 
-\begin{lstlisting}[language=HTML5, label={poly_code1}]
+\begin{lstlisting}[language=html, label={poly_code1}]
 <script>
  //registro un nuovo elemento chiamato Custom Element
  Polymer({
@@ -244,7 +244,7 @@ Il protitopo deve avere la proprietà is che specifica il tag HTML del nuovo ele
 <\script>
 \end{lstlisting}
 Il metodo polymer restituisce un costruttore che viene usato per istanziare il nuovo custom element. Se si desidera passare degli argomenti al costruttore, bisogna specificare nel prototipo la funzione \texttt{factoryImpl}; ad esempio il custom element realizzato in \ref{poly_code1} può essere istanziato in in questo modo:
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var el = new CustomElement('someproperty');
 \end{lstlisting}
 Un’altra funzionalità offerta la Polymer è implementazione nel prototipo base delle lifecycle callbacks secondo lo standard Custom Elements; le funzioni sono state rinominate e sono le seguenti:
@@ -256,7 +256,7 @@ Un’altra funzionalità offerta la Polymer è implementazione nel prototipo bas
 \end{itemize}
 Ovviamente è possibile utiizzare anche i metodi originali, implementandoli nel prototipo dell’elemento. Polymer aggiunge un’ulteriore callback, \texttt{ready}, che viene invocata quando Polymer ha terminato la creazione e l’inizializzazione di tutti i nodi interni al local DOM dell’elemento; infatti molti elementi possono includere all’interno dei nodi che implementano UI e comportamento dell’elemento: Polymer definisce questi nodi local DOM.
 Per specificare il DOM da usare come local DOM dell’elemento, si usa l’elemento \texttt{<dom-module>}, a cui si assegna l’attributo id che coincide con la proprietà is del prototipo del nuovo elemento. All’interno del \texttt{<dom-module>} si inserisce un elemento \texttt{<template>}, e Polymer automaticamente copierà il contenuto del template nel local DOM dell’elemento.
-\begin{lstlisting}[language=HTML5,label={code_poly2}]
+\begin{lstlisting}[language=html,label={code_poly2}]
 <dom-module id="custom-element">
  <template>
   <p>I am a DOM element, and this is my local DOM</p>
@@ -270,7 +270,7 @@ Per specificare il DOM da usare come local DOM dell’elemento, si usa l’eleme
 \end{lstlisting}
 Nell’esempio \ref{code_poly2} il local DOM è statico, dal momento che il suo unico nodo \texttt{<p>} ha per valore una stringa fissa. Tuttavia nella maggior parte dei casi è preferibile che il local DOM possa cambiare dinamicamente, e per questo scopo Polymer ha introdotto la funzionalità \textbf{data binding}. 
 Data Binding è uno strumento per associare una proprietà di un custom element ad un attributo di un elemento contenuto nel suo local DOM. E’ possibile fare il binding su una proprietà del componente racchiudendo un riferimento alla proprietà tra doppie graffe ({{ }}). Il contenuto nelle parentesi verrà sostituito dal valore della proprietà il cui riferimento è contenuto nelle graffe. Nell’esempio è possibile vedere un binding tra la proprietà \texttt{owner} di \texttt{custom-element}, definita mediante il costrutto \texttt{properties} che verrà descritto a breve, e l’attributo \texttt{owner} dell’elemento del local DOM di \texttt{custom-element}. 
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 <dom-module id="custom-element">
  <template>
   This is <b>{{owner}}</b> custom element.
@@ -291,7 +291,7 @@ Data Binding è uno strumento per associare una proprietà di un custom element 
 Il costrutto utilizzato per la definizione della proprietà owner fa parte di altra funzionalità offerta da Polymer: le \textbf{declared properties}. 
 E’ possibile dichiarare delle proprietà di un custom element aggiungendole ad un oggetto properties nel prototipo del custom element. Ogni proprietà facente parte delle API pubbliche dell’elemento, andrebbe dichiarata nell’oggetto properties. Attraverso l’oggetto properties è inoltre possibile usufruire di un’altra funzionalità di Polymer, ovvero \textbf{Property Observation}. 
 E’ possibile mettersi in ascolto dei cambiamenti di una proprietà di un custom element, inserendo all’interno di essa l’attributo observer e associandovi una funzione setter detta change handler; nel momento in cui la proprietà subisce un cambiamento, la change handler viene chiamata con il vecchio e nuovo valore come argomenti.
-\begin{lstlisting}[language=HTML5]
+\begin{lstlisting}[language=html]
 Polymer({
  is: 'custom-element',
  properties: {

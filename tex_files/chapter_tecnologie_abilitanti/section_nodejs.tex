@@ -23,7 +23,7 @@ Ogni funzione in Node.js è asincrona, quindi le istruzioni che normalmente bloc
 Ad esempio per leggere un file in maniera asincrona bisogna specificare una funzione di callback da eseguire una volta che l’ operazione di lettura è stata completata.
 La callback è una funzione che viene chiamata solo dopo che un dato task è stato completato.
 Un esempio di callback è il seguente :
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var callback = function(err, contents) {
 	console.log(contents);
 }
@@ -65,7 +65,7 @@ Le promesse, o promise, sono oggetti che rappresentano il risultato di una chiam
 Il vantaggio principale nell’utilizzo delle promesse rispetto alle callback consiste nel rendere il codice più leggibile in quanto più simile al flusso di esecuzione sincrono.
 La componente principale dell’oggetto promessa è il suo metodo then. 
 Il metodo then viene invocato una volta ottenuto il risultato dell’ operazione asincrona e prende come argomento due callback opzionali, una eseguita quando l’operazione è andata a buon fine, l’altra in caso di errore.
-\begin{lstlisting}[language=JavaScript]
+\begin{lstlisting}[language=javascript]
 var promise = doSomethingAsync();
 promise.then(onFulfilled, onRejected);
 \end{lstlisting}

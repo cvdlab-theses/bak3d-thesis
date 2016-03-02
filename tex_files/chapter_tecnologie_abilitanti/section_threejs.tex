@@ -1,2 +1,54 @@
 \section{Three.js}
 \label{sec:chapter_tecnologie_abilitanti_threejs}
+
+Three.js è una libreria/API JavaScript, basata su WebGL, che permette la creazione e visualizzazione di grafica 3D su browser web. Nasce con l’obiettivo di rendere WebGL facile da utilizzare.
+La libreria Three.js permette di lavorare ad un livello più alto di astrazione rispetto a WebGL in quanto gestisce la fase di rendering per ogni oggetto nella scena, nascondendola di fatto al programmatore.
+La libreria inoltre, occupandosi della matematica base, nasconde al programmatore la complessa algebra lineare delle trasformazioni come traslazione, rotazione o scalatura di un oggetto nella scena, permettendogli di utilizzare direttamente i risultati provenienti dai calcoli.
+Di fatto questo velocizza il lavoro dello sviluppatore facendogli risparmiare parecchie linee di codice; un semplice cubo che con WebGL richiederebbe centinaia di righe di codice tra Javascript e GLSL per scrivere lo shader, in Three.js richiederebbe solo una piccola frazione di esse.
+A questo punto verrà descritto un breve progetto Three.js al fine di presentarne la facilità di utilizzo rispetto a WebGL.
+I progetti sviluppati in Three.js seguono tipicamente un approccio procedurale; per convenzione il codice viene sviluppato in tre funzioni: ‘init’, ‘animate’ e ‘render’ dividendo di fatto il progetto in tre segmenti logici: inizializzazione, aggiornamento e disegno.
+\begin{lstlisting}[language=javascript]
+var camera, scene, renderer;
+init();
+animate();
+
+function init() {
+ // sezione di set-up di progetto
+}
+function animate() {
+ // sezione per l'aggiornamento e l'animazione
+ requestAnimationFrame( animate );
+ render();
+}
+function render() {
+ // sezione di disegno su canvas
+ renderer.render( scene, camera );
+}
+\end{lstlisting}
+La funzione \texttt{animate()} utilizza il metodo \texttt{requestAnimationFrame()} che consente di invocare consecutivamente la funzione passata come parametro, nell’ esempio animate, all’ interno di un ciclo altamente ottimizzato dal browser. Questo ciclo permette al render di disegnare la scena al massimo per 60 volte al secondo, valore che però diminuisce all’aumentare della complessità della scena.
+\\
+Con un progetto completamente statico è possibile evitare l’invocazione della funzione animate ed accodare la funzione di disegno della scena a quella preposta all’ inizializzazione.
+\\
+A questo punto, per permettere a Three.js di effettuare il render su schermo sono necessari: un oggetto scena, un oggetto camera ed un renderer.
+La scena permette di indicare quali oggetti renderizzare ed in quale posizione, semplicemente aggiungendoli e spostandoli all’interno di essa.
+La camera indica quale porzione della scena viene renderizzata e mostrata su schermo. L’istanza di renderer è essenziale per indicare quale scena deve essere renderizzata da Three.js, e per definire la risoluzione della finestra del browser in cui viene mostrato il render.
+\\ 
+Infine viene aggiunto l’elemento renderer al documento HTML. Questo rappresenta l’elemento canvas che il renderer usa per mostrare la scena.
+\\
+Una volta inseriti i tre elementi, è necessario aggiungere alla scena l’elemento da renderizzare, ad esempio un cubo.
+\begin{lstlisting}[language=javascript]
+var geometry = new THREE.BoxGeometry(1,1,1);
+var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+var cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+\end{lstlisting}
+Per fare questo bisogna inizializzare una Box Geometry, contenente le primitive geometriche fondamentali di un cubo.
+\\
+Oltre alla geometria bisogna creare un materiale che conferisce alcune proprietà all’oggetto. Esistono diversi materiali, ognuno con proprie caratteristiche, a cui si possono aggiungere proprietà che sono comuni ad ogni materiale come il colore. In questo esempio il materiale permette all’oggetto di assumere il colore verde.
+\\ 
+Infine bisogna creare la Mesh vera e propria che rappresenta l’oggetto con una propria geometria a cui è applicato un materiale. La mesh può essere inserita nella scena per essere renderizzata.
+\\
+L’esecuzione del codice nell’esempio permette la visualizzazione su schermo di un cubo statico verde.
+\\
+Risulta chiaro quindi quanto Three.js velocizzi e semplifichi il lavoro degli sviluppatori, risultando comprensibile anche a chi non comprende dettagliatamente la pipeline di rendering. Nel codice è totalmente assente l’ algebra lineare delle trasformazioni descritta tramite matrice. Per effettuare una traslazione è sufficiente indicare solamente la nuova posizione sugli assi $x$,$y$ o $z$ dell’ oggetto; Three.js nasconde al programmatore tutta la logica delle operazioni da effettuare sulla matrice di trasformazione per ogni traslazione, rotazione o scalatura. Inoltre effettua automaticamente la mappatura dalle coordinate 3D della scena a quelle 2D dello schermo, cosa che invece con WebGL sarebbe stata a carico del programmatore.
+Three.js quindi, nel presente lavoro di tesi, è stato utilizzato come libreria base per la creazione dell’ editor e del navigatore di scene 3D fotorealistiche. I due ambienti verrano dettagliati nei capitoli successivi.
