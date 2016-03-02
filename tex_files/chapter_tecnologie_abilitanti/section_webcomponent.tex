@@ -61,5 +61,49 @@ Come discusso in precedenza, le lifecycle callback risultano uno strumento utile
 \item \emph {attributeChangedCallback(attributeName)} - il comportamento dell’elemento quando un suo attributo viene modificato.
 \end{itemize}
 \emph{createdCallback} viene invocata in modo sincrono alla creazione dell’elemento, le altre callback sono invece chiamate in modo asincrono. Le callback asincrone solitamente sfruttano \texttt{MutationObserver} per mettersi in ascolto dei cambiamenti sul DOM; questo consente alle callbacks di essere invocate prima di altri elementi come layout, stile, o altri eventi; in questo modo si evitano problemi, come il caricamento di contenuto senza stile, prima che la callbacks abbiano modo di reagire alle modifiche sul DOM.
+Per la definizione di metodi o proprietà, possono essere utilizzati dei metodi getter e setter:
+\begin{lstlisting}
+set properties(prop) {
+     this.mybutton_text = prop.text;
+}
 
+get text() {
+     return this.textContent;
+}
+\end{lstlisting}
+Una volta definite le callback e i getter e setter è possibile attivare il nuovo elemento, utilizzando il metodo \texttt{Document.registerElement()}:
+\begin{lstlisting}
+var mybutton = document.registerElement("my-button", MyButton);
+\end{lstlisting}
+A questo punto il nuovo elemento si può includere nel documento HTML, usando direttamente i tag:
+\begin{lstlisting}
+<my-button></my-button>
+\end{lstlisting}
+oppure in Javascript:
+\begin{lstlisting}
+var custom_button = new MyButton
+document.getElementById(‘something’).appendChild(custom_button)
+\end{lstlisting}
+E’ possibile associare uno stile al nuovo elemento in due modi:
+Specificandolo nell’implementazione della lifecycle callback \emph{createCallback} :
+\begin{lstlisting}
+createdCallback(){ 
+     this.innerHTML = ""+ 
+         " <style> "+ " p { color: orange; } "+ " </style> "+ 
+         .
+         .
+         + "";
+}
+\end{lstlisting}
+Oppure utilizzando un file css standard:
+\begin{lstlisting}
+my-button > p { 
+background-color:#FFA500;
+}
+\end{lstlisting}
 
+\subsection{HTML imports}
+\label{sec:chapter_tecnologie_abilitanti_html_imports}
+
+HTML imports è un modo per importare e riusare documenti HTML in altri documenti HTML. Come il tag \texttt{<script>} permette di iniettare codice Javascript nelle pagine, così HTML imports permettere di iniettare intere risorse HTML. In particolare HTML imports permette di importare dei custom element da URL esterni. In generale si può dire che HTML imports è il meccanismo di pacchettizzazione per le tecnologie Web Components.
+Per importare una risorsa HTML si inserisce nel documento il tag \texttt{<link>} come mostrato dall’esempio:
