@@ -1,0 +1,9 @@
+\section{Formato di scambio dei dati}
+\label{sec:chapter_architettura_sistema_formato_scambio}
+
+Per permettere la comunicazione delle  tre componenti principali (servizio, editor, navigatore) del sistema creato per il presente lavoro di tesi è stato utilizzato un formato di scambio di dati completamente indipendente dal linguaggio di programmazione: JSON (JavaScript Object Notation).
+Questo formato si basa sul linguaggio JavaScript ed utilizza testo, semplice da leggere e scrivere, per trasmettere dati costituiti da coppie attributo-valore (oggetti).
+\\
+Esso rappresenta il formato  di dati più usato per permettere la comunicazione asincrona tra browser/server, questo perchè utilizza convenzioni conosciute dai programmatori Java, Javascritpt, C, Perl, Python per citarne alcuni. Questa caratteristica rende di fatto il JSON un linguaggio ideale per lo scambio di dati ed ha consentito in questo lavoro la comunicazione tra un’ applicazione browser lato client scritta in Javascript (sia l’ editor che il navigatore) ed il servizio lato server scritto in Python.
+\\
+Il formato JSON è basato su due strutture di dati universali:
