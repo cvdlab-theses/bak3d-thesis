@@ -33,7 +33,7 @@ I vantaggi apportati dalla tecnologia custom elements sono:
 \end{enumerate}
 A questo punto verrà mostrato come è possibile creare un nuovo custom element utilizzando ad esempio le classi di JavaScript 6.
 Per prima cosa viene definita la classe, la cui struttura è tipicamente la seguente:
-\begin{lstlisting}
+\begin{lstlisting}[language=JavaScript]
 class MyButton extends HTMLElement {    
 /* E possibile estendere 
    qualsiasi altro elemento o classe */
@@ -62,7 +62,7 @@ Come discusso in precedenza, le lifecycle callback risultano uno strumento utile
 \end{itemize}
 \emph{createdCallback} viene invocata in modo sincrono alla creazione dell’elemento, le altre callback sono invece chiamate in modo asincrono. Le callback asincrone solitamente sfruttano \texttt{MutationObserver} per mettersi in ascolto dei cambiamenti sul DOM; questo consente alle callbacks di essere invocate prima di altri elementi come layout, stile, o altri eventi; in questo modo si evitano problemi, come il caricamento di contenuto senza stile, prima che la callbacks abbiano modo di reagire alle modifiche sul DOM.
 Per la definizione di metodi o proprietà, possono essere utilizzati dei metodi getter e setter:
-\begin{lstlisting}
+\begin{lstlisting}[language=JavaScript]
 set properties(prop) {
      this.mybutton_text = prop.text;
 }
@@ -72,21 +72,21 @@ get text() {
 }
 \end{lstlisting}
 Una volta definite le callback e i getter e setter è possibile attivare il nuovo elemento, utilizzando il metodo \texttt{Document.registerElement()}:
-\begin{lstlisting}
+\begin{lstlisting}[language=JavaScript]
 var mybutton = document.registerElement("my-button", MyButton);
 \end{lstlisting}
 A questo punto il nuovo elemento si può includere nel documento HTML, usando direttamente i tag:
-\begin{lstlisting}
+\begin{lstlisting}[language=HTML5]
 <my-button></my-button>
 \end{lstlisting}
 oppure in Javascript:
-\begin{lstlisting}
+\begin{lstlisting}[language=JavaScript]
 var custom_button = new MyButton
 document.getElementById("something").appendChild(custom_button)
 \end{lstlisting}
 E’ possibile associare uno stile al nuovo elemento in due modi:
 Specificandolo nell’implementazione della lifecycle callback \emph{createCallback} :
-\begin{lstlisting}
+\begin{lstlisting}[language=JavaScript]
 createdCallback(){ 
      this.innerHTML = ""+ 
          " <style> "+ " p { color: orange; } "+ " </style> "+ 
@@ -96,7 +96,7 @@ createdCallback(){
 }
 \end{lstlisting}
 Oppure utilizzando un file css standard:
-\begin{lstlisting}
+\begin{lstlisting}[language=HTML5]
 my-button > p { 
 background-color:#FFA500;
 }
@@ -107,3 +107,81 @@ background-color:#FFA500;
 
 HTML imports è un modo per importare e riusare documenti HTML in altri documenti HTML. Come il tag \texttt{<script>} permette di iniettare codice Javascript nelle pagine, così HTML imports permettere di iniettare intere risorse HTML. In particolare HTML imports permette di importare dei custom element da URL esterni. In generale si può dire che HTML imports è il meccanismo di pacchettizzazione per le tecnologie Web Components.
 Per importare una risorsa HTML si inserisce nel documento il tag \texttt{<link>} come mostrato dall’esempio:
+\begin{lstlisting}[language=HTML5]
+<link rel="import" href="myfile.html">
+\end{lstlisting}
+L’elemento HTML \texttt{<template>} è un meccanismo per mantenere nel DOM un contenuto HTML lato client che non viene renderizzato quando la pagina viene caricata, ma che può essere successivamente istanziato a tempo di esecuzione usando JavaScript. Un template può essere visto come un frammento di contenuto che viene memorizzato per un successivo uso all’interno del documento. Durante il caricamento della pagina il parser del browser processerà comunque il contenuto del \texttt{<template>} , ma solo per assicurarsi che il contenuto sia valido, dopodichè tale contenuto non verrà renderizzato.
+Per creare un elemento \texttt{<template>} , basta definire il template content e racchiuderlo tra i tag \texttt{<template>} :
+\begin{lstlisting}[language=HTML5]
+<template id="mytemplate">
+  <img src="" alt="great image">
+  <div class="comment"></div>
+</template>
+\end{lstlisting}
+Se incluso in un elemento template, un contenuto HTML gode delle seguenti proprietà: 
+\begin{itemize}
+\item Il contenuto è inattivo e nascosto finchè non viene attivato esplicitamente.
+\item Il contenuto inattivo non ha alcun effetto collaterale: non verrà eseguito alcuno script, non verrà caricata nessuna immagine, o eseguiti file audio.
+\item Il contenuto inattivo è come se non fosse presente nel documento: usando \texttt{document.getElementById()} o \texttt{querySelector()} nella pagina principale non verrà restituito alcun nodo figlio di un \texttt{<template>}
+\item Il template può essere posizionato ovunque all’interno di \texttt{<head>}, \texttt{<body>}, o \texttt{<frameset>}, e può includere qualsiasi tipo di contenuto ammissibile nei tre tag sopra citati. Può essere posizionato anche come figlio di una \texttt{<table>} o di una \texttt{<select>}. 
+\end{itemize}
+Per utilizzare un template bisogna attivarlo. Il modo più semplice per farlo è creare un clone della proprietà .content del template mediante \texttt{document.importNode()}. la proprietà \texttt{.content} è un \texttt{DocumentFragment} di sola lettura, contenente il template content. Una volta appeso al DOM, il clone si attiva.
+\begin{lstlisting}[language=JavaScript]
+var t = document.querySelector('#mytemplate');
+var clone = document.importNode(t.content, true);
+document.body.appendChild(clone);
+\end{lstlisting}
+
+\subsection{Shadow DOM}
+\label{sec:chapter_tecnologie_abilitanti_shadow_dom}
+
+Shadow DOM è la tecnologia core dei Web Components. Shadow DOM permette di incapsulare le implementazioni degli elementi in un albero DOM separato, in modo da separarle dal resto del documento, e allo stesso tempo proteggere il documento dai cambiamenti introdotti dal componente. Uno dei motivi per cui viene utilizzato lo shadow DOM è lo stile; lo stile di un web component non dovrebbe influenzare lo stile della pagina che lo ospita, e viceversa la pagina ospitante non dovrebbe influenzare lo stile del componente; questa situazione può manifestarsi ad esempio nei grandi siti, dove spesso il css è male organizzato. In generale lo Shadow DOM fornisce ad un normale albero DOM il supporto adeguato all’incapsulamento sia per JavaScript che per CSS; inoltre fornisce lo strumento necessario a controllare come diversi alberi DOM interagiscono l’uno con l’altro. 
+Lo shadow DOM è rappresentato dalla propria radice, detta \emph{shadow root}.
+Un elemento in cui è inserito un nodo shadow root è detto \emph{shadow host}. Il contenuto di uno shadow host viene renderizzato, mentre quello dello shadow root no. 
+Nella tecnologia shadow DOM un nodo può esprimere tre diversi tipi di alberi: \emph{light DOM}, \emph{shadow DOM} e \emph{composed DOM}.
+Al Light DOM e allo shadow DOM si può anche fare riferimento con il nome logical DOM; questo è il DOM con cui lo sviluppatore interagisce. Il composed DOM è ciò che il browser vede, e che usa per renderizzare i pixel su schermo.
+
+Il light DOM di un custom element viene visto dall’utente finale come un normale sottoalbero. Quindi può accedervi per chiedere informazioni usando \texttt{.childNodes}, \texttt{.children}, \texttt{.innerHTML} o qualsiasi altro metodo o proprietà di un comune sottoalbero.
+\begin{lstlisting}[language=HTML5]
+<custom-element>
+  <p>something hidden from end user</p>
+  <h1>Hello World</h1>
+</custom-element>
+\end{lstlisting}
+Un elemento custom può definire uno shadow DOM associando un nodo shadow root a se stesso. Lo shadow DOM è interno all’elemento e celato all’utente finale. I suoi nodi non sono figli del custom element. Un nodo shadow root viene definito in questo modo:
+\begin{lstlisting}[language=HTML5]
+#shadow-root
+  <!-- tutto cio che viene definito qui dentro andra
+  	   nello shadow DOM del custom element -->
+  <p>something hidden from end user</p>
+\end{lstlisting}
+E un tipico utilizzo per associarne uno ad un custom element:
+\begin{lstlisting}[language=JavaScript]
+var cel = document.getElementById('custom-element');
+var shadow = cel.createShadowRoot();
+document.body.appendChild(cel);
+\end{lstlisting}
+Il composed DOM è ciò che il browser renderizza. Per il rendering, il light DOM viene distribuito nello shadow DOM per creare il composed DOM; nel nostro esempio il composed DOM avrà questo aspetto:
+\begin{lstlisting}[language=HTML5,label={custom_el_code}]
+<custom-element>
+  <p>something hidden from end user</p>
+  <h1>Hello World</h1>
+</custom-element>
+\end{lstlisting}
+I nodi nel light DOM o nello shadow DOM esprimono relazioni tra parenti o fratelli che corrispondono a quelle dei rispettivi alberi a cui appartengono; le relazioni che esistono nel composed DOM finale non sono espresse da nessuna parte nel DOM. Guardando l’esempio \ref{custom_el_code} questo vuol dire che, anche se dal composed DOM si evince che \texttt{<p>}, così come \texttt{<h1>}, sono figli di \texttt{<custom-element>}, in verità il primo è figlio dello shadow DOM, mentre il secondo è figlio del light DOM. I due nodi non solo relazionati, ma il composed DOM li renderizza come se lo fossero. In questo modo l’utente può manipolare light e shadow DOM come se fossero normali sottoalberi del DOM, lasciando poi al sistema l’onere di sincronizzare i due nell’albero di render finale.
+
+I produttori di browser sono tutt’oggi al lavoro per introdurre nativamente il supporto ai web components:
+\begin{itemize}
+\item \textbf{Google Chrome} è al momento il punto di riferimento per il supporto ai Web Components, principalmente per il fatto che Google è uno dei principali promotori di questi nuovi standards. Tutti e quattro di standards dei Web Component hanno un supporto nativo in Chrome e possono essere usati senza bisogno di polyfills. 
+\item \textbf{Firefox} utilizza un’implementazione di Templated e offre la possibilità di attivare Shadow DOM e i Custom Elements. Al momento l’implementazione di HTML Imports è in standby in quanto si temono eccessive sovrapposizioni con ECMAScript 6 (ES6), ovvero lo standard su cui si basa l’implementazione JavaScript di SpiderMonkey, l’engine utilizzato da Mozilla. 
+\item \textbf{Safari} ha un supporto per Templates e recentemente ha aggiunto un supporto per Shadow DOM. Esiste anche un prototipo di implementazione di Custom Elements, ma come per Mozilla, il team di WebKit, il motore su cui si basa Safari, pensa che i moduli ES6 debbano essere la base per l’import di nuovi elementi custom e quindi non sta lavorando attivamente ad un supporto per la tecnologia.
+\item \textbf{Microsoft} ha da poco aggiunto un supporto per HTML Template in Edge 13. l’obiettivo è quello di fornire al browser un supporto completo ai Web Components.
+\end{itemize}
+
+Siccome nella stragrande maggioranza dei browser ancora non è presente un supporto nativo ai Web Components, molti fanno ancora affidamento al \emph{Web Components Polyfill}.
+Per polyfill si intende una porzione di codice, comunemente detta plugin, che permette di introdurre nel browser una tecnologia che nativamente non offrirebbe. 
+Grazie al polyfill, molti browsers, tra cui Internet Explorer 11, hanno il supporto ai Web Components. 
+Un browser con supporto nativo ai Web Components può garantire prestazioni d’uso migliori. Il Web Components Polyfill usato dai browser per includere il supporto ai Web Component si chiama \texttt{Webcomponent.js}
+
+\texttt{Webcomponents.js} è un insieme di polyfills che implementano le tecnologie dei Web Components. Grazie a questo plugin gli sviluppatori possono usufruire dei Web Component su tutti i browsers moderni, ad eccezione di Google Chrome, che non necessita più dello strato polyfill.
+
