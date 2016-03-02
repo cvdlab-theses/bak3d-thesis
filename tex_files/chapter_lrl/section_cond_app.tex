@@ -10,7 +10,7 @@ Inoltre l’oggetto spostato non proietterebbe nessuna ombra nella nuova posizio
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_lrl/lrl_appl1.png}\hfill
- \caption[Applicabilità, ombre statiche]{In foto è mostrato l'effetto del processamento offline delle informazioni luminose. Notare come l'ombre ombra sul pavimento rimanga statica nonostante lo spostamento dell'oggetto che l'aveva proiettata.}
+ \caption[Applicabilità, ombre statiche]{In foto è mostrato l'effetto del processamento offline delle informazioni luminose. L' ombra sul pavimento rimane statica anche dopo lo spostamento dell'oggetto che l'aveva proiettata.}
  \label{fig:lrl_appl1}
 \end{figure}
 Questo inconveniente viene ottenuto perchè le informazioni di luci ed ombre sono salvate all’interno delle lightmapped texture, ed all’interno del ciclo di render non viene effettuato alcun calcolo dinamico delle luci  (perchè le luci sono totalmente assenti nella scena).
@@ -19,7 +19,7 @@ Stesso discorso per le env-map, modificare la scena dopo che le env-map sono sta
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_lrl/lrl_appl2.png}\hfill
- \caption[Applicabilità, riflesso con env map]{Notare come sia possibile ottenere uno specchio utilizzando un'env map riflettente, accettando tuttavia il compromesso di avere un riflesso immutabile nonostante lo spostamento degli oggetti.}
+ \caption[Applicabilità, riflesso con env map]{Uno specchio ottenuto tramite una env map riflettente. Il riflesso risulta però immutibile nonostante lo spostamento degli oggetti.}
  \label{fig:lrl_appl2}
 \end{figure}
 Proprio per questi motivi è possibile ottenere scene fotorealistiche e scalabili solamente se esse, una volta create, non vengono modificate nel tempo.
@@ -36,7 +36,7 @@ Se ad esempio venisse processato un bake diverso per ogni singola stanza, il ris
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_lrl/lrl_appl3.png}\hfill
- \caption[Applicabilità, scene autocontenute]{Senza effettuare un unico baking dell'intera scena non sarebbe possibile ottenere effetti di luce con in foto.}
+ \caption[Applicabilità, scene autocontenute]{Effetti di luce fotorealistici ottenuti tramite un unico bake dell'intera scena.}
  \label{fig:lrl_appl3}
 \end{figure}
 Questo ragionamento può essere applicabile solo su porzioni di scena autocontenute, come ad esempio una stanza chiusa di un appartamento, in cui è impossibile che luci, ombre ed effetti di riflessione/rifrazione possano influenzare altre stanze.
