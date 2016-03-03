@@ -13,14 +13,15 @@ Le richieste HTTP sottomesse dal client possono essere diverse, e quindi che il 
 \\
 Per ogni tipologia di richiesta ci sarà dunque una diversa pipeline di Middleware, ma non è detto che ci sia sempre bisogno di elaborare un flusso di dati mediante più passi di elaborazione; per operazioni semplici è infatti possibile definire un solo Middleware. 
 Le diverse tipologie di richieste HTTP che il client può sottomettere sono mostrate in tabella:
-\begin{center}
-	\begin{tabular}{| p{2cm} | p{1.5cm} | p{3cm} | l | p{3cm} |}
-    \hline
-    Funzionalità editor & Metodo richiesta & Contenuto & URL & Middleware\\ \hline
-    Bake & POST & scene.json,email utente,nome scena,sampling & /bake & validate\_parameters,assign\_id,create\_directory,save\_input,enqueue,answer,run\\ \hline
-    Jobs & GET &  & /jobs & get\_jobs\\ \hline
-	Status & GET & id processo bake & /jobs:id & status\\ \hline
-    Delete & DELETE & id processo bake & /jobs:id & delete\_bake\\ 
-    \hline
-    \end{tabular}
-\end{center}
+\begin{table}[]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\begin{tabular}[c]{@{}l@{}}Funzionalità\\ Editor\end{tabular} & \begin{tabular}[c]{@{}l@{}}Metodo \\ richiesta\end{tabular} & Contenuto & URL & Middleware \\ \hline
+Bake & POST & \begin{tabular}[c]{@{}l@{}}scene.json, \\ email, \\ nome scena, \\ sampling\end{tabular} & /bake & \begin{tabular}[c]{@{}l@{}}validate\_parameters, \\ assign\_id, \\ create\_directory, \\ save\_input, \\ enqueue,  answer,\\ run\end{tabular} \\ \hline
+Jobs & GET &  & /jobs & get\_jobs \\ \hline
+Status & GET & \begin{tabular}[c]{@{}l@{}}id processo\\ bake\end{tabular} & /jobs:id & status \\ \hline
+Delete & DELETE & \begin{tabular}[c]{@{}l@{}}id processo\\ bake\end{tabular} & /jobs:id & delete\_bake \\ \hline
+\end{tabular}
+\end{table}
