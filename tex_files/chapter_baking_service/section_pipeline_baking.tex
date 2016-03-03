@@ -99,16 +99,90 @@ Ogni valore dell’array bidimensionale rappresenta infatti un triangolo ed ogni
 \\
 Infine l’informazione degli spigoli viene omessa in quanto totalmente ridondante per via della presenza delle facce. 
 Gli spigoli di solito vengono utilizzati per la creazione di oggetti senza facce. Essi però risultano totalmente inutili in questo lavoro di tesi in quanto permettono di ottenere oggetti costituiti solamente da lati che di fatto nel mondo reale non esistono.
-
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=0.6\linewidth]{images/chapter_baking_service/Blender_spigoli.png}\hfill
+ \caption[Blender e gli spigoli]{Un oggetto senza facce in Blender}
+ \label{fig:baking_service_Blender_spigoli}
+\end{figure}
 
 
 Quindi una volta creata la mesh è possibile creare l’object 3D che rappresenta l’oggetto vero e proprio all’interno della scena. Operazioni quali ad esempio creazione e modifica dei materiali, l’assegnazione di texture e le trasformazioni possono essere effettuate solamente sull’ oggetto.
 \\
 Il materiale associato all’oggetto nel JSON, quindi proveniente dal render Three.js, non può essere assegnato al nuovo oggetto creato in Blender perchè quest’ultimo utilizza un render differente. 
-Questi due render utilizzano infatti tipologie di materiali differenti e per questo è necessario convertire un materiale Three.js in un materiale Cycles render (Blender). Questa operazione risulta molto complessa e verrà spiegata nel paragrafo X. 
+Questi due render utilizzano infatti tipologie di materiali differenti e per questo è necessario convertire un materiale Three.js in un materiale Cycles render (Blender). Questa operazione risulta molto complessa e verrà spiegata nel paragrafo X.
+\\
+Inoltre se nell’oggetto json sono descritte anche le normali ad esso associate, queste verranno prelevate ed assegnate all’oggetto creato in Blender.
+\\
+In questo lavoro di tesi viene supposto infatti che le normali scritte nel json, e quindi quelle create ad hoc per l’oggetto, risultino quelle ideali per l’oggetto e quindi migliori di quelle che riuscirebbe a creare Blender.
+Supposizione che poi si è rivelata veritiera in fase di sperimentazione.
+\\
+Utilizzando le normali di vertici originali è possibile ottenere l’effetto \emph{smooth shading} desiderato, invece utilizzando le normali calcolate da Blender si ottiene un \emph{flat shading} (\ref{fig:baking_service_flat_smooth}).
+Nello smooth shading le normali memorizzate per ogni vertice vengono interpolate, questo permette di non osservare la forma delle facce di cui è costituito dell’oggetto.
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_baking_service/flat_smooth.png}\hfill
+ \caption[Smooth shading e flat shading in Blender.]{A sinistra un effetto smooth shading, a destra un  effetto flat shading}
+ \label{fig:baking_service_flat_smooth}
+\end{figure}
+In Blender, esattamente come Three.js, di default le normali sono uscenti dal lato frontale della faccia (\emph{front\_side}) di ogni geometria. 
+Ci sono casi in cui si rende necessario però utilizzare oggetti Three.js con le normali uscenti dalla faccia anteriore (\emph{back\_side}).
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_baking_service/front_back_side.png}\hfill
+ \caption[Front side e back side in Blender.]{A sinistra normali front side, a destra normali back side}
+ \label{fig:baking_service_front_back_side}
+\end{figure}
+Blender tramite l’utilizzo della funzione \texttt{flip\_normals()} permette di girare le normali front\_side e di assegnarle alla faccia opposta, permettendo in questo modo di ottenere le normali back\_side (figura: \ref{fig:baking_service_front_back_side}. 
+Adattare correttamente le normali è stato importante in quanto esse sono fondamentali per il corretto calcolo delle luci e per la corretta creazione delle lightmap.
+La lightmap viene calcolata sul lato frontale della faccia se le normali sono front\_side, altrimenti sul lato opposto se sono back\_side.
+\\
+Purtroppo però inserire queste normali non è una operazione semplice in quanto Blender ricalcola automaticamente le normali ogni volta che dalla modalità \emph{object} si passa alla modalità \emph{edit}, sovrascrivendo quelle vecchie.
+\\
+In particolare il passaggio alla modalità edit  in questo lavoro si rende necessario per effettuare il flip delle normali e per effettuare il baking che verrà descritto nel capitolo x.
+\\
+Di fatto attualmente non esiste un modo per evitare questa sovrascrittura delle normali. L’unica possibilità per evitarla è salvare localmente in una struttura dati l’associazione geometria e normali importate. Questa struttura dati viene sfruttata prima di effettuare l’esportazione della scena, descritta in X, per forzare l’inserimento delle normali originali nelle geometrie degli oggetti.
+Come spiegato in precedenza l’utilizzo delle normali create da Blender deve essere assolutamente evitato per impedire l’esportazione da Blender verso Three.js di una scena in cui gli oggetti che sarebbero dovuti essere smooth sono in realtà flat.
+\\
+Se all’ oggetto json è assegnata una diffuse texture allora la stessa deve essere applicata al corrispondente oggetto Blender. L’assegnazione della texture all’oggetto non è un’operazione semplice. 
+Viene prelevato dal json la stringa che rappresenta l’immagine codificata in base 64. Questa viene poi decodificata, convertita nella texture corrispondente e memorizzata da Blender.
+\\
+Per assegnare la texture all’oggetto Blender è necessario aggiungere al suo materiale un \texttt{texture\_slot} che ha il compito di memorizzare la texture assegnata. 
+A questo punto la texture viene memorizzata nello slot associato all’oggetto.
+\\
+Per poter associare le coordinate uv (inserite in un array) alla texture è necessario prima inserirle all’interno di una struttura dati della mesh chiamata \texttt{uv\_layer}.
+\\
+Ad ogni uv\_layer, in cui sono inserite le coordinate uv, è necessario assegnare un nome che risulta fondamentale al fine di identificarlo.
+Nel presente lavoro di tesi sono stati creati per ogni mesh due differenti uv\_layer (con associati nomi differenti), uno per la diffuse\_map e l’altro per la lightmap.
+\\
+Entrambi gli uv\_layer hanno assegnate le stesse coordinate uv, questo per permettere la creazione di una lightmap perfettamente coincidente alla diffusemap (a meno delle informazioni di luce) per permette l’ottenimento dei vantaggi descritti nel paragrafo \ref{sec:chapter_lrl_li_te_ba}.
+\\
+Infine alla diffuse texture ed alla lightmap vengono assegnate le corrispondenti uv (le stesse nel nostro lavoro).
+Durante il caricamento della scena, nessuna lightmap viene creata, quindi l’uniche uv considerate sono quelle riguardanti la diffuse texture.
+\\
+Il motivo per cui vengono utilizzati due uv\_layer verrà dettagliato durante la spiegazione nel paragrafo [X].
+\\
+Per ogni texture è inoltre necessario necessario effettuare una mappatura del parametro repeat ed una mappatura del colore da assegnare al materiale, diverso se possiede la texture o meno. Questa mappatura verrà descritta nel capitolo x.
 
+Una volta applicata la texture vengono eseguite le trasformazioni di traslazione, rotazione e scalatura all’oggetto creato.
+Nel json tutte le trasformazioni da applicare all’oggetto sono riportate in una matrice di trasformazione associata all’oggetto JSON. In figura \ref{fig:baking_service_matrix} è rapprentata una matrice di trasformazione; non è però compito di questa elaborato spiegarne il funzionamento.
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=0.6\linewidth]{images/chapter_baking_service/matrix.jpg}\hfill
+ \caption[Matrice di trasformazione]{Una matrice di trasformazione.}
+ \label{fig:baking_service_matrix}
+\end{figure}
 
-
-
-
+Tramite l’utilizzo di una libreria Blender chiamata trasformation.py è stato possibile ottenere queste informazioni dalla matrice di trasformazione. 
+In particolare la funzione utilizzata è chiamata decompose() che accetta come parametro la matrice scritta come lista (lista identica a quella presente nel JSON) e permette di ottenere come risultato le tre trasformazioni.
+\\
+Le informazioni di traslazione e scalatura possono essere applicate direttamente così come sono sugli oggetti Blender. 
+Purtroppo questo non è però possibile per la rotazione in quanto la funzione produce come risultato un quaternione. Il quaternione deve essere infatti prima convertito in un angolo di eulero per potere poi essere applicato sull’oggetto. 
+\\
+Anche questa conversione è stata possibile grazie ad una funzione della libreria \texttt{transformation.py}.
+Infine l’oggetto viene aggiunto alla scena Blender, pronto per subire l’operazione di bake che verrà dettagliata accuratamente nel paragrafo [X].
 
