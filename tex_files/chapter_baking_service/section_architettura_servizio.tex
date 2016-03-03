@@ -1,0 +1,26 @@
+\section{Architettura del servizio}
+\label{sec:chapter_baking_service_architettura_servizio}
+
+FOTO ARCHITETTURA (RIFARE QUELLA DI SPINI)
+
+Nella descrizione generale del servizio nel paragrafo \ref{sec:chapter_architettura_sistema_il_servizio_baking} si è accennato al fatto che le richieste sono elaborate dal server in modo differente a seconda del loro tipo, e che le elaborazioni più complesse possono essere decomposte in una successione di passi di elaborazione più piccoli. Ogni passo di elaborazione può essere implementato in una funzione separata, e ognuna di queste funzioni è detta Middleware. Ogni middleware è un componente autocontenuto che racchiude le responsabilità funzionali di implementare un passo di elaborazione.
+\\
+Questa caratteristica permette l’aggiunta o la rimozione di middleware dalla pipeline in modo agevole. Il flusso di dati in ingresso verrà elaborato attraverso i passi successivi della pipeline. 
+\\
+Il servizio prevede dunque un web server che ascolta le richieste dei client da remoto; questo web server è identificabile mediante indirizzo IP e numero di porta dalla quale è in ascolto; a fronte di una richiesta da parte del client manda in esecuzione una pipeline di middleware che la elabora, producendo una risposta. La pipeline di Middleware viene quindi invocata ogni volta che una richiesta HTTP viene catturata dal server. 
+\\
+Le richieste HTTP sottomesse dal client possono essere diverse, e quindi che il server dovrà essere in grado di riconoscere che tipo di richiestà è, e quali sono le operazioni necessarie per soddisfarla. 
+\\
+Per ogni tipologia di richiesta ci sarà dunque una diversa pipeline di Middleware, ma non è detto che ci sia sempre bisogno di elaborare un flusso di dati mediante più passi di elaborazione; per operazioni semplici è infatti possibile definire un solo Middleware. 
+Le diverse tipologie di richieste HTTP che il client può sottomettere sono mostrate in tabella:
+\begin{center}
+	\begin{tabular}{| p{2cm} | p{1.5cm} | p{3cm} | l | p{3cm} |}
+    \hline
+    Funzionalità editor & Metodo richiesta & Contenuto & URL & Middleware\\ \hline
+    Bake & POST & scene.json,email utente,nome scena,sampling & /bake & validate\_parameters,assign\_id,create\_directory,save\_input,enqueue,answer,run\\ \hline
+    Jobs & GET &  & /jobs & get\_jobs\\ \hline
+	Status & GET & id processo bake & /jobs:id & status\\ \hline
+    Delete & DELETE & id processo bake & /jobs:id & delete\_bake\\ 
+    \hline
+    \end{tabular}
+\end{center}

@@ -1,1 +1,10 @@
-In this chapter...
+In questo capitolo verrà mostrato nel dettaglio il servizio dedicato al processamento del baking delle lightmap su richiesta dell’utente. 
+\\
+Nel paragrafo \ref{sec:chapter_architettura_sistema_il_servizio_baking} si è descritto il generale il servizio, individuandone i punti focali nella gestione diversificata delle richieste utente in base al loro tipo, e nella pipeline di elaborazione che viene eseguita a fronte di una richiesta di baking delle lightmap. In questo capitolo verranno dettagliati tali punti, discutendo le soluzioni scelte a fronte di ogni problema. Non mancheranno riferimenti alle tecnologie utilizzate per implementare determinate soluzioni. 
+\\
+Attualmente il servizio di bake viene erogato da un calcolatore collegato alla rete.
+Sul calcolatore è implementato un web server; questo web server è configurato per eseguire specifiche operazioni in base al tipo di richieste che cattura. Per riconoscere il tipo della richiesta, il server guarda all’URL e al metodo della richiesta. Il tipo di richiesta principale che il server cattura è una richiesta di bake; l’operazione corrispondente consiste in una serie di pre e post elaborazioni, che fanno da contorno all’operazione più importante, ovvero il processo di baking. Per invocare tale processo, è necessario che sul calcolatore sia installato un software di grafica 3D abilitato alla generazione di ligthmap, che in questo caso è Blender. Come avviene l’istanziazione di Blender per richiedere un bake verrà spiegato nel prossimo paragrafo. Ovviamente trattandosi della procedura computazionalmente più onerosa, si è scelto di installare il servizio su di un calcolatore munito di hardware di accelerazione grafica performante. 
+\\
+Oltre alle richieste di bake di una scena, il web server è in grado di elaborare richieste per ottenere la lista dei bake in attesa o in esecuzione sul servizio, richieste per conoscere lo status di completamento di un bake, o richieste per annullare un bake.
+\\ 
+Nel paragrafo \ref{sec:chapter_architettura_sistema_il_servizio_baking} si è fatto cenno al fatto che il server tiene memoria delle sue azioni, in modo che in caso fallimento da parte del client il server è comunque in grado di ricevere il risultato e di effettuare tutte le operazioni sopra citate.
