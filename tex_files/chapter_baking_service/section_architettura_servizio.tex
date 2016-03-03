@@ -9,7 +9,7 @@ Questa caratteristica permette l’aggiunta o la rimozione di middleware dalla p
 \\
 Il servizio prevede dunque un web server che ascolta le richieste dei client da remoto; questo web server è identificabile mediante indirizzo IP e numero di porta dalla quale è in ascolto; a fronte di una richiesta da parte del client manda in esecuzione una pipeline di middleware che la elabora, producendo una risposta. La pipeline di Middleware viene quindi invocata ogni volta che una richiesta HTTP viene catturata dal server. 
 \\
-Le richieste HTTP sottomesse dal client possono essere diverse, e quindi che il server dovrà essere in grado di riconoscere che tipo di richiestà è, e quali sono le operazioni necessarie per soddisfarla. 
+Le richieste HTTP sottomesse dal client possono essere diverse, e quindi il server dovrà essere in grado di riconoscere che tipo di richiestà è, e quali sono le operazioni necessarie per soddisfarla. 
 \\
 Per ogni tipologia di richiesta ci sarà dunque una diversa pipeline di Middleware, ma non è detto che ci sia sempre bisogno di elaborare un flusso di dati mediante più passi di elaborazione; per operazioni semplici è infatti possibile definire un solo Middleware. 
 Le diverse tipologie di richieste HTTP che il client può sottomettere sono mostrate in tabella:
@@ -32,9 +32,12 @@ All’arrivo di una richiesta HTTP il server confronta metodo e URL della richie
 \\
 Il Baking Service è realizzato con la consapevolezza che l’attività di modifica, aggiunta o rimozione di middleware può essere piuttosto frequente, pertanto si è cercato di individuare un framework che semplificasse questo tipo di operazioni. La soluzione è stata quella di realizzare un server HTTP basato su NodeJS. 
 L’ambiente NodeJS, mostrato nel paragrafo \ref{sec:chapter_tecnologie_abilitanti_nodejs}, consente la realizzazione di applicazioni lato server in poche righe di codice, grazie a framework come \texttt{ExpressJS}. Questo framework è lo standard de facto per la realizzazione di applicazioni server-side in ambiente Node, ed offre tutta una serie di strumenti per la realizzazione della routing table, e per la realizzazione dei middleware. 
-
-FOTO
-
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_baking_service/ba_se_ex_js.png}\hfill
+ \caption[ExpressJS]{In foto un dettaglio sulla gestione delle richieste utilizzando un framework ExpressJS}
+ \label{fig:ba_se_ex_js}
+\end{figure}
 Seguendo l’ordine della tabella, verranno ora analizzati i punti focali relativi alla realizzazione di ogni middleware, iniziando appunto dalla pipeline per processamento del bake. 
 \\
 Il primo passo della pipeline prevede che tutte le informazioni presenti nella POST vengano validate.
@@ -47,7 +50,7 @@ Viene dunque creata ed inizializzata una struttura \texttt{bake\_data} contenent
 \item Istante di accettazione della richiesta (viene fatto coincidere con il momento in cui viene creata la struttura dati. Questo dato è utile per conoscere ad esempio il tempo che intercorre tra accettazione della richiesta, e l’inizio del processamento del bake).
 \end{itemize}
 Il passo di elaborazione successivo si occupa di assegnare un id univoco al processo di bake, memorizzandolo nel rispettivo bake\_data. L’id univoco è fondamentale per creare una corrispondenza tra client e processo di bake richiesto dal client, utile specialmente per le funzionalità Jobs, Status, e Delete. 
-A questo punto bisogna rendere persistente su disco la scena fornita dall’utente; siccome il formato delle richieste di bake è sempre lo stesso, bisogna diversificare gli input in base al processo. Per prima cosa viene quindi creata nel file system una directory avente per nome l’id del processo. Il path della directory appena creata verrà memorizzato nei bake\_data del processo. 
+Successivamente bisogna rendere persistente su disco la scena fornita dall’utente; siccome il formato delle richieste di bake è sempre lo stesso, bisogna diversificare gli input in base al processo. Per prima cosa viene quindi creata nel file system una directory avente per nome l’id del processo. Il path della directory appena creata verrà memorizzato nei bake\_data del processo. 
 L’operazione successiva prevede la scrittura del file di input, ovvero la scena, all’interno di questa directory. 
 A questo punto la fase di preprocessamento è conclusa, e può così iniziare la fase principale, ovvero il bake. Per i motivi gia discussi nei capitoli precedenti questa è ovviamente la fase più pesante e che richiede il maggior tempo per essere processata; fungerà quindi da collo di bottiglia per tutta la pipeline. Durante il processamento di un bake è possibile che le richieste per altri bake continuino ad arrivare, pertanto è necessario disciplinare gli arrivi in una struttura dati a coda. 
 \\
