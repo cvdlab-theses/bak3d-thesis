@@ -52,7 +52,7 @@ Salvo dove diversamente specificato in questo capitolo si assume che le operazio
 
 
 \subsection{Caricamento della scena}
-\label{sec:chapter_baking_service_pipeline_baking_caricamento_scena}
+\label{sec:chapter_baking_service_pipeline_baking_caricam_scena}
 Il caricamento della scena è il primo passo di elaborazione effettuato dallo script installato in Blender. Questo processo risulta avviato su un server remoto che, tra le varie funzioni, intercetta le richieste effettuate dal client (l’editor).
 \\
 Nella richiesta viene inviato il file .json che rappresenta la scena 3D in Three.js descritta tramite le strutture dati ed i parametri previsti dal rendering di tipo Rasterization.
@@ -64,11 +64,41 @@ Di fatto la scena Three.js descritta nel JSON4 viene analizzata, mediante un alg
 Ogni oggetto descritto nel formato JSON viene quindi riconosciuto ed adattato nella struttura dati corrispondente In Blender. Quest’ultimo espone infatti una API scritta in Python per la creazione di scene 3D, molto differente dal linguaggio Three.js.
 \\
 Viene ora presentato una pseudocodifica dei passi effettuati dall’analizzatore:
-
-
-
-
-
+\\
+\begin{algorithm}
+	json = load\_json (json\_path);\hspace{5pt}add\_object(Empty)\;
+	\For{ogni json\_ob nella scena, visitata in profondità}{
+	    \If{has\_geo(json\_ob)}{
+			json\_geometry=take\_geo\_fromJson(json\_ob)\;
+	    	json\_material=take\_mat\_fromJson(json\_ob)\;
+	    	verts=take\_verts(json\_geometry);\hspace{5pt}faces=calculate\_faces()\;
+			mesh=new mesh(verts, faces);\hspace{5pt}object=new object (mesh)\;
+	    	\If{json\_material}{
+	        mat=\textbf{mappingMateriale(json\_material)}\;
+	        object.active\_material=mat\;
+	        }
+	        \If{has\_normal(json\_geometry)}{
+	        add\_normal(object,geometry)\;
+	        }
+	        \If{has\_texture(json\_material)}{
+	    	apply\_texture(object,json\_material)\;
+	    	apply\_uv(object,json\_geometry)\;
+	    	}
+		}
+	    \If{is\_light(json\_ob)}{
+	    	light\_type=json\_ob.type;\hspace{5pt}object=\textbf{mappingLuce(json\_ob)}\;
+	    }
+		\If{is\_ob3D(json\_ob)}{
+	    	ob=Empty;\;
+	    }
+		apply\_transformations(ob, getMatrix(json\_ob))\;
+		\If{has\_parent(json\_ob)}{
+	    	json\_parent=parent(json\_ob);\hspace{5pt}ob.parent=json\_parent\;
+	    	}
+		add\_object(ob)\;
+	}
+\end{algorithm}
+\\
 La scena descritta nel json viene visitata tramite una visita in profondità ricorsiva. 
 Questo permette di riportare in Blender la medisima gerarchia della scena creata in Three.js.
 Per ogni oggetto json individuato vengono effettuate delle operazioni di adattamento che permettono di creare in Blender le corrispondenti strutture dati Three.js.
