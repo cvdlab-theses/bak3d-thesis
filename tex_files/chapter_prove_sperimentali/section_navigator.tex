@@ -30,8 +30,8 @@ Nulla però esclude all’utilizzatore del servizio, creato in questo lavoro di 
 \\ 
 Quindi per ogni test è stata effettuata una ulteriore prova atta a valutare la fluidità di una sesta scena, identica a quella con 30 luci, in cui però ad ogni luce viene assegnato un valore di ampiezza angolare maggiore: 180 gradi.
 \\
-I sei risultati di fluidità provenienti dalle scene con luci vengono quindi confrontati con la frequenza di fotogrammi al secondo (fps) erogabili durante la renderizzazione di una scena (senza luci) processata tramite bake. Scena identica per composizione alle altre cinque.
-Gli fps di ogni scena vengono calcolati sia per la vista dall’alto sia per quella in prima persona.
+I sei risultati di fluidità provenienti dalle scene con luci vengono quindi confrontati con la frequenza di fotogrammi al secondo (fps) erogabili durante la renderizzazione di una scena (senza luci) processata tramite bake. Questa scena, con applicate le lightmap (senza luci), viene ottenuta dando in input al servizio di bake la scena con 50 luci.
+Gli fps di ogni ambiente creato vengono calcolati sia per la vista dall’alto sia per quella in prima persona.
 \\
 Questo test ha permesso di sperimentare quanto effettivamente le luci incidano sulle performance di rendering e di comprendere a fondo in quali circostanze la tecnica di bake comporti i maggiori benefici in termini di prestazioni.
 \\
@@ -41,6 +41,26 @@ Vengono adesso presentati i risultati di performance ottenuti su un calcolatore 
 \item Scheda grafica: NVIDIA GeForce 320M 256 MB.
 \item Memoria RAM: 4 GB
 \end{itemize}
+
+La scena processata tramite il servizio di bake ha permesso di ottenere un frame rate stabile a 60 frame al secondo sia durante la navigazione dall'alto sia durante quella in prima persona.
+I risultati della scena senza bake all'aumentare del numero di luci inserite sono invece descritti in tabella \ref{table:luci_basse_prest}
+
+\begin{table}[]
+\centering
+\caption{Numero di luci e fluidità (architettura 1).}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}numero\\ spotlight\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}angle\\ spotlight\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}frame-rate\\ dall'alto\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}frame-rate\\ prima persona\end{tabular}}} \\ \hline
+5 & 36 & 28-40 & 29-35 \\ \hline
+10 & 36 & 18-30 & 22-30 \\ \hline
+20 & 36 & 20-25 & 16-25 \\ \hline
+30 & 36 & 10-15 & 13-20 \\ \hline
+30 & 180 & 7-12 & 9-13 \\ \hline
+50 & 36 & 8-13 & 6-12 \\ \hline
+\end{tabular}
+\label{table:luci_basse_prest}
+\end{table}
+
 Dai risultati ottenuti è possibile osservare come la renderizzazione di una scena che non è stata processata tramite bake appesantisca il processo di rendering anche inserendo poche luci con ampiezza angolare di 36 gradi.
 \\
 La navigazione in prima persona risulta infatti problematica già quando nella scena sono inserite 5 fonti luminose. I più bassi valori di fps vengono raggiunti quando sono osservate più fonti luminose insieme.
@@ -62,6 +82,26 @@ Adesso vengono presentati i risultati di performance ottenuti su un calcolatore 
 \item Scheda grafica: NVIDIA GeForce GT635M 2GB.
 \item Memoria RAM: 8 GB
 \end{itemize}
+
+La scena processata tramite il servizio di bake, esattamente come con il calcolatore di fascia bassa, ha permesso di ottenere un frame rate stabile a 60 frame al secondo sia durante la navigazione dall'alto sia durante quella in prima persona.
+I risultati della scena senza bake all'aumentare del numero di luci inserite sono invece descritti in tabella \ref{table:luci_alte_prest}
+
+\begin{table}[]
+\centering
+\caption{Numero di luci e fluidità (architettura 2).}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}numero\\ spotlight\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}angle\\ spotlight\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}frame-rate\\ dall'alto\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}frame-rate\\ prima persona\end{tabular}}} \\ \hline
+5 & 36 & 43-60 & 56-60 \\ \hline
+10 & 36 & 37-41 & 46-60 \\ \hline
+20 & 36 & 22-26 & 25-57 \\ \hline
+30 & 36 & 17-18 & 17-51 \\ \hline
+30 & 180 & 11-13 & 13-34 \\ \hline
+50 & 36 & 12-14 & 12-32 \\ \hline
+\end{tabular}
+\label{table:luci_alte_prestl}
+\end{table}
+
 Dai risultati ottenuti è possibile osservare come la renderizzazione nel navigatore di una scena che non è stata processata tramite bake risulti fluida in presenza di poche luci, con un frame rate elevato ma fortemente variabile.
 \\ 
 Il frame rate esattamente come per il calcolatore di basse prestazioni risulta più basso quando la camera renderizza direttamente una o più luci.
@@ -173,9 +213,21 @@ Nella seconda vengono invece valutati gli fps all’ aumentare del numero delle 
 \\
 Al variare del numero di oggetti Three.Mirror nella prima scena i risultati ottenuti sono stati i seguenti:
 
-
-
-
+\begin{table}[]
+\centering
+\caption{Three.Mirror e fluidità (architettura 1).}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Three.mirror} & \textbf{frame-rate} \\ \hline
+2 & 36-40 \\ \hline
+3 & 28-30 \\ \hline
+4 & 15-24 \\ \hline
+5 & 17-18 \\ \hline
+6 & 15-17 \\ \hline
+7 & 14-17 \\ \hline
+\end{tabular}
+\label{table:three_mirror}
+\end{table}
 
 Come osservabile anche solo l’inserimento di due specchi incide pesantemente sulle performance di renderizzazione e quindi sulla fluidità di navigazione.
 \\
@@ -187,7 +239,21 @@ Inserire infatti anche un solo oggetto Three.Mirror all’interno di una scena c
 
 Invece al variare del numero di envmap nella seconda scena i risultati ottenuti sono stati i seguenti:
 
-
+\begin{table}[]
+\centering
+\caption{Env map e fluidità (architettura 1).}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Three.mirror} & \textbf{frame-rate} \\ \hline
+2 & 36-40 \\ \hline
+3 & 28-30 \\ \hline
+4 & 15-24 \\ \hline
+5 & 17-18 \\ \hline
+6 & 15-17 \\ \hline
+7 & 14-17 \\ \hline
+\end{tabular}
+\label{table:env-map}
+\end{table}
 
 Come osservabile il numero di fotogrammi al secondo si è mantenuto costante sui 60 frame anche con l’inserimento di sette effetti di riflessione ottenuti tramite le envmap, fluidità che sarebbe stata impossibile da raggiungere utilizzando i Three.Mirror.
 \\
