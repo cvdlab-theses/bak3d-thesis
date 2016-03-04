@@ -21,7 +21,7 @@ Algoritmo di baking: Le funzioni implementate sono due separate,ma qui vengono r
 \\
 \begin{algorithm}[H]
 	\For{o in scene} {
-  		\If{o ha un materiale attivo, e se l’attributo hide di O è False} {
+  		\If{o ha un materiale attivo, e se l’attributo hide di o è False} {
   			\If{o non ha mappe uv attive} {
       			enter\_object\_mode()\;
 	  			select\_as\_active(o)\; 
@@ -37,7 +37,9 @@ Algoritmo di baking: Le funzioni implementate sono due separate,ma qui vengono r
 			tree.add\_new\_node(“Image Texture”)\;
 			node\_tex.image $=$ img\;
 			launch\_bake(o)\;
-			\textbf{---> Procedura setupNodes() <---}
+			\textbf{/* Ha inizio la procedura setupNodes(), 
+			per ristrutturare l'albero dei nodi che compongono 
+			il materiale di o */}
 			\\
 			out\_mat $=$ tree.nodes[“Material Output”]\;
 			tree.delete\_nodes(to\_save $=$ [node\_tex, out\_mat])\;
