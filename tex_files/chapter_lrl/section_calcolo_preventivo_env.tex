@@ -15,7 +15,7 @@ Come spiegato nel capitolo x, l’ambiente che circonda la CubeCamera viene infa
 \end{figure}
 
 Nel presente lavoro di tesi le env-map vengono calcolate solamente in Three.js e non attraverso l’utilizzo di uno strumento esterno più potente come Blender.
-Three.js infatti, oltre a permettere di creare env-map in modo semplice ed efficiente, ha permesso di diminuire notevolmente il numero di informazioni che Blender ed il tool di visualizzazione in Three.js devono scambiarsi. Informazioni che prevedono i dati di 6 immagini per ogni oggetto che riflette o rifrae, dati che diverrebbe enormi nel caso in cui nella scena venissero utilizzati decine di effetti di riflessioni/rifrazione. Questo aspetto in particolare verrà approfondito nel capitolo --.
+Three.js infatti, oltre a permettere di creare env-map in modo semplice ed efficiente, ha permesso di diminuire notevolmente il numero di informazioni che Blender ed il tool di visualizzazione in Three.js devono scambiarsi. Informazioni che prevedono i dati di 6 immagini per ogni oggetto che riflette o rifrae, dati che diverrebbe enormi nel caso in cui nella scena venissero utilizzati decine di effetti di riflessioni/rifrazione. Il tipo di formato utilizzato per lo scambio dei dati verrà approfondito nel paragrafo \ref{sec:chapter_architettura_sistema_formato_scambio}.
 \\
 Come spiegato precedentemente è però necessario che il calcolo avvenga solamente quando l’ambiente creato risulta completo e fisso. Se così non fosse gli effetti di riflessione o rifrazione non proietterebbero le nuove modifiche dell’ ambiente.
 Inoltre è importante che le env-map vengano calcolate su una scena in cui il processo di bake è già stato eseguito, in modo da ottenere anche la riflessione/rifrazione di luci ed ombre.
