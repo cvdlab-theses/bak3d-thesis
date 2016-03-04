@@ -1,2 +1,33 @@
 \section{Navigator}
 \label{sec:chapter_prove_sperimentali_navigator}
+I test effettuati sul navigatore hanno permesso di osservare i benefici ottenuti nella fluidità di fruizione di una scena processata tramite il processo di  bake.
+\\
+In particolare sono stati effettuati dei confronti diretti tra la frequenza di fotogrammi al secondo proiettabili su schermo durante la renderizzazione di una scena con sole lightmap (senza fonti di luminose) e la frequenza di una scena non processata con il bake (con luci).
+La presenza di luci all’interno di una normale scena creata in Three.js rappresenta uno dei maggiori fattori che incide sulle performance di renderizzazione e quindi sul numero di frame visualizzabili per secondo (fps).
+\\
+I confronti effettuati tra le due differenti scene hanno permesso di sperimentare quanto le luci incidono sulle prestazioni di rendering.
+\\ 
+Inoltre hanno permesso di valutare qualitativamente i miglioramenti visivi nella riproduzione delle fonti luminose ottenuti da un rendering di tipo Cycles rispetto ad uno di tipo Rasterization.
+
+\subsection{Confronto prestazionale tra scena con o senza bake}
+\label{sec:chapter_prove_sperimentali_navigator_confronto_prestazionale}
+Il test effettuato prevede di sperimentare i benefici prestazionali, osservabili durante l’utilizzo del navigatore, di una scena che ha subito il processo di bake (senza luci) rispetto ad una non processata tramite il servizio bake (con luci).
+\\
+Il numero di luci di quest’ultima scena viene aumentato gradualmente per permettere di verificare come l’incremento di queste possa incidere sulle performance complessive del sistema. 
+Infine i risultati di fluidità sperimentati vengono confrontati con le performance ottenibili dall’utilizzo di una scena senza luci con applicate le lightmap.
+\\
+Siccome questo test è fortemente dipendente dall’architettura utilizzata, esso viene effettuato su tre differenti architetture, rispettivamente, con prestazioni basse, medie ed alte.
+\\
+Nel dettaglio ogni test prevede di calcolare il numero di fotogrammi al secondo erogati dal navigatore durante la renderizzazione di cinque scene identiche per composizione di oggetti ma differenti per numero di luci inserite :5, 10, 20, 30 o 50 luci.
+\\
+Questi valori sono stati scelti in quanto per la realizzazione di un appartamento di media grandezza sono necessari solitamente un numero di luci comprese tra le dieci e le trenta; numero che raramente supera cinquanta.
+\\
+Le luci inserite risultano identiche per valori di intensità e per ampiezza dell’angolo luminoso (36 gradi). 
+L’angolo luminoso in particolare è il parametro che maggiormente incide sulle prestazioni di rendering; per tutte le luci presenti nelle cinque scene è stato utilizzato il valore di 36 gradi.
+\\
+Questo valore è stato scelto in rappresenta un tipo di angolazione che ben approssima l’angolo di luce di una lampada presente in un appartamento.
+Nulla però esclude all’utilizzatore del servizio creato in questo lavoro di tesi di utilizzare luci con una elevata ampiezza dell’angolo luminoso.
+\\ 
+Quindi per ogni test è stata effettuata una ulteriore prova atta a valutare la fluidità di una sesta scena, identica a quella con 30 luci, in cui però ad ognuna di esse viene assegnato un valore di ampiezza angolare maggiore: 180 gradi. 
+}
+
