@@ -52,7 +52,7 @@ Questo ha permesso di rendere visibili all’interno della scena Three.js gli og
  \label{fig:baking_service_basic_phong}
 \end{figure}
 
-Nel presente lavoro di tesi agli oggetti che non devono subire il bake viene assegnato il parametro avoid\_bake e viene sfruttato soprattutto per le skybox, come spiegato nel paragrafo [X].
+Nel presente lavoro di tesi agli oggetti che non devono subire il bake viene assegnato il parametro avoid\_bake e viene sfruttato soprattutto per le skybox, come spiegato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_ciclo_bake}.
 Nell’exporter in particolare per riconoscere se una texture è di tipo lightmap o di tipo diffuse sono state sfruttate le texture slot assegnate al materiale dell’oggetto. 
 Viene ricordato come ad ogni texture slot viene assegnata una texture. In questo lavoro ogni materiale di un oggetto può avere due texture slot, uno per le diffuse ed uno per le lightmap.
 Ad ogni texture slot è assegnato un parametro blend\_type con valore \texttt{ADD} nel caso in cui la texture associata sia una diffuse e \texttt{MULTIPLY} nel caso in cui sia una lightmap.

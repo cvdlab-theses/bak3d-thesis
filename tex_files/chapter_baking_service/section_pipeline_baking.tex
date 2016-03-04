@@ -26,7 +26,7 @@ Il caricamento della scena prevede l’analisi del file in entrata al fine di ri
 Questo adattamento è specifico per le due tecnologie utilizzate ed è ugualmente valido per entrambi i render di Blender: Blender render e Cycles render.
 \\
 Il mapping risulta un’operazione complessa in quanto ha il compito di mappare specificatamente un rendering di tipo rasterization in un rendering di tipo path tracing (chiamato Cycles render in Blender).
-Questo tipo di mappatura è stato oggetto di studio e sperimentazioni in questo lavoro di tesi in quanto non esiste una metodologia standard che permettesse di effettuarla. Questa operazione in particolare viene dettagliata nel paragrafo [mappatura parametri].
+Questo tipo di mappatura è stato oggetto di studio e sperimentazioni in questo lavoro di tesi in quanto non esiste una metodologia standard che permettesse di effettuarla. Questa operazione in particolare viene dettagliata nel paragrafo\ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}.
 \\
 Anche l’operazione di bake è stata studiata approfonditamente al fine di comprendere come Blender la effettuasse. Sono state effettuate sperimentazioni tramite l’interfaccia grafica fornita dal software al fine di comprendere quali parametri influenzassero il Bake e quali valori assegnare ad essi per ottenere i risultati voluti. L’operazione di bake è stata poi replicata tramite codice sfruttando le API messe a disposizione da Blender.
 \\
@@ -40,7 +40,7 @@ Inoltre è stato effettuato un accurato lavoro di ricerca su come effettuare il 
 Questa fase di studio e sperimentazione è stata velocizzata grazie all’utilizzo del Node Editor, fornito da Blender.
 Il suo utilizzo permette una metodologia di programmazione molto potente e flessibile che sfrutta i nodi al fine di modificare i materiali degli oggetti, le texture ed il rendering in generale.
 \\
-Esso è stato sfruttato principalmente durante la fase di mapping, come spiegato nel paragrafo [x], ed ha permesso di riprodurre alcuni materiali tipici di un Rasterization render tramite la creazioni di complessi materiali in Blender.
+Esso è stato sfruttato principalmente durante la fase di mapping, come spiegato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}, ed ha permesso di riprodurre alcuni materiali tipici di un Rasterization render tramite la creazioni di complessi materiali in Blender.
 \\
 Inoltre durante la realizzazione dello script sono state utilizzate due differenti modalità che hanno permesso di lavorare in maniera differente con gli oggetti geometrici:
 \begin{itemize}
@@ -116,7 +116,7 @@ Fortunatamente sia Three.js che Blender trattano la gerarchia della scena in man
 Successivamente per ogni oggetto 3D descritto nel file JSON in entrata viene valutato se esso:
 \begin{itemize}
 \item contiene una geometria (e quindi vertici) e cioè se esso rappresenta effettivamente un oggetto solido 3D.
-\item rappresenta una luce, essa verrà quindi mappata in una luce Blender secondo il meccanismo spiegato nel paragrafo [x] e quindi aggiunta nella scena Blender.
+\item rappresenta una luce, essa verrà quindi mappata in una luce Blender secondo il meccanismo spiegato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri} e quindi aggiunta nella scena Blender.
 \item rappresenta un Object 3D e quindi non ha assegnato una geometria, come spiegato precedentemente verrà adattato ad un oggetto Empty di Blender e poi aggiunto nella scena.
 \end{itemize}
 Per creare un oggetto 3D in Blender è necessario prima creare una mesh, cioè una collezione di vertici (verts), spigoli (edges) e facce (faces) che definiscono la forma dell’ oggetto da rappresentare, e poi creare l’oggetto vero e proprio da aggiungere alla scena. Questo oggetto di solito include la mesh, il materiale e le texture appplicate al materiale.
@@ -173,9 +173,9 @@ La lightmap viene calcolata sul lato frontale della faccia se le normali sono fr
 \\
 Purtroppo però inserire queste normali non è una operazione semplice in quanto Blender ricalcola automaticamente le normali ogni volta che dalla modalità \emph{object} si passa alla modalità \emph{edit}, sovrascrivendo quelle vecchie.
 \\
-In particolare il passaggio alla modalità edit  in questo lavoro si rende necessario per effettuare il flip delle normali e per effettuare il baking che verrà descritto nel capitolo x.
+In particolare il passaggio alla modalità edit in questo lavoro si rende necessario per effettuare il flip delle normali e per effettuare il baking.
 \\
-Di fatto attualmente non esiste un modo per evitare questa sovrascrittura delle normali. L’unica possibilità per evitarla è salvare localmente in una struttura dati l’associazione geometria e normali importate. Questa struttura dati viene sfruttata prima di effettuare l’esportazione della scena, descritta in X, per forzare l’inserimento delle normali originali nelle geometrie degli oggetti.
+Di fatto attualmente non esiste un modo per evitare questa sovrascrittura delle normali. L’unica possibilità per evitarla è salvare localmente in una struttura dati l’associazione geometria e normali importate. Questa struttura dati viene sfruttata prima di effettuare l’esportazione della scena, descritta in \ref{sec:chapter_baking_service_pipeline_baking_esport_scena}, per forzare l’inserimento delle normali originali nelle geometrie degli oggetti.
 Come spiegato in precedenza l’utilizzo delle normali create da Blender deve essere assolutamente evitato per impedire l’esportazione da Blender verso Three.js di una scena in cui gli oggetti che sarebbero dovuti essere smooth sono in realtà flat.
 \\
 Se all’ oggetto json è assegnata una diffuse texture allora la stessa deve essere applicata al corrispondente oggetto Blender. L’assegnazione della texture all’oggetto non è un’operazione semplice. 
@@ -194,7 +194,7 @@ Entrambi gli uv\_layer hanno assegnate le stesse coordinate uv, questo per perme
 Infine alla diffuse texture ed alla lightmap vengono assegnate le corrispondenti uv (le stesse nel nostro lavoro).
 Durante il caricamento della scena, nessuna lightmap viene creata, quindi l’uniche uv considerate sono quelle riguardanti la diffuse texture.
 \\
-Il motivo per cui vengono utilizzati due uv\_layer verrà dettagliato durante la spiegazione nel paragrafo [X].
+Il motivo per cui vengono utilizzati due uv\_layer verrà dettagliato durante il paragrafo \ref{sec:chapter_baking_service_pipeline_baking_ciclo_bake}.
 \\
 Per ogni texture è inoltre necessario necessario effettuare una mappatura del parametro repeat ed una mappatura del colore da assegnare al materiale, diverso se possiede la texture o meno. Questa mappatura verrà descritta nel capitolo x.
 
@@ -215,5 +215,5 @@ Le informazioni di traslazione e scalatura possono essere applicate direttamente
 Purtroppo questo non è però possibile per la rotazione in quanto la funzione produce come risultato un quaternione. Il quaternione deve essere infatti prima convertito in un angolo di eulero per potere poi essere applicato sull’oggetto. 
 \\
 Anche questa conversione è stata possibile grazie ad una funzione della libreria \texttt{transformation.py}.
-Infine l’oggetto viene aggiunto alla scena Blender, pronto per subire l’operazione di bake che verrà dettagliata accuratamente nel paragrafo [X].
+Infine l’oggetto viene aggiunto alla scena Blender, pronto per subire l’operazione di bake.
 
