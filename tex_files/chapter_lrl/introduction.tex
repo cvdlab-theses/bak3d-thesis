@@ -9,10 +9,10 @@ Il fattore scalabilità è quindi fortemente influenzato dal numero di luci in u
 Per rendere scalabile il servizio di fruibilità della scena bisogna quindi ridurre il carico computazionale sulla pipeline di rendering, rendendola appunto “lightweight”, pur mantenendo la resa grafica fotorealistica.
 \\
 A fronte di tale necessità verranno descritti gli accorgimenti adottati per velocizzare il ciclo di render.
-Il primo accorgimento è quello di liberare la pipeline di rendering dal calcolo delle informazioni luminose, le quali verranno preprocessate offline una sola volta, e memorizzate all’interno di strutture dati chiamate \textbf{lightmapped texture} mediante il processo di baking; nel capitolo [num cap] verrà spiegato cosa sono le lightmapped texture e quali caratteristiche la differenziano da una normale lightmap. 
+Il primo accorgimento è quello di liberare la pipeline di rendering dal calcolo delle informazioni luminose, le quali verranno preprocessate offline una sola volta, e memorizzate all’interno di strutture dati chiamate \textbf{lightmapped texture} mediante il processo di baking; nel capitolo \ref{sec:chapter_lrl_li_te_ba} verrà spiegato cosa sono le lightmapped texture e quali caratteristiche la differenziano da una normale lightmap. 
 \\
 Siccome il calcolo dell’illuminazione non dipende più dal renderer di ThreeJS, può essere affidato ad uno strumento esterno, come un’applicazione desktop in grado di processare algoritmi di illuminazione complessi; ovviamente dovrà anche essere in grado di memorizzare i risultati ottenuti, processo di baking delle lightmap.
-
+\\
 Un’altro dettaglio che incide profondamente sulle performance di un rendering è la presenza di effetti rifrangenti o riflettenti all’interno della scena. Ad esempio Three.js permette di creare degli specchi che riflettono l’ambiente circostante renderizzandolo in tempo reale.
 Se all’interno della scena ci fossero degli oggetti in movimento, questi apparirebbero riflessi nella posizione in cui effettivamento si trovano.
 \\
