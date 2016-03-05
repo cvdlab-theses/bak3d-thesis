@@ -1,7 +1,12 @@
 \section{Architettura del servizio}
 \label{sec:chapter_baking_service_architettura_servizio}
 
-FOTO ARCHITETTURA (RIFARE QUELLA DI SPINI)
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_baking_service/architettura.png}\hfill
+ \caption[Architettura servizio di baking]{Descrizione generale dell'architettura del servizio, a fronte della sottomissione di una richiesta di bake da parte dell'utente.}
+ \label{fig:architettura}
+\end{figure}
 
 Nella descrizione generale del servizio nel paragrafo \ref{sec:chapter_architettura_sistema_il_servizio_baking} si è accennato al fatto che le richieste sono elaborate dal server in modo differente a seconda del loro tipo, e che le elaborazioni più complesse possono essere decomposte in una successione di passi di elaborazione più piccoli. Ogni passo di elaborazione può essere implementato in una funzione separata, e ognuna di queste funzioni è detta Middleware. Ogni middleware è un componente autocontenuto che racchiude le responsabilità funzionali di implementare un passo di elaborazione.
 \\
