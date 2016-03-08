@@ -1,1 +1,36 @@
-In this chapter...
+Il navigatore permette la fruizione di una scena fotorealistica, offrendo la possibilità di navigare in prima persona un ambiente virtuale.
+\\
+Rappresenta un servizio fruibile come applicazione web tramite browser e non richiede alcuna attività di installazione o aggiornamento da parte dell’utente.
+\\
+Il navigatore realizzato nel presente lavoro di tesi permette di sopperire i limiti derivanti dai render statici (immagini dell’ambiente virtuale) che consentono di osservare l’ambiente solamente da punti di vista fissi.
+\\
+A differenza di essi infatti, il navigatore permette all’osservatore di passeggiare virtualmente all’interno dello spazio creato, dando la sensazione di visitare realmente la scena realizzata. 
+Questo consente all’utilizzatore di immaginare e valutare in maniera estremamente accurata l’ambiente virtuale, permettendo inoltre di osservare a piacimento ogni singolo dettaglio presente in essa.
+\\
+In particolare il servizio offre una semplice interfaccia grafica attraverso la quale è possibile scegliere tra due tipologie di modalità di navigazione:
+\begin{itemize}
+\item Navigazione dall’alto.
+\item Navigazione in prima persona, anche tramite visore per la realtà virtuale.
+\end{itemize}
+La prima consente di osservare la scena dall’alto, mentre la seconda permette di simulare una passeggiata virtuale all’interno della scena creata consentendo: di osservare l’ambiente, camminare, saltare e, se possibile, salire o scendere gli oggetti (es.scale o un divano). Quest’ultima navigazione risulta la funzionalità principale del servizio e simula in maniera estremamente fedele il comportamento di un utente reale mentre visita un appartamento.
+\\
+Inoltre durante la visita vengono gestite le collisioni con gli oggetti presenti nella scena.
+In particolare l’ algoritmo di collisione realizzato in questo elaborato impedisce all’osservatore virtuale di attraversare muri e oggetti, arrestando il movimento nella direzione di collisione. 
+\\
+Questo algoritmo può però incidere pesantemente sulle performance real-time dell’applicazione, comportando un incremento del carico di lavoro effettuato ad ogni ciclo di render.
+Carico di lavoro che, se non gestito opportunamente, comporta un abbattimento degli fps dell’applicazione, compromettendo la fluidità generale.
+\\
+Per questo motivo è stato necessario effettuare delle ottimizzazioni sulle funzionalità più onerose computazionalmente per permettere un tipo di navigazione precisa e fluida anche su hardware di basse prestazioni. Queste ottimizzazioni vengono effettuate dal servizio in maniera automatica e totalmente trasparente all’ utilizzatore.
+\\ 
+Inoltre la navigazione e le corrispondenti ottimizzazioni effettuate risultano valide indipendentemente dalla composizione dell’ ambiente realizzato.
+\\
+
+Permettere la navigazioni di qualsiasi tipo di scena Three.js ha richiesto una lunga attività di studio e sperimentazione al fine di valutare e creare una metodologia che permettesse di ottenere il miglior compromesso possibile tra efficienza nei calcoli effettuati e precisione nella mobilità e nel riconoscimento delle collisioni. 
+\\
+Un’ operazione di questo tipo risulta estremamente complessa in quanto il navigatore deve fornire la possibilità di visitare appartamenti fotorealistici completi, anche arredati.
+\\
+La renderizzazione di una scena di tali dimensioni risulta di per sé estremamente complessa dal punto di vista del carico computativo. Risulta chiaro quindi quanto sia essenziale diminuire al massimo il numero di calcoli da effettuare ad ogni ciclo di render per permettere una navigazione fluida ad un frame rate costante. 
+
+
+
+
