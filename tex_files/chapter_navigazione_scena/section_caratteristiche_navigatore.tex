@@ -12,7 +12,7 @@ Quando viene avviata, risulta possibile consultare una mappa di navigazione che 
 In particolare la mappa di navigazione mostra i movimenti e l’orientamento dell’osservatore, all’interno dell’ambiente, tramite un indicatore che viene modificato in tempo reale. 
 Permette infatti all’utilizzatore di orientarsi all’interno della scena ed è particolarmente utile in ambienti di medie e grandi dimensioni.
 \\
-Il navigatore permette l’utilizzo di differenti tipologie di mappe, che verranno descritte nel paragrafo X.
+Il navigatore permette l’utilizzo di differenti tipologie di mappe, che verranno descritte nel paragrafo \ref{sec:caratteristiche_navigatore_mappa}.
 Infine il servizio permette di passeggiare all’interno della scena creata tramite una vista stereoscopica sfruttando i visori per la realtà virtuale. 
 \\
 La scena in questa modalità risulta visibile in 3D dando all’utilizzatore l’idea di trovarsi veramente all’interno di essa.
@@ -99,7 +99,8 @@ Informazione fondamentale anche per l’architetto durante la progettazione di u
 \\
 Inoltre l’elevato grado di realismo delle luci create permetterebbe all’architetto di valutare la luce ambientale entrante in una stanza anche quando ci sono ostacoli di fronte alla finestra da cui entra la luce (es. un palazzo). Sarebbe sufficiente ricreare l’ostacolo nella scena virtuale e poi valutare la luce proiettata nella stanza con il servizio di navigazione.
 \\
-Inoltre al fine di dare all’utente un’idea ancora più precisa degli spazi creati sono state effettuate delle sperimentazioni tramite visori di realtà virtuali. 
+Inoltre al fine di dare all’utente un’idea ancora più precisa degli spazi creati sono state effettuate delle sperimentazioni tramite visori di realtà virtuali.
+\\ 
 Nel paragrafo seguente verrà spiegato come essi sono stati utilizzati.
 
 \subsection{Navigazione in realtà virtuale}
@@ -200,9 +201,11 @@ Non è possibile infatti sfruttare i normali controlli in prima persona in quant
 Durate questa modalità infatti Il movimento avviene automaticamente in avanti secondo la direzione di osservazione, quest’ultima viene modificata mediante l’utilizzo dell’oscilloscopio del cellulare.
 \\
 Il movimento automatico in avanti avviene ad una velocità tale da simulare una normale passeggiata all’interno di una abitazione.
-I dettagli implementativi di come è stato realizzata questa modalità del navigatore verrano descritti nel paragrafo X.
+I dettagli implementativi di come è stato realizzata questa modalità del navigatore verrano descritti nel paragrafo \ref{sec:chapter_navigazione_scena_implementazione}.
 
 \subsection{Mappa di navigazione}
+\label{sec:caratteristiche_navigatore_mappa}
+
 Quando viene avviata la navigazione in prima persona è possibile attivare o disattivare la mappa di navigazione.
 La mappa permette di osservare la scena caricata tramite una vista aerea.
 \\

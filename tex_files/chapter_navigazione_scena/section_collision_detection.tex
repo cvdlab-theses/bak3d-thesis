@@ -171,7 +171,7 @@ Quando invece si trova nella bounding box blu, gli oggetti che passano nella fas
 Questo algoritmo permette di ottenere ottime prestazione quando la scena è costituita da un alto numero di oggetti, come le scene di interni prese in esame in questo elaborato.
 Nel presente lavoro di tesi infatti ha permesso, in scene costituite da centinaia di oggetti, di valutare ad ogni ciclo di render solamente un manciata di oggetti e di ignorare completamente gli altri in quanto troppo lontani per potere collidere con l’osservatore virtuale.
 \\
-I dettagli implementati di questa soluzione veranno esaminati nel paragrago X.
+I dettagli implementati di questa soluzione veranno esaminati nel paragrago \ref{sec:chapter_navigazione_scena_implementazione}.
 
 \subsection{Fase ristretta}
 
@@ -214,7 +214,139 @@ Nel dettaglio l’osservatore, esattamente come una persona reale, può muoversi
 Ad ogni direzione di movimento viene associato un diverso vettore nella stessa direzione.
 Per semplicità di trattazione, viene ora supposto che i vettori lanciati siano perpendicolari all’osservatore e paralleli al piano in cui si muove. Verrà spiegato successivamente come questo non sia però sufficiente per la creazione di un algoritmo preciso di collisione.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collisioni1.png}\hfill
+ \caption[Esempio di collisione.]{Scena vista dall'alto. Esempio di collisione.}
+ \label{fig:navigazione_scena_collisioni1}
+\end{figure}
 
+Nell’esempio in figura \ref{fig:navigazione_scena_collisioni1}  viene rappresentato l’osservatore visto dall’alto con gli otto vettori direzionati nelle otto direzioni principali di movimento.
+\\
+Nell’immagine a sinistra il vettore frontale interseca il muro, questo permette di impedire il movimento in avanti. L’osservatore in questo modo non attraversa il muro, rimanendo bloccato da esso.
+\\
+Nell’immagine a destra invece il vettore laterale destro interseca con il muro, impedendo in questo modo il movimento verso la direzione laterale destra.
+Quindi ogni volta che un vettore associato ad una direzione di movimento individua un ostacolo, il movimento in quella direzione viene impedito.
+\\
+Risulta quindi fondamentale che questi vettori ruotino insieme all’osservatore. In particolare i vettori devono ruotare insieme all’asse di rotazione verticale dell’osservatore, solitamente l’asse y se la superficie si trova sul piano orizzontale x,z.
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/coll_rotat.jpg}\hfill
+ \caption[Veduta dall'alto dei vettori dell'osservatore.]{La rotazione dei vettori associati all'osservatore.}
+ \label{fig:navigazione_scena_coll_rotat}
+\end{figure}
+Questi otto vettori risultano quindi fondamentali al fine di individuare all’interno della scena virtuale oggetti con cui l’osservatore può collidere.
+\\
+Questi vettori però non possono essere lanciati perpendicolarmente all’osservatore e paralleli rispetto al piano in cui si muove in quanto probabilmente non intersecherebbero oggetti con forme convesse come tavolini.
+\\
+I raggi infatti, molto probabilmente, non colpirebbero il tavolino in quanto lanciati nella zona vuota sopra o sotto di esso (figura \ref{fig:navigazione_scena_collision_tav1}).
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_tav1.png}\hfill
+ \caption[Raggi su oggetti convessi.]{Intersezione dei raggi su oggetti convessi.}
+ \label{fig:navigazione_scena_collision_tav1}
+\end{figure}
 
+Una possibile metodologia per la risoluzione di questo inconveniente è quella di considerare gli oggetti tramite la loro Bounding box e di lanciare i raggi a partire dal basso dell’osservatore virtuale (i piedi dell’osservatore virtuale).
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_tav2.jpg}\hfill
+ \caption[Raggi sulle Bounding Box.]{Intersezione dei raggi sulle Bounding Box degli oggetti convessi}
+ \label{fig:navigazione_scena_collision_tav2}
+\end{figure}
 
+Se infatti i raggi vengono lanciati da una altezza bassa, vicina alla superficie che sorregge l’osservatore, allora certamente colpiranno la Bounding Box che racchiude l’oggetto della scena. Se invece i raggi vengono lanciati da un punto elevato allora avranno una bassa probabilità di intersecare il volume di delimitazione, non permettendo quindi il riconoscimento della collisione.
+\\
+Utilizzare le Bounding Box permette di risolvere questo problema ma comporta, per particolari geometrie di oggetti, un problema non indifferente: il rischio di collisione in punti in cui non si dovrebbe. Valutare le collisioni con questi volumi comporta di fatto una notevole diminuzione dello spazio di movimento dell’osservatore.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/divano.png}\hfill
+ \caption[Problemi utilizzo Bounding Box.]{Bounding Box che non delimita perfettamente il volume del divano}
+ \label{fig:navigazione_scena_divano}
+\end{figure}
+
+Nell’immagine di esempio è possibile notare come la Bounding Box non permetta di delimitare perfettamente il volume del divano.
+\\
+Siccome i raggi lanciati collidono con la Bounding Box invece che con l’oggetto, l’algortimo non permette all’osservatore di entrare all’interno della zona segnata in verde. Zona che di fatto dovrebbe essere invece accessibile.
+\\
+Questa imprecisione soprattutto in piccole abitazioni, comporta problemi non indifferenti durante la navigazione, impedendola in alcuni casi.
+\\
+Inoltre in questo lavoro di tesi è risultato fondamentale ottenere l’algoritmo di collisione più preciso possibile in ambienti web, per questo motivo la Bounding Box è stata abbandonata in favore di una tecnica differente.
+\\
+Gli otto vettori vengono sempre lanciati ad una altezza bassa dell’osservatore ma vengono inclinati verso l’alto. Questo permette il riconoscimento di tutti gli oggetti convessi in maniera estremamente precisa. L’altezza da cui vengono lanciati viene esaminata quando verrano descritti i vettori che permettono di salire/scendere le scale.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_tav3.jpg}\hfill
+ \caption[Raggi inclinati verso l'alto.]{Raggio dell'osservatore inclinato verso l'alto.}
+ \label{fig:navigazione_scena_collision_tav3}
+\end{figure}
+
+L’angolo con cui vengono inclinati questi raggi è stato oggetto di studio e sperimentazione, 
+Gli angoli di inclinazione verso l’alto dei vettori associati alle quattro direzioni principali risultano di 65 gradi, mentre quelli delle quattro direzioni oblique risultano di circa 80 gradi.
+\\
+Quando l’osservatore collide un oggetto e si muove in una delle quattro direzioni principali (aventi, indietro,destra,sinistra), l’unico vettore ad intersecare è proprio quello associato alla direzione principale di movimento in quanto meno inclinato.
+\\
+Il movimento in quella direzione risulta impedito mentre i movimenti nelle direzioni oblique risultano ancora possibili in quanto i raggi associati non sono stati intersecati dall’oggetto perché più inclinati verso l’alto.
+\\
+Utilizzare invece per tutti gli otto vettori la stessa inclinazioni, nella maggior parte delle situazioni, non avrebbe permesso il movimento nelle direzioni oblique. 
+Questo perché nella maggior parte dei casi sia il raggio nelle direzione principale di movimento, sia i due raggi obliqui vicini ad esso verrebbero intersecati dall’oggetto all’interno dell’intervallo di distanza (0-20 cm).
+\\
+Inoltre risultava fondamentale mantenere la distanza massima di collisione a 20 cm per permettere un tipo di collisione credibile con l’oggetto intersecato. Quando infatti una persona collide con un muro si ferma a qualche cm prima di toccarlo, questo intervallo permette di ricreare virtualmente questo comportamento reale.
+\\
+L’utilizzo di due differenti angolazioni ha permesso quindi di utilizzare l’intervallo di distanza di collisione ed ha permesso di ricreare un tipo di navigazione fluida in tutte le direzioni, riproducendo molto fedelmente una camminata nel mondo reale.
+\\
+
+Oltre a questi otto vettori ne vengono utilizzati altri cinque:
+\begin{itemize}
+\item Quattro vettori permettono il riconoscimento di oggetti su cui è possibile salire come ad esempio le scale.
+\item Un vettore permette il riconoscimento del piano su cui l’osservatore è poggiato, permettendo in questo modo all’osservatore di rimanerci sopra.
+\end{itemize}
+I quattro vettori sono direzionati in avanti, indietro, a destra ed a sinistra ma questa volta inclinati verso il basso. Sperimentazioni svolte hanno confermato che per il riconoscimento di oggetti su cui è possibile salire sono sufficiente quattro vettori invece che otto, permettendo di migliorare l’efficienza dell’algoritmo.
+\\
+Questi quattro vettori sono lanciati verso il basso con un angolo di inclinazione di 57 gradi, scelto in base ad opportune prove, a partire da uno specifico punto dell’altezza dell’osservatore. Questo punto viene calcolato in base a quanto è alto l’osservatore virtuale; tutti e 13 i raggi vengono lanciati dal 15\% dell’altezza dell’osservatore.
+\\
+Quindi supponendo l’osservatore è alto 1.80 m, non solo i quattro raggi direzionati verso il basso, ma anche gli otto verso l’alto saranno lanciati a partire da una altezza di 27 cm.
+Questo vuol dire che l’osservatore virtuale al massimo sarà in grado di salire gradini alti 27 cm.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/scala.jpg}\hfill
+ \caption[Dimensioni di una scala da interno.]{Dimensioni di una scala da interno.}
+ \label{fig:navigazione_scena_collision_scala}
+\end{figure}
+
+Normalmente i gradini hanno una alzata (altezza) compresa tra i 15 ed i 20 cm.
+I raggi inviati verso il basso dall’algoritmo permettono di salire su questo tipo di scale, inoltre permettono anche, in base all’altezza dell’osservatore, di salire gradini più alti. 
+Questo per consentire una navigazione fluida anche in ambienti in cui le scale sono particolarmente ripide o in cui sono presenti salite molto pendenti.
+\\ 
+L’algoritmo creato permette infatti di salire agevolmente le comuni scale da abitazioni con pendenza compresa tra i 20 ed i 45 gradi, ma anche di salire scale particolarmente ripide con pendenza fino a 60 gradi, utilizzate soprattutto all’interno di locali tecnici.
+\\
+La pedata, cioè la profondità del gradino, non deve essere riconosciuta in quanto l’algoritmo permette all’osservatore di rimanere sopra una superficie piana, qualunque sia la grandezza di essa. Il piano che lo sorregge viene valutato dal vettore lanciato verso il basso.
+\\
+Questo vettore direzionato verso il basso, entra perpendicolarmente al piano su cui è poggiato l’osservatore. Esso riconosce il piano su cui è poggiato l’osservatore  e permette ad esso di rimanere ancorato sopra la superficie.
+\\
+La collisione avviene se il raggio interseca una superficie che si trova ai piedi dell’osservatore (all’altezza zero); anche in questo caso è presente una soglia di tolleranza di intersezione.
+\\ 
+Se la collisione avviene allora l’osservatore rimane poggiato sopra l’oggetto con cui ha intersecato.
+\\
+Se invece la collisione non avviene allora l’osservatore cade in direzione verticale perpendicolare al piano e diretta verso il basso fino a quando il vettore non interseca con una superficie. La velocità con cui cade l’osservatore virtuale, esattamente come nella vita reale, dipende dall’ accelerazione di gravità: $g = 9,8 \frac{m}{s^2}$
+
+Il corpo che cade si muove quindi con un moto rettilineo uniformemente accelerato in quanto viene supposto che non ci sia attrito dovuto dall’aria.
+Questo vettore è stato inoltre fondamentale per simulare virtualmente il movimento del salto.
+In figura è possibile osservare da una veduta laterale le angolazioni dei vettori principali utilizzati.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_gradini.jpg}\hfill
+ \caption[I raggi che permetto di salire.]{I raggi che permettono di salire e scendere scale.}
+ \label{fig:navigazione_scena_collision_gradini}
+\end{figure}
+
+Di fatto quindi l’utilizzo di soli 13 vettori ha permesso di creare una metodologia di collision detection precisa e, grazie al basso numero di raggi utilizzato, efficiente.
+\\
+Efficiente anche perché ogni raggio viene valutato sul piccolo sottoinsieme degli oggetti con cui l’osservatore ha la più alta probabilità di collisione, calcolati durante la fase generale.
+\\
+Questa metodologia si adatta ad ogni scena creabile tramite l’editor, rendendo trasparente all’utente tutta la tecnologia su cui è basata la navigazione della scena.
 
