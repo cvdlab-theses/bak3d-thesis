@@ -17,7 +17,9 @@ Questa tipologia di test ha come obiettivo quello di sottomettere al servizio de
 \\
 Il fattore variabile in questo test è la dimensione, quindi il numero di oggetti all’interno della scena. Altri fattori come l’illuminazione, che non inficia sensibilmente sulle performance, o il sampling, rimangono statici. 
 \\
-Il servizio permette di misurare il tempo effettivo di bake direttamente sul server, iniziando la misurazione esattamente al momento dell’istanziazione del processo di bake, e terminandola a fine processo. Pertanto le misure possono considerarsi fedeli, e non influenzate da fattori come i ritardi dovuti al traffico di rete. 
+Il servizio permette di misurare il tempo effettivo di bake direttamente sul server, iniziando la misurazione esattamente al momento dell’istanziazione del processo di bake, e terminandola a fine processo. 
+\\
+Pertanto le misure possono considerarsi fedeli, e non influenzate da fattori come i ritardi dovuti al traffico di rete. 
 \\
 A questo punto verranno mostrate le misure di velocità del servizio a fronte di cinque richieste di bake; ad ogni richiesta è associata una scena 3D contenente un numero di oggetti sparsi che va da 1 a 150. L’oggetto scelto in esame è un modello 3D di uso comune nell’arredamento di interni. 
 \\
@@ -25,8 +27,8 @@ Per quanto riguarda l’illuminazione si è scelto di posizionare un’unica Spo
 \\
 Ogni richiesta è elaborata sfruttando due architetture hardware differenti: CPU e CUDA.
 \\
-I tempi di elaborazione delle richieste sono mostrati in tabella \ref{table:per_num_ob}:
-
+I tempi di elaborazione delle richieste sono mostrati in tabella \ref{table:per_num_ob}.
+\newpage
 \begin{table}[]
 \centering
 \caption[Performance al variare degli oggetti]{Tempi di bake, espressi in secondi, al variare del numero di oggetti.}
@@ -51,21 +53,21 @@ Questo perchè incrementare il numero di oggetti all’interno della scena non s
 \\
 Spostando l’elaborazione del baking su architettura CUDA si nota immediatamente come le performance subiscano un incremento considerevole, con miglioramenti che in alcuni casi superano il 60\%, rispetto alle elaborazioni basate su CPU. 
 \\
-In figura \ref{fig:grafico1} e \ref{fig:grafico2} è possibile osservare come le performance aumentino considerevolmente utilizzando una architettura CUDA piuttosto che CPU.
-\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/grafico1.png}\hfill
- \caption[Performance CPU variando oggetti]{Performance su architettura CPU del servizio di baking al variare del numero di oggetti.}
+ \includegraphics[width=0.6\linewidth]{images/chapter_prove_sperimentali/grafico1.png}\hfill
+ \caption[Performance CPU variando oggetti]{Performance su CPU del servizio di baking al variare del numero di oggetti.}
  \label{fig:grafico1}
 \end{figure}
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/grafico2.png}\hfill
- \caption[Performance CUDA variando oggetti]{Performance su architettura CUDA del servizio di baking al variare del numero di oggetti.}
+ \includegraphics[width=0.6\linewidth]{images/chapter_prove_sperimentali/grafico2.png}\hfill
+ \caption[Performance CUDA variando oggetti]{Performance su CUDA del servizio di baking al variare del numero di oggetti.}
  \label{fig:grafico2}
 \end{figure}
+\\
+In figura \ref{fig:grafico1} e \ref{fig:grafico2} è possibile osservare come le performance aumentino considerevolmente utilizzando una architettura CUDA piuttosto che CPU.
 
 \subsection{Velocità e qualità al variare del sampling}
 \label{sec:chapter_prove_sperimentali_servizio_baking_vel_sam}
@@ -76,7 +78,7 @@ Il sampling è il parametro più importante per il controllo della qualità di u
 \\
 Il range di valori di sampling scelto per i test corrisponde al processamento di  bake valoci ma di bassa qualità, fino al processamento di bake molto lenti ma di qualità elevata. Per la scena si è deciso di realizzare un ambiente di media complessità che contenesse un buon numero di oggetti ed ombre. Come per le misurazioni descritte nel paragrafo \ref{sec:chapter_prove_sperimentali_servizio_baking_vel_obj} , anche per questa attività di test vengono considerati i tempi di baking su due architetture hardware differenti: CPU e CUDA.
 I tempi di elaborazione delle richieste sono mostrati in tabella \ref{table:per_samp} :
-
+\newpage
 \begin{table}[]
 \centering
 \caption[Performance al variare del sampling]{Tempi di bake, espressi in secondi, al variare del sampling.}
@@ -95,30 +97,27 @@ I tempi di elaborazione delle richieste sono mostrati in tabella \ref{table:per_
 \end{tabular}
 \label{table:per_samp}
 \end{table}
-
 Osservando le misure di velocità di processamento su architettura CPU in tabella \ref{table:per_samp} è possibile notare come il tempo di processamento aumenti in modo quasi lineare con il valore di sampling.
 \\
 Si prenda come riferimento il tempo di bake nel primo caso, ossia con valore di sampling pari a 1:
 Il caso con sampling uguale a 10 è 4 volte più lento, mentre quello da 30 lo è circa 7 volte; quindi con un aumento di 20 punti di sampling il tempo tra i due casi aumenta di circa 3 volte il tempo impiegato nel caso di riferimento. Osservando il test da 50 sampling, rispetto a quello da 30 sampling anche qui si può notare un’aumento del tempo di bake di circa 3 volte, a fronte di un incremento del valore di sampling sempre di 20 punti. Salendo ancora è possibile notare come nei casi da 50 sampling, 100, 150 e 200, l’incremento di tempo è sempre lineare, e aumenta di 10 volte ogni incremento del valore di sampling di 50 punti. E’ dunque possibile individuare una crescita quasi lineare del tempo di processamento all’aumentare del valore di sampling.
-\\ 
 Questo tipo di andamento consente di avere dei tempi di processamento del bake prevedibili; ad esempio, prima di sottomettere una richiesta di bake con sampling alto, l’utente potrebbe sottomette una richiesta per un bake di qualità più bassa, utile come preview dell’aspetto finale che avrà la scena. Dal tempo impiegato per generare questa preview l’utente è in grado di stimare il tempo che sarà necessario per soddisfare la richiesta di bake di qualità più alta. 
-\\
 Si osservino ora i tempi per il calcolo degli stessi risultati sfruttando l’architettura CUDA. E’ possibile notare come le performance di bake migliorino del 45\% circa; questo incremento della velocità di elaborazione non è trascurabile, e dimostra come il calcolo parallelo su GPU sia molto più performante del tradizionale calcolo su CPU. I miglioramenti di un elaborazione su architettura CUDA rispetto che su architettura CPU vengono mostrati in figura \ref{fig:grafico3} e \ref{fig:grafico4} .
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/grafico1.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_prove_sperimentali/grafico1.png}\hfill
  \caption[Performance CPU variando sampling]{Performance su architettura CPU del servizio di baking al variare del sampling.}
  \label{fig:grafico3}
 \end{figure}
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/grafico2.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_prove_sperimentali/grafico2.png}\hfill
  \caption[Performance CUDA variando sampling]{Performance su architettura CUDA del servizio di baking al variare del sampling.}
  \label{fig:grafico4}
 \end{figure} 
-
+\\
 Come già menzionato il sampling è la caratteristica chiave per il controllo della qualità di un bake. Dopo aver mostrato come i tempi di processamento varino al variare del sampling, verrano ora mostrati gli output dei suddetti processamenti.
 \\
 Ogni output corrisponde ad una scena 3D su cui è stato effettuato un bake con un diverso livello di sampling; verranno mostrati i risultati per tre diversi valori di sampling, corrispondenti ad un livello qualitativo basso, medio e alto.
