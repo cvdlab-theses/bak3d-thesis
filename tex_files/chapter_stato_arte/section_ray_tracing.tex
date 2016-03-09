@@ -26,13 +26,13 @@ Questo raggio prende il colore del primo oggetto intersecato. Dal punto appena i
 \\Questo procedimento viene ripetuto ricorsivamente fino a quando una superficie non riflettente viene colpita o fino quando il contributo massimo di rimbalzi non viene raggiunto.
 \\
 Se l’ oggetto intersecato è solido e trasparente, un nuovo raggio può essere generato nella direzione di rifrazione, ed esattamente come per la riflessione questo verrà valutato ricorsivamente.
-\newpage
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.7\linewidth]{images/chapter_stato_arte/stato_arte_refr_refl.png}\hfill
  \caption[Ray tracing ed effetti di rifrazione/riflessione]{Algoritmo di ray tracing e gestione degli effetti di rifrazione e riflessione}
  \label{fig:stato_arte_refr_refl}
 \end{figure}
-
+\\
 Il problema principale è il fatto che, oltre alle sorgenti luce, ogni singolo oggetto visibile ad occhio nudo riflette luce ed il 
 ray tracing calcola solamente le luci dirette alle superfici mentre quelle indirette vengono completamente ignorate. L’ algoritmo di path tracing risolve questa limitazione.
