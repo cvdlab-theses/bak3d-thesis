@@ -6,17 +6,17 @@ Risulta compatibile con la maggior parte dei moderni browser disponibili sul mer
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_webgl_compat.png}\hfill
+ \includegraphics[width=1\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_webgl_compat.png}\hfill
  \caption[Lista browser compatibili]{Browser compatibili con WebGL.}
  \label{fig:stato_arte_webgl_compat}
 \end{figure}
+\\
 WebGL si basa sulle \emph{OpengGL ES 2.0}, librerie grafiche OpenGL ottimizzate per dispositivi mobili, che forniscono un’ interfaccia di programmazione per la grafica 3D. Utilizza l’ elemento canvas HTML5, che viene acceduto attraverso il DOM (Document Object Model), per renderizzare l’ immagine desiderata.
 \\
 Le API WebGL sono di basso livello e funzionano intuitivamente come una sequenza di messaggi da inviare all’ oggetto gl che rappresenta un contesto WebGL costruito su una canvas.
 \begin{lstlisting}[language=JavaScript]
 gl=document.getElementById("canvas_id").getContext("experimental-webgl");
 \end{lstlisting}
-
 Analizzare la pipeline di rendering di WebGL equivale praticamente ad analizzare la pipeline di OpenGL ES 2.0. Grazie a WebGL il programmatore non deve preoccuparsi dell’ intero processo di rendering in quanto alcune delle fasi più complesse vengono gestite dalla libreria.
 La pipeline di WebGL è implementata per mezzo di Shader programmabili seguendo le specifiche di OpenGL ES 2.0 e di GLSL. Quest’ultimo è un linguaggio di programmazione ad alto livello per la gestione delle unità di shader di una GPU.
 \\
@@ -26,11 +26,11 @@ In figura \ref{fig:tecnologie_abilitanti_webglrender}  è possibile osservare la
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_webglrender.png}\hfill
+ \includegraphics[width=0.9\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_webglrender.png}\hfill
  \caption[La pipeline di WebGL]{La pipeline di rendering WebGL}
  \label{fig:tecnologie_abilitanti_webglrender}
 \end{figure}
-
+\\
 Le specifiche WebGL richiedono che lo sviluppatore provveda a fornire alla GPU due shader chiamati rispettivamente Vertex Shader e Fragment Shader:
 \begin{itemize}
 \item Il Vertex Shader è un metodo programmabile il cui compito è quello di restituire, per ogni tripletta di coordinate che identificano un vertice nello spazio, una coppia di coordinate che identifichino lo stesso vertice sul piano bidimensionale dello schermo (la canvas). Tale operazione prende in considerazione le informazioni come il punto di vista e l’angolazione dalla quale viene osservata la scena.

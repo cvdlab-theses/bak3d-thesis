@@ -3,22 +3,28 @@
 
 Al giorno d’oggi le applicazioni web sono molto complesse: è fondamentale trovare il modo corretto di suddividere lo sviluppo dell’applicazione in più componenti non sovrapposte, in modo che il team di sviluppo operi in maniera più efficiente. 
 Ogni componente del sistema deve garantire la proprietà di isolamento, per nascondere la propria complessità agli altri componenti.
+\\
 Un buon isolamento tra componenti rende il software più manutenibile e semplice da sviluppare.
 Inizialmente la complessità delle applicazioni web veniva gestita lato server, isolando l’applicazione in più pagine web; questo obbligava l’utente a dover navigare molte pagine sul browser.
+\\
 Con l’avvento di tecniche come AJAX, che hanno semplificato la realizzazione di single page applications, gli utenti hanno cominciato a fruire di una esperienza d’uso più fluida, simile a quella che si ha con le applicazioni desktop. 
 La logica delle applicazione lato client, che spesso è anche più complessa di quella lato server, può essere isolata all’interno di una singola pagina web o documento mediante i web component.
 \\
-I web component sono un’ insieme di tecnologie prodotte da  Google e approvate dal W3C che consentono la creazione di widget, ovvero elementi html che includono logica di funzionamento e stile, che possono essere importate in documenti o applicazioni web. Da una widget viene separata ogni responsabilità che ha a che fare con altre widget; di conseguenza ogni elemento non dipende dai dettagli implementativi degli altri elementi. Sono possibili dipendenze solo tra le interfacce esposte dalle widget. 
+I web component sono un’ insieme di tecnologie prodotte da  Google e approvate dal W3C che consentono la creazione di widget, ovvero elementi html che includono logica di funzionamento e stile, che possono essere importate in documenti o applicazioni web. Da una widget viene separata ogni responsabilità che ha a che fare con altre widget; di conseguenza ogni elemento non dipende dai dettagli implementativi degli altri elementi. Sono possibili dipendenze solo tra le interfacce esposte dalle widget.
+\\ 
 Assegnare le responsabilità in questo modo permette al modello a componenti di soddisfare la proprietà di incapsulamento.
 Inoltre la fruibilità di elementi html facilmente integrabili nell’applicazione permette alle componenti di interagire in modo semplice tra loro; in questo modo è soddisfatta anche la proprietà di interoperabilità tra componenti.
-Questi web component sono parte del browser, quindi non hanno bisogno di librerie esterne per essere usati, ma basta includerli aggiungendo un tag nella pagina html. 
+Questi web component sono parte del browser, quindi non hanno bisogno di librerie esterne per essere usati, ma basta includerli aggiungendo un tag nella pagina html.
+\\ 
 Una widget è portabile e gode di un elevata riusabilità; inoltre all’interno di una widget è possibile effettuare tutto ciò che è consentito dai linguaggi html, css e JavaScript. 
 L’obiettivo principale dei web component è cambiare il modo in cui le applicazioni web vengono create, consentendo agli sviluppatori di estendere il vocabolario HTML creando nuovi elementi HTML riusabili. Questa aggiunta permette agli sviluppatori di interfacciarsi a più alto livello con lo sviluppo di applicazioni web, definibili mediante aggregazione di più componenti.
 Quando si parla di web components in verità si parla di quattro tecnologie differenti, le quali insieme forniscono tutti gli strumenti necessari per creare i propri componenti.
 Tali tecnologie sono: Custom Elements, Templates, HTML Imports e Shadow DOM. 
 
-La tecnologia \textbf{Custom Element} permette di creare nuovi elementi HTML all’interno del DOM del browser; ogni elemento racchiude logica di funzionamento, stile CSS e un tag HTML necessario per importare l’elemento nelle applicazioni web. 
-Nonostante questi elementi facciano parte dei web components, possono essere utilizzati anche come entità separate. Uno dei motivi per cui è stata creata la tecnologia Custom Elements è la possibilità di introdurre le lifecycle callbacks, che consentono di associare specifici comportamenti ad un elemento HTML durante il suo ciclo di vita. Ad esempio è possibile istruire un elemento HTML sul comportamento che deve assumere nel momento in cui viene inserito nel DOM, e su quello che deve assumere quando viene rimosso dal DOM. 
+La tecnologia \textbf{Custom Element} permette di creare nuovi elementi HTML all’interno del DOM del browser; ogni elemento racchiude logica di funzionamento, stile CSS e un tag HTML necessario per importare l’elemento nelle applicazioni web.
+\\
+Nonostante questi elementi facciano parte dei web components, possono essere utilizzati anche come entità separate. Uno dei motivi per cui è stata creata la tecnologia Custom Elements è la possibilità di introdurre le lifecycle callbacks, che consentono di associare specifici comportamenti ad un elemento HTML durante il suo ciclo di vita. Ad esempio è possibile istruire un elemento HTML sul comportamento che deve assumere nel momento in cui viene inserito nel DOM, e su quello che deve assumere quando viene rimosso dal DOM.
+\\
 Per registrare un nuovo elemento HTML nel browser si usa il metodo \texttt{Document.registerElement()}, e il nuovo elemento utilizzerà di default l’interfaccia HTMLElement; se invece l’elemento non viene registrato sul browser, userà l’interfaccia HTMLUnknownElement. E’ anche possibile creare un elemento HTML come estensione di un elemento nativo, come \texttt{<button>}; in questo caso però non sarà possibile includere l’estensione nel DOM come elemento a se stante, ma sempre insieme all’elemento nativo che estende; ad esempio l’inclusione sarà \texttt{<button is=”my button”>} e non \texttt{<my-button>} .
 I vantaggi apportati dalla tecnologia custom elements sono:
 \begin{enumerate}
@@ -171,7 +177,8 @@ I produttori di browser sono tutt’oggi al lavoro per introdurre nativamente il
 \end{itemize}
 Siccome nella stragrande maggioranza dei browser ancora non è presente un supporto nativo ai Web Components, molti fanno ancora affidamento al \emph{Web Components Polyfill}.
 Per polyfill si intende una porzione di codice, comunemente detta plugin, che permette di introdurre nel browser una tecnologia che nativamente non offrirebbe. 
-Grazie al polyfill, molti browsers, tra cui Internet Explorer 11, hanno il supporto ai Web Components. 
+Grazie al polyfill, molti browsers, tra cui Internet Explorer 11, hanno il supporto ai Web Components.
+\\
 Un browser con supporto nativo ai Web Components può garantire prestazioni d’uso migliori. Il Web Components Polyfill usato dai browser per includere il supporto ai Web Component si chiama \emph{Webcomponent.js}
 
 Webcomponents.js è un insieme di polyfills che implementano le tecnologie dei Web Components. Grazie a questo plugin gli sviluppatori possono usufruire dei Web Component su tutti i browsers moderni, ad eccezione di Google Chrome, che non necessita più dello strato polyfill.
@@ -182,7 +189,8 @@ Webcomponents.js è un insieme di polyfills che implementano le tecnologie dei W
  \caption[Supporto ai polyfill]{In tabella, le tecnologie web component supportate dai browser mediante uso di polyfill.}
  \label{fig:tecnologie_abilitanti_polyfill}
 \end{figure}
-Se il browser possiede gia un supporto nativo ai Web Component, webcomponents.js lo individua automaticamente e di conseguenza cambia modalità a favore del supporto nativo, in modo da garantire le migliori prestazioni possibili per il browser. 
+Se il browser possiede gia un supporto nativo ai Web Component, webcomponents.js lo individua automaticamente e di conseguenza cambia modalità a favore del supporto nativo, in modo da garantire le migliori prestazioni possibili per il browser.
+\\
 Anche se molti sviluppatori sfruttano tutte le tecnologie offerte da webcomponents.js, il plugin è strutturato in modo da poter usare anche un sottoinsieme delle tecnologie offerte. 
 I polyfills che webcomponents.js offre sono:
 \begin{itemize}
@@ -198,32 +206,42 @@ I polyfills che webcomponents.js offre sono:
 \item Mutation Observers (per ascoltare i cambiamenti all’interno del DOM)
 \end{itemize}
 \end{itemize}
-Le tecnologie di Web Component espongono delle API a basso livello; creare nuovi elementi HTML utilizzando direttamente le primitive offerte da queste tecnologie può richiedere una grande mole di lavoro da parte dello sviluppatore. Per questo motivo sono state create diverse librerie che semplificano lo sviluppo di nuovi componenti HTML: tra queste si fa menzione di X-Tag, Polymer e Bosonic. Fondamentalmente queste librerie fanno uso di strumenti di alto livello per ridurre la duplicazione del codice e rendere più semplice la creazione di nuovi componenti. Di base, tutte queste librerie utilizzano lo stesso Web Component polyfill. Sia Polymer che Bosonic offrono anche una libreria di web components pronti per essere utilizzati, e l’utilizzatore di questi componenti non dovrà preoccuparsi di quali librerie sono state usate per crearli. 
+Le tecnologie di Web Component espongono delle API a basso livello; creare nuovi elementi HTML utilizzando direttamente le primitive offerte da queste tecnologie può richiedere una grande mole di lavoro da parte dello sviluppatore. 
+\\
+Per questo motivo sono state create diverse librerie che semplificano lo sviluppo di nuovi componenti HTML: tra queste si fa menzione di X-Tag, Polymer e Bosonic. 
+\\
+Fondamentalmente queste librerie fanno uso di strumenti di alto livello per ridurre la duplicazione del codice e rendere più semplice la creazione di nuovi componenti. Di base, tutte queste librerie utilizzano lo stesso Web Component polyfill. 
+\\
+Sia Polymer che Bosonic offrono anche una libreria di web components pronti per essere utilizzati, e l’utilizzatore di questi componenti non dovrà preoccuparsi di quali librerie sono state usate per crearli. 
 Delle tre librerie menzionate Polymer è quella più diffusa; nel paragrafo \ref{sec:chapter_tecnologie_abilitanti_polymer} vedremo come, mediante Polymer, sono stati sfruttati gli standard Web Components per la realizzazione dell’editor.
-
+\newpage
 \subsection{Polymer}
 \label{sec:chapter_tecnologie_abilitanti_polymer}
-Come già accennato nel paragrafo precedente, polymer è una libreria studiata per rendere semplice e veloce la creazione di nuovi componenti HTML. Essa poggia sugli standard Web Components, e offre un insieme di funzionalità volte a ridurre la quantità di codice scritto, e a semplificare la creazione di elementi HTML complessi; inoltre, la libreria offre un catalogo di elementi già pronti per essere importati nelle applicazioni web. 
+Come già accennato nel paragrafo precedente, polymer è una libreria studiata per rendere semplice e veloce la creazione di nuovi componenti HTML. 
+\\
+Essa poggia sugli standard Web Components, e offre un insieme di funzionalità volte a ridurre la quantità di codice scritto, e a semplificare la creazione di elementi HTML complessi; inoltre, la libreria offre un catalogo di elementi già pronti per essere importati nelle applicazioni web.
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.5\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_polymer_stack.png}\hfill
+ \includegraphics[width=0.4\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_polymer_stack.png}\hfill
  \caption[Strato Polymer]{In foto, la posizione dello strato Polymer rispetto alle tecnologie web components.}
  \label{fig:tecnologie_abilitanti_polymer_stack}
 \end{figure}
-
+\\
 Siccome il supporto nativo ai Web Components ancora non è presente in tutti i browsers, Polymer utilizza i polyfills di webcomponent.js. Con i polyfills, Polymer è compatibile con i seguenti browsers:
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_poly_comp.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_tecnologie_abilitanti/tecnologie_abilitanti_poly_comp.png}\hfill
  \caption[Polymer e browser compatibili]{Compatibilità di polymer con i principali browser.}
  \label{fig:tecnologie_abilitanti_poly_comp}
 \end{figure}
 A questo punto verranno mostrate le principali funzionalità offerte da Polymer per la creazione di elementi HTML:
 //
 Per registrare un nuovo elemento nel browser si usa la funzione Polymer. La registrazione, di cui  prevede l’associazione di un tag riconoscitivo dell’elemento ad un prototipo, nel quale poter aggiungere metodi e proprietà all’elemento. La funzione Polymer prende come argomento un oggetto che definisce il prototipo dell’elemento, e restituisce un costruttore che può essere usato per istanziare l’elemento.
+\\
 Inoltre la funzione definisce la catena prototipale per il nuovo elemento, collegandolo al prototipo base di Polymer, da cui eredita le funzioni in esso definite; questo esula lo sviluppare dal dover definire egli stesso una catena prototipale.
+\\
 Il protitopo deve avere la proprietà is che specifica il tag HTML del nuovo elemento creato. Attualmente Polymer supporta l’estensione solamente di elementi HTML nativi, come \texttt{<input>} o \texttt{<button>}. Per estendere un elemento HTML nativo si inserisce nel prototipo la proprietà extends associata al tag dell’elemento che si vuole estendere. 
 \begin{lstlisting}[language=html, label={poly_code1}]
 <script>
@@ -255,6 +273,7 @@ Un’altra funzionalità offerta la Polymer è implementazione nel prototipo bas
 \item \texttt{attributeChanged}, che corrisponde a attributeChangedCallback.
 \end{itemize}
 Ovviamente è possibile utiizzare anche i metodi originali, implementandoli nel prototipo dell’elemento. Polymer aggiunge un’ulteriore callback, \texttt{ready}, che viene invocata quando Polymer ha terminato la creazione e l’inizializzazione di tutti i nodi interni al local DOM dell’elemento; infatti molti elementi possono includere all’interno dei nodi che implementano UI e comportamento dell’elemento: Polymer definisce questi nodi local DOM.
+\\
 Per specificare il DOM da usare come local DOM dell’elemento, si usa l’elemento \texttt{<dom-module>}, a cui si assegna l’attributo id che coincide con la proprietà is del prototipo del nuovo elemento. All’interno del \texttt{<dom-module>} si inserisce un elemento \texttt{<template>}, e Polymer automaticamente copierà il contenuto del template nel local DOM dell’elemento.
 \begin{lstlisting}[language=html,label={code_poly2}]
 <dom-module id="custom-element">
@@ -268,8 +287,11 @@ Per specificare il DOM da usare come local DOM dell’elemento, si usa l’eleme
  </script>
 </dom-module>
 \end{lstlisting}
-Nell’esempio \ref{code_poly2} il local DOM è statico, dal momento che il suo unico nodo \texttt{<p>} ha per valore una stringa fissa. Tuttavia nella maggior parte dei casi è preferibile che il local DOM possa cambiare dinamicamente, e per questo scopo Polymer ha introdotto la funzionalità \textbf{data binding}. 
-Data Binding è uno strumento per associare una proprietà di un custom element ad un attributo di un elemento contenuto nel suo local DOM. E’ possibile fare il binding su una proprietà del componente racchiudendo un riferimento alla proprietà tra doppie graffe ({{ }}). Il contenuto nelle parentesi verrà sostituito dal valore della proprietà il cui riferimento è contenuto nelle graffe. Nell’esempio è possibile vedere un binding tra la proprietà \texttt{owner} di \texttt{custom-element}, definita mediante il costrutto \texttt{properties} che verrà descritto a breve, e l’attributo \texttt{owner} dell’elemento del local DOM di \texttt{custom-element}. 
+Nell’esempio \ref{code_poly2} il local DOM è statico, dal momento che il suo unico nodo \texttt{<p>} ha per valore una stringa fissa. Tuttavia nella maggior parte dei casi è preferibile che il local DOM possa cambiare dinamicamente, e per questo scopo Polymer ha introdotto la funzionalità \textbf{data binding}.
+\\
+Data Binding è uno strumento per associare una proprietà di un custom element ad un attributo di un elemento contenuto nel suo local DOM. E’ possibile fare il binding su una proprietà del componente racchiudendo un riferimento alla proprietà tra doppie graffe ({{ }}). 
+\\
+Il contenuto nelle parentesi verrà sostituito dal valore della proprietà il cui riferimento è contenuto nelle graffe. Nell’esempio è possibile vedere un binding tra la proprietà \texttt{owner} di \texttt{custom-element}, definita mediante il costrutto \texttt{properties} che verrà descritto a breve, e l’attributo \texttt{owner} dell’elemento del local DOM di \texttt{custom-element}. 
 \begin{lstlisting}[language=html]
 <dom-module id="custom-element">
  <template>
@@ -288,8 +310,10 @@ Data Binding è uno strumento per associare una proprietà di un custom element 
  </script>
 </dom-module>
 \end{lstlisting}
-Il costrutto utilizzato per la definizione della proprietà owner fa parte di altra funzionalità offerta da Polymer: le \textbf{declared properties}. 
-E’ possibile dichiarare delle proprietà di un custom element aggiungendole ad un oggetto properties nel prototipo del custom element. Ogni proprietà facente parte delle API pubbliche dell’elemento, andrebbe dichiarata nell’oggetto properties. Attraverso l’oggetto properties è inoltre possibile usufruire di un’altra funzionalità di Polymer, ovvero \textbf{Property Observation}. 
+Il costrutto utilizzato per la definizione della proprietà owner fa parte di altra funzionalità offerta da Polymer: le \textbf{declared properties}.
+\\
+E’ possibile dichiarare delle proprietà di un custom element aggiungendole ad un oggetto properties nel prototipo del custom element. Ogni proprietà facente parte delle API pubbliche dell’elemento, andrebbe dichiarata nell’oggetto properties. Attraverso l’oggetto properties è inoltre possibile usufruire di un’altra funzionalità di Polymer, ovvero \textbf{Property Observation}.
+\\
 E’ possibile mettersi in ascolto dei cambiamenti di una proprietà di un custom element, inserendo all’interno di essa l’attributo observer e associandovi una funzione setter detta change handler; nel momento in cui la proprietà subisce un cambiamento, la change handler viene chiamata con il vecchio e nuovo valore come argomenti.
 \begin{lstlisting}[language=html]
 Polymer({
