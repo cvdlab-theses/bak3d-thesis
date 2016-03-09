@@ -2,10 +2,13 @@
 \label{sec:chapter_tecnologie_abilitanti_threejs}
 
 Three.js è una libreria/API JavaScript, basata su WebGL, che permette la creazione e visualizzazione di grafica 3D su browser web. Nasce con l’obiettivo di rendere WebGL facile da utilizzare.
+\\
 La libreria Three.js permette di lavorare ad un livello più alto di astrazione rispetto a WebGL in quanto gestisce la fase di rendering per ogni oggetto nella scena, nascondendola di fatto al programmatore.
+\\
 La libreria inoltre, occupandosi della matematica base, nasconde al programmatore la complessa algebra lineare delle trasformazioni come traslazione, rotazione o scalatura di un oggetto nella scena, permettendogli di utilizzare direttamente i risultati provenienti dai calcoli.
 Di fatto questo velocizza il lavoro dello sviluppatore facendogli risparmiare parecchie linee di codice; un semplice cubo che con WebGL richiederebbe centinaia di righe di codice tra Javascript e GLSL per scrivere lo shader, in Three.js richiederebbe solo una piccola frazione di esse.
 A questo punto verrà descritto un breve progetto Three.js al fine di presentarne la facilità di utilizzo rispetto a WebGL.
+\\
 I progetti sviluppati in Three.js seguono tipicamente un approccio procedurale; per convenzione il codice viene sviluppato in tre funzioni: ‘init’, ‘animate’ e ‘render’ dividendo di fatto il progetto in tre segmenti logici: inizializzazione, aggiornamento e disegno.
 \begin{lstlisting}[language=javascript]
 var camera, scene, renderer;
