@@ -7,7 +7,15 @@ Nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_caricam_scena} è 
 \\
 La condizione abilitante per garantire un baking delle lightmap ottimale, è che tutte le strutture create in ThreeJS siano mappate nelle relative strutture di Blender. Per strutture si intendono tutti gli elementi di scena descritti all’interno del file JSON di input, ovvero geometrie, materiali, luci e texture.
 \\ 
-Ognuna di queste strutture all’interno dell’Editor offre all’utente la possibilità di configurarne dei parametri, e siccome ThreeJS e Blender si basano su tecnologie e motori di rendering diversi, non è che detto che intepretino i parametri di configurazione nello stesso modo. Per questo motivo è stata necessaria una lunga attività di studio con l’obiettivo di realizzare una mappatura esplicita dei parametri da ThreeJS a Blender. La mappatura deve essere tale per cui l’effetto ricercato dall’utente nell’editor, sia il medesimo in Blender. Ovviamente il feedback visivo di un effetto in ThreeJS rispetto a quello in Blender non può che essere qualitativamente peggiore, ma l’obiettivo qui non è trovare una corrispondenza a livello qualitativo, ma a livello di caratteristiche degli oggetti. E’ importante sottolineare il fatto che la mappatura in Blender viene fatta rispetto ad un ben preciso motore di rendering, ovvero il Cycles Renderer; la scelta è motivata dal fatto che per il baking delle lightmap viene sfruttato l’algoritmo di illuminazione indiretta Path Tracing, che è alla base del Cycles Renderer. Questo paragrafo sarà diviso in più sezioni; ogni sezione prenderà in esame la mappatura dei parametri inerenti ad una specifica struttura, iniziando dalla più importante per il contesto del presente lavoro di tesi, ovvero la luce. In tabella \ref{light_table} sono evidenziate le luci che verranno considerate per il mapping. Le luci mostrate sono tutte quelle che l’utente può utilizzare nell’editor, e che hanno una controparte effettiva in Blender.
+Ognuna di queste strutture all’interno dell’Editor offre all’utente la possibilità di configurarne dei parametri, e siccome ThreeJS e Blender si basano su tecnologie e motori di rendering diversi, non è che detto che intepretino i parametri di configurazione nello stesso modo. Per questo motivo è stata necessaria una lunga attività di studio con l’obiettivo di realizzare una mappatura esplicita dei parametri da ThreeJS a Blender. 
+\\
+La mappatura deve essere tale per cui l’effetto ricercato dall’utente nell’editor, sia il medesimo in Blender. Ovviamente il feedback visivo di un effetto in ThreeJS rispetto a quello in Blender non può che essere qualitativamente peggiore, ma l’obiettivo qui non è trovare una corrispondenza a livello qualitativo, ma a livello di caratteristiche degli oggetti. 
+\\
+E’ importante sottolineare il fatto che la mappatura in Blender viene fatta rispetto ad un ben preciso motore di rendering, ovvero il Cycles Renderer; la scelta è motivata dal fatto che per il baking delle lightmap viene sfruttato l’algoritmo di illuminazione indiretta Path Tracing, che è alla base del Cycles Renderer. 
+\\
+Questo paragrafo sarà diviso in più sezioni; ogni sezione prenderà in esame la mappatura dei parametri inerenti ad una specifica struttura, iniziando dalla più importante per il contesto del presente lavoro di tesi, ovvero la luce. 
+\\
+In tabella \ref{light_table} sono evidenziate le luci che verranno considerate per il mapping. Le luci mostrate sono tutte quelle che l’utente può utilizzare nell’editor, e che hanno una controparte effettiva in Blender.
 \begin{table}[]
 \centering
 \caption{Luci ThreeJS e Blender}
@@ -44,18 +52,26 @@ Anche qui ogni luce è controllata da un sottoinsieme di questi parametri; inolt
 \item Spot shape size: angolo del raggio della spotlight.
 \item Spot shape blend: per diminuire la marcatezza dei bordi di luce della spot lamp.
 \end{itemize}
-E’ possibile notare la presenza di parametri, come la distance in threejs, che non hanno una vera controparte in blender. Questo perchè le luci sono calcolate dai due motori di render in modo completamente differente. Si consideri ad esempio una SpotLight e una Spot Lamp: nel primo caso si ha un fascio di luce diretta che ha effetto solo all’interno del cono in cui è contenuto, e che quindi è governato dalla lunghezza massima del cono. Nel secondo caso si ha un fascio di luce che non ha una distanza massima, ma un numero massimo di rimbalzi che i raggi possono fare all’interno di tutta la scena, potendo quindi esercitare un effetto luminoso indiretto ovunque al di fuori del cono. Il beneficio di una mappatura su Blender dei valori di distance scelti dall’utente risulta dunque nullo, in particolar modo se il mapping è su sistemi con motori di render Path Tracing. Si è scelto dunque di non mappare su Blender la distance delle luci nella scena, e di tenere il parametro trasparente all’utente. Tuttavia il parametro distance non viene scartato, ma utilizzato per un mapping diverso.
+E’ possibile notare la presenza di parametri, come la distance in threejs, che non hanno una vera controparte in blender. Questo perchè le luci sono calcolate dai due motori di render in modo completamente differente. Si consideri ad esempio una SpotLight e una Spot Lamp: nel primo caso si ha un fascio di luce diretta che ha effetto solo all’interno del cono in cui è contenuto, e che quindi è governato dalla lunghezza massima del cono. 
 \\
-Come già discusso nel corso dell’elaborato, l’obiettivo è realizzare un servizio web per la costruzione di interni 3D fotorealistici; all’interno di questo editor si vogliono fornire delle fonti luminose che diano all’utente dell’editor un feedback visivo simile a quello di Blender, in modo da dare all’utente un’idea di come sarà l’illuminazione dopo il bake, senza considerare le ombre. Questa proprietà deve essere un default per le luci dell’editor, che devono quindi già godere di tale proprietà senza bisogno di configurarle; per fare ciò devono essere preimpostate in alcuni parametri di controllo. Questa modellazione ha richiesto un’attività di studio e confronti tra illuminazione di ThreeJs e Blender, sfruttando i parametri distance, exponent e decay. A questo punto verrà mostrato il modo in cui le Spotlight di ThreeJS vengono preimpostate nell’editor.
+Nel secondo caso si ha un fascio di luce che non ha una distanza massima, ma un numero massimo di rimbalzi che i raggi possono fare all’interno di tutta la scena, potendo quindi esercitare un effetto luminoso indiretto ovunque al di fuori del cono. Il beneficio di una mappatura su Blender dei valori di distance scelti dall’utente risulta dunque nullo, in particolar modo se il mapping è su sistemi con motori di render Path Tracing. 
+\\
+Si è scelto dunque di non mappare su Blender la distance delle luci nella scena, e di tenere il parametro trasparente all’utente. Tuttavia il parametro distance non viene scartato, ma utilizzato per un mapping diverso.
+\\
+Come già discusso nel corso dell’elaborato, l’obiettivo è realizzare un servizio web per la costruzione di interni 3D fotorealistici; all’interno di questo editor si vogliono fornire delle fonti luminose che diano all’utente dell’editor un feedback visivo simile a quello di Blender, in modo da dare all’utente un’idea di come sarà l’illuminazione dopo il bake, senza considerare le ombre. 
+\\
+Questa proprietà deve essere un default per le luci dell’editor, che devono quindi già godere di tale proprietà senza bisogno di configurarle; per fare ciò devono essere preimpostate in alcuni parametri di controllo. Questa modellazione ha richiesto un’attività di studio e confronti tra illuminazione di ThreeJs e Blender, sfruttando i parametri distance, exponent e decay. A questo punto verrà mostrato il modo in cui le Spotlight di ThreeJS vengono preimpostate nell’editor.
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_baking_service/ba_se_ex_cubo.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_baking_service/ba_se_ex_cubo.png}\hfill
  \caption[SpotLight ThreeJS]{Effetto di una SpotLight ThreeJS orientata verso un cubo.}
  \label{fig:ba_se_ex_cubo}
 \end{figure}
 Si consideri la spotlight in figura \ref{fig:ba_se_ex_cubo}:
-per garantire un effetto più realistico è necessario agire su alcuni parametri, ad esempio diminuendo l’effetto luminoso in corrispondenza dei bordi del cono (exponent), e aumentando la dispersione della luce in funzione della distanza dalla superficie (decay). E’ necessario che la luce soddisfi queste proprietà, e che l’effetto complessivo sia confrontabile con quello delle luci che verranno create in blender.
+per garantire un effetto più realistico è necessario agire su alcuni parametri, ad esempio diminuendo l’effetto luminoso in corrispondenza dei bordi del cono (exponent), e aumentando la dispersione della luce in funzione della distanza dalla superficie (decay). 
+\\
+E’ necessario che la luce soddisfi queste proprietà, e che l’effetto complessivo sia confrontabile con quello delle luci che verranno create in blender.
 \\ 
 A questo punto vengono modellati i parametri di configurazione di ThreeJS con riferimento ai parametri di Blender che controllano gli stessi effetti. L’obiettivo è arrivare ad una condizione di equilibrio, trovando la configurazione di parametri ThreeJS, e di parametri Blender, avente come risultato due luci in due sistemi diversi, ma aventi effetti paragonabili.
 \\
@@ -69,6 +85,7 @@ Sperimentando configurazioni differenti e mettendo a confronto i risultati, si �
  \caption[SpotLight preimpostata]{Effetto di una SpotLight ThreeJS preimpostata nell'editor (a sinistra), e risultato della replicazione della stessa nel bake (a destra).}
  \label{fig:ba_se_confronto_spot}
 \end{figure}
+\\
 A questo punto verrà descritta l’attività di mappatura con riferimento ai parametri di cui l’utente ha piena libertà di configurarne di valori nell’Editor, ovvero l’intensity, l’hex, e l’angle. Questi parametri non vengono preimpostati, e per ognuno di questi è possibile trovare un parametro corrispondente in Blender.
 \\ 
 Infatti vi sono delle nette corrispondenze tra spot shape size ed angle, intensity e strenght, hex e color. Gli effetti che intendono controllare questi parametri sono dunque gli stessi; ciò che cambia sono i valori che vengono assegnati a questi parametri.
@@ -98,6 +115,7 @@ Notare in tabella \ref{insensity_table} come per ogni luce il fattore di convers
  \caption[Confronto intensity - strenght]{Confronto tra illuminazione di una scena ThreeJS(a sinistra), e illuminazione della medesima scena importata in Blender (a destra).}
  \label{fig:ba_se_tavolini}
 \end{figure}
+\\
 Per quanto riguarda l’agle la mappatura è molto semplice, e riguarda esclusivamente la generazione di Spot Lamp.
 \\
 In presenza di un campo angle nella descrizione della luce nel JSON; il relativo valore viene estratto, moltiplicato per due, e assegnato al parametro spot shape size. 
@@ -120,6 +138,7 @@ La funziona di mappatura consiste quindi nell’estrarre il colore dalla descriz
  \caption[Mappatura AmbientLight]{Confronto tra AmbientLight ThreeJS (a sinistra), e mappatura della medesima in Blender (a destra).}
  \label{fig:ba_se_confronto_cubi}
 \end{figure}
+\\
 E’ importante sottolineare che le operazioni di mappatura mostrate fin’ora sono strettamente correlate al tipo di motore di render utilizzato in Blender, ossia il Cycle Render. Basti pensare ad esempio che utilizzando il più leggero Blender Render, l’intensità delle luci in ThreeJS verrebbe mappata 1:1 con la strength delle rispettive luci in Blender. Anche per la distance si dovrebbe fare un discorso completamente diverso, perchè a differenza del Cycle Render, le SpotLight e le PointLight nel Blender Render hanno il parametro distance, che quindi può essere mappato direttamente da quello di ThreeJS.
 \\
 \\
@@ -190,6 +209,7 @@ Dopo l’estrazione del base64 della texture dalla descrizione JSON, e la decodi
  \caption[Mappatura texturizzazione]{In foto è mostrato un dettaglio circa la configurazione di nodi che permette di applicare una texture ad un oggetto.}
  \label{fig:ba_se_diffuse_uv_ma}
 \end{figure}
+\\
 Nel paragrafo \ref{sec:chapter_stato_arte_lightmap} si è discusso di come la condizione abilitante per un corretto mapping di una texture su di una superficie sia l’utilizzo delle mappe UV. Questa procedura viene svolta generando un nodo UV Map rappresentante proprio la mappa UV, e assegnando a questo nodo i valori della mappa UV estratta dalla descrizione della texture nel JSON. Questo nodo viene poi collegato al nodo Texture, come è mostrato in figura \ref{fig:ba_se_diffuse_uv_ma}
 \\
 L’attività di texturizzazione deve inoltre tenere conto di alcuni parametri configurabili all’interno dell’editor. 
@@ -198,8 +218,23 @@ Durante un’utilizzo tipico dell’editor da parte dell’utente, può essere n
 \\
 Similmente a quanto visto per la roughness del glossy shader in Blender, e la shininess del PhongMaterial in ThreeJS, ci sono differenze nel formato tra repeat in ThreeJS e repeat nel Cycle Render di Blender.
 \\
-In ThreeJS il repeat è descritto mediante un vettore con due valori $x$ e $y$; $x$ è un intero che indica il numero di volte che la texture deve essere replicata lungo l’asse $x$; la $y$ indica invece il numero di ripetizioni sull’asse $y$. Il processo di ripetizione consiste nel suddividere la superficie lungo l’asse $x$ e $y$ un numero di volte indicato dal fattore repeat; si ottiene così una superficie suddivisa in più sezioni. A questo punto la texture viene applicata su ogni sezione ottenendo quindi l’effetto di ripetizione della stessa.
+In ThreeJS il repeat è descritto mediante un vettore con due valori $x$ e $y$; $x$ è un intero che indica il numero di volte che la texture deve essere replicata lungo l’asse $x$; la $y$ indica invece il numero di ripetizioni sull’asse $y$. 
 \\
-Nel Cycle render di Blender il repeat viene applicato in modo simile, ma per farlo  bisogna intervenire sulle UV Map. E’ necessario infatti definire un fattore di scalatura lungo gli assi $u$ e $v$, della UV Map. Se 1 è la scala originale della UV Map, un fattore di scalatura 0.5 sull’asse $u$ implica che lungo tale asse la mappa sarà grande la metà dell’originale, e quindi su tale asse può essere replicata; lo stesso vale per l’asse $v$. Siccome la mappa UV viene replicata, la texture verrà mappata sulla superficie in corrispondenza di ogni replica, ottenendo quindi l’effetto ripetizione. Da questa descrizione si può notare sin da subito come la rappresentazione numerica del repeat nei due sistemi sia una l’opposto dell’altra. In ThreeJS sono due interi maggiori di 0 che indicano esplicitamente il numero di ripetizioni lungo i due assi di riferimento, in Blender sono due valori compresi tra 0 e 1 che indicano la percentuale di scalatura della mappa UV rispetto agli assi di riferimento. Siccome i valori sono uno l’inverso dell’altro, è possibile definire una mappatura del repeat in Blender calcolando l’inverso dei due valori di repeat per $x$ e $y$ descritti per la texture nel JSON. Questa mappatura è implementata all’interno della funzione che si occupa di importare le texture in Blender. Siccome il repeat si applica sulla mappa UV, bisognerà intervenire sul nodo del node editor che la rappresenta. L’intervento consiste nell’inserimento tra il nodo Texture e il Nodo UV Map di un nodo intermedio detto \emph{Mapping}, mostrato in figura \ref{fig:ba_se_diffuse_uv_ma} . Questo nodo intermedio si occupa di prendere in input la mappa UV e applicare su di essa una scalatura sugli assi $x$ e $y$, che corrispondono agli assi $u,v$ trattandosi di una UV map. L’output di questo nodo sarà la mappa UV ripetuta, che verrà quindi data in input al nodo Texture. I fattori di scaling da inserire nel nodo Mapping sono calcolati dalla funzione di import delle texture, che estrae i repeat $x$ e $y$ ThreeJS della descrizione JSON della texture e che al parametro di scaling sulle u del nodo Mapping assegnerà il valore $\frac{1}{x}$, mentre al parametro di scaling sulle $v$ assegnerà $\frac{1}{y}$.
+Il processo di ripetizione consiste nel suddividere la superficie lungo l’asse $x$ e $y$ un numero di volte indicato dal fattore repeat; si ottiene così una superficie suddivisa in più sezioni. A questo punto la texture viene applicata su ogni sezione ottenendo quindi l’effetto di ripetizione della stessa.
 \\
-A questo punto si è ottenuto un nuovo shader diffuse per il mapping della texture sulla superficie della mesh. L’ultima fase prevista dalla texturizzazione è la combinazione di questo nuovo shader, con quello del materiale già realizzato. La combinazione è possibile utilizzando un nodo \emph{Mixer}, che prende in input i due shader e ne produce uno unico da assegnare alla superficie della mesh. Come già menzionato in precedenza è importante che, per una texturizzazione fedele dei diffuse color dell’immagine, gli eventuali contributi di colore di altri shader vengano impostati sul nero, in modo da non influenzare il colore della texture. Per questo motivo prima della texturizzazione vengono controllati gli shader, ed eventuali contributi di colore vengono impostati a nero $(0,0,0)$. 
+Nel Cycle render di Blender il repeat viene applicato in modo simile, ma per farlo  bisogna intervenire sulle UV Map. E’ necessario infatti definire un fattore di scalatura lungo gli assi $u$ e $v$, della UV Map. 
+\\
+Se 1 è la scala originale della UV Map, un fattore di scalatura 0.5 sull’asse $u$ implica che lungo tale asse la mappa sarà grande la metà dell’originale, e quindi su tale asse può essere replicata; lo stesso vale per l’asse $v$. Siccome la mappa UV viene replicata, la texture verrà mappata sulla superficie in corrispondenza di ogni replica, ottenendo quindi l’effetto ripetizione. Da questa descrizione si può notare sin da subito come la rappresentazione numerica del repeat nei due sistemi sia una l’opposto dell’altra. 
+\\
+In ThreeJS sono due interi maggiori di 0 che indicano esplicitamente il numero di ripetizioni lungo i due assi di riferimento, in Blender sono due valori compresi tra 0 e 1 che indicano la percentuale di scalatura della mappa UV rispetto agli assi di riferimento. 
+\\
+Siccome i valori sono uno l’inverso dell’altro, è possibile definire una mappatura del repeat in Blender calcolando l’inverso dei due valori di repeat per $x$ e $y$ descritti per la texture nel JSON. Questa mappatura è implementata all’interno della funzione che si occupa di importare le texture in Blender. Siccome il repeat si applica sulla mappa UV, bisognerà intervenire sul nodo del node editor che la rappresenta. 
+\\
+L’intervento consiste nell’inserimento tra il nodo Texture e il Nodo UV Map di un nodo intermedio detto \emph{Mapping}, mostrato in figura \ref{fig:ba_se_diffuse_uv_ma} . Questo nodo intermedio si occupa di prendere in input la mappa UV e applicare su di essa una scalatura sugli assi $x$ e $y$, che corrispondono agli assi $u,v$ trattandosi di una UV map. 
+\\
+L’output di questo nodo sarà la mappa UV ripetuta, che verrà quindi data in input al nodo Texture. I fattori di scaling da inserire nel nodo Mapping sono calcolati dalla funzione di import delle texture, che estrae i repeat $x$ e $y$ ThreeJS della descrizione JSON della texture e che al parametro di scaling sulle u del nodo Mapping assegnerà il valore $\frac{1}{x}$, mentre al parametro di scaling sulle $v$ assegnerà $\frac{1}{y}$.
+\\
+
+A questo punto si è ottenuto un nuovo shader diffuse per il mapping della texture sulla superficie della mesh. L’ultima fase prevista dalla texturizzazione è la combinazione di questo nuovo shader, con quello del materiale già realizzato. 
+\\
+La combinazione è possibile utilizzando un nodo \emph{Mixer}, che prende in input i due shader e ne produce uno unico da assegnare alla superficie della mesh. Come già menzionato in precedenza è importante che, per una texturizzazione fedele dei diffuse color dell’immagine, gli eventuali contributi di colore di altri shader vengano impostati sul nero, in modo da non influenzare il colore della texture. Per questo motivo prima della texturizzazione vengono controllati gli shader, ed eventuali contributi di colore vengono impostati a nero $(0,0,0)$. 

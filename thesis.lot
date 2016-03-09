@@ -20,11 +20,31 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {table}{\numberline {5.1}{\ignorespaces Richieste utente e middleware}}{120}{table.caption.75}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.2}{\ignorespaces Luci ThreeJS e Blender\relax }}{137}{table.caption.82}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Luci ThreeJS e Blender\relax }}{138}{table.caption.82}
 \defcounter {refsection}{0}\relax 
 \contentsline {table}{\numberline {5.3}{\ignorespaces Mappatura intensity Blender\relax }}{142}{table.caption.85}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.1}{\ignorespaces Performance al variare degli oggetti}}{174}{table.caption.101}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.2}{\ignorespaces Performance al variare del sampling}}{177}{table.caption.104}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.3}{\ignorespaces Performance al variare delle luci}}{180}{table.caption.110}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.4}{\ignorespaces Confronto dimensioni input-output}}{183}{table.caption.111}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.5}{\ignorespaces Dimensioni output variando sampling}}{185}{table.caption.113}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{188}{table.caption.115}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{189}{table.caption.116}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{195}{table.caption.123}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{196}{table.caption.124}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 

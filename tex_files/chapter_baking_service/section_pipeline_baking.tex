@@ -1,14 +1,19 @@
 \section{Pipeline di baking}
 \label{sec:chapter_baking_service_pipeline_baking}
 L’operazione di Bake, in questo lavoro di tesi, avviene tramite l’utilizzo di un processo Blender installato su un server remoto. Blender in questo lavoro di tesi ha permesso la creazione e l’applicazione di texture lightmap sugli oggetti presenti nella scena creata in Three.js.
+\\
 Questa procedura risulta però complessa da effettuare in quanto prevede una profonda conoscenza, da parte di chi la utilizza, dell’algoritmo di bake e dei parametri che esso accetta. Inoltre è necessaria una buona esperienza nell’utilizzo di Blender, un software difficile da padroneggiare.
 \\
-Nel dettaglio per permettere a Blender la creazione delle lightmap, la scena creata in ambiente web (descritta tramite il formato JSON4) deve essere importata, tale e quale a quella originale, all’interno del software Blender. Questa importazione all’interno di un linguaggio differente, quello Python, risulta un’operazione complessa.
+Nel dettaglio per permettere a Blender la creazione delle lightmap, la scena creata in ambiente web (descritta tramite il formato JSON4) deve essere importata, tale e quale a quella originale, all’interno del software Blender. 
+\\
+Questa importazione all’interno di un linguaggio differente, quello Python, risulta un’operazione complessa.
 \\
 Una volta che la scena è stata importata correttamente in Blender, verranno calcolate ed applicate le informazioni di luce (lightmap) agli oggetti inseriti. 
 Infine la scena, con applicate le informazioni di luce, verrà esportata nel file di scambio JSON 4. All’interno di quest’ultimo vengono infatti trascritte tutte le strutture dati Python in un formato comprensibile a Three.js.
 \\
-L’obiettivo principale di questo lavoro è stato quindi quello di automatizzare il processo di creazione delle lightmap al fine di semplificare l’esperienza dell’utente che utilizza questo sistema. L’utente infatti una volta creata la scena in Three.js dove solamente premere un pulsante ed il processo di bake penserà ad effettuare tutte le elaborazione in maniera totalmente autonoma.
+L’obiettivo principale di questo lavoro è stato quindi quello di automatizzare il processo di creazione delle lightmap al fine di semplificare l’esperienza dell’utente che utilizza questo sistema. 
+\\
+L’utente infatti una volta creata la scena in Three.js dove solamente premere un pulsante ed il processo di bake penserà ad effettuare tutte le elaborazione in maniera totalmente autonoma.
 \\
 L’elaborazione risulta quindi completamente trasparente e l’utilizzatore non si accorge del fatto che il flusso di dati in input (il json creato in Three.js) deve passare attraverso più passi di elaborazione (una pipeline quindi).
 L’implementazione di ognuno di questi passi è stata realizzata tramite il linguaggio Python, sfruttando le API fornite da Blender.
@@ -33,10 +38,11 @@ Anche l’operazione di bake è stata studiata approfonditamente al fine di comp
 Il ciclo di bake viene effettuato grazie all’utilizzo di CUDA, l'architettura di elaborazione in parallelo di NVIDIA. 
 CUDA ha infatti permesso, in questo lavoro di tesi, miglioramenti netti nei tempi di bake rispetto a computazioni basate su CPU grazie allo sfruttamento della potenza di calcolo delle GPU (unità di elaborazione grafica).
 \\
-Per l’esportazione è stato utilizzato come base un addon (scritto in Python) già esistente, descritto in [X], che permettesse di effettuare questa operazione. Esso però risultava incompleto in quanto non permetteva la scrittura di alcune strutture dati fondamentali. Le modifiche apportate all’ exporter verrano approfondite nel paragrafo [x].
+Per l’esportazione è stato utilizzato come base un addon (scritto in Python) già esistente, descritto in [X], che permettesse di effettuare questa operazione. Esso però risultava incompleto in quanto non permetteva la scrittura di alcune strutture dati fondamentali. Le modifiche apportate all’ exporter verrano approfondite nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_esport_scena}.
 \\
 Realizzare lo script è risultata quindi un’operazione complessa in quanto ha reso necessario un accurato studio delle strutture dati utilizzate da Three.js e dalle API di Blender.
 Inoltre è stato effettuato un accurato lavoro di ricerca su come effettuare il mapping tra due rendering differenti, anch’ essi studiati dettagliatamente.
+\\
 Questa fase di studio e sperimentazione è stata velocizzata grazie all’utilizzo del Node Editor, fornito da Blender.
 Il suo utilizzo permette una metodologia di programmazione molto potente e flessibile che sfrutta i nodi al fine di modificare i materiali degli oggetti, le texture ed il rendering in generale.
 \\
@@ -59,6 +65,7 @@ Nella richiesta viene inviato il file .json che rappresenta la scena 3D in Three
 Questo file viene poi analizzato dallo script creato nel presente lavoro di tesi per permettergli di effettuare il caricamento della scena.
 \\
 L’analisi prevede in particolare il riconoscimento  delle informazioni Three.js riportate sul json al fine di adattarle in strutture dati utilizzate in Blender.
+\\
 Di fatto la scena Three.js descritta nel JSON4 viene analizzata, mediante un algoritmo ricorsivo, a partire dall’ oggetto JSON che rappresenta la scena, per definizione il padre di ogni oggetto presente.
 \\
 Ogni oggetto descritto nel formato JSON viene quindi riconosciuto ed adattato nella struttura dati corrispondente In Blender. Quest’ultimo espone infatti una API scritta in Python per la creazione di scene 3D, molto differente dal linguaggio Three.js.
@@ -109,6 +116,7 @@ L’oggetto scena scritto nel JSON, rappresentato  tramite un Object3D, viene pr
 Come visibile nella pseudo, questo oggetto Empty viene aggiunto, all’inizio del caricamento, come padre della nuova scena che verrà creata in Blender.
 \\
 Questo tipo di adattamento Object3D-Empty avviene inoltre per ogni Object3D individuato dall’importer.
+\\
 Le due strutture dati risultano analoghe in quanto rappresentano un oggetto vuoto (null) e non contengono una vera geometria o materiale. Sia gli Object3D che gli Empty vengono normalmente assegnati come padri di un certo numero di oggetti ai quale si vuole che subiscano le medesime trasformazioni effettuate sul padre. Quindi se un oggetto A è padre di un oggetto B e viene applicata una trasformazione ad A, la medesima trasformazione viene applicata anche su B.
 \\
 Fortunatamente sia Three.js che Blender trattano la gerarchia della scena in maniera equivalente. Quindi essa non ha avuto bisogno di adattamenti ma è stata riportata esattamente come viene descritta nel formato di scambio Three.js.
@@ -142,7 +150,8 @@ Gli spigoli di solito vengono utilizzati per la creazione di oggetti senza facce
 Quindi una volta creata la mesh è possibile creare l’object 3D che rappresenta l’oggetto vero e proprio all’interno della scena. Operazioni quali ad esempio creazione e modifica dei materiali, l’assegnazione di texture e le trasformazioni possono essere effettuate solamente sull’ oggetto.
 \\
 Il materiale associato all’oggetto nel JSON, quindi proveniente dal render Three.js, non può essere assegnato al nuovo oggetto creato in Blender perchè quest’ultimo utilizza un render differente. 
-Questi due render utilizzano infatti tipologie di materiali differenti e per questo è necessario convertire un materiale Three.js in un materiale Cycles render (Blender). Questa operazione risulta molto complessa e verrà spiegata nel paragrafo X.
+\\
+Questi due render utilizzano infatti tipologie di materiali differenti e per questo è necessario convertire un materiale Three.js in un materiale Cycles render (Blender). Questa operazione risulta molto complessa e verrà spiegata nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}.
 \\
 Inoltre se nell’oggetto json sono descritte anche le normali ad esso associate, queste verranno prelevate ed assegnate all’oggetto creato in Blender.
 \\
@@ -168,6 +177,7 @@ Ci sono casi in cui si rende necessario però utilizzare oggetti Three.js con le
  \label{fig:baking_service_front_back_side}
 \end{figure}
 Blender tramite l’utilizzo della funzione \texttt{flip\_normals()} permette di girare le normali front\_side e di assegnarle alla faccia opposta, permettendo in questo modo di ottenere le normali back\_side (figura: \ref{fig:baking_service_front_back_side}. 
+\\
 Adattare correttamente le normali è stato importante in quanto esse sono fondamentali per il corretto calcolo delle luci e per la corretta creazione delle lightmap.
 La lightmap viene calcolata sul lato frontale della faccia se le normali sono front\_side, altrimenti sul lato opposto se sono back\_side.
 \\
@@ -212,8 +222,7 @@ Tramite l’utilizzo di una libreria Blender chiamata trasformation.py è stato 
 In particolare la funzione utilizzata è chiamata decompose() che accetta come parametro la matrice scritta come lista (lista identica a quella presente nel JSON) e permette di ottenere come risultato le tre trasformazioni.
 \\
 Le informazioni di traslazione e scalatura possono essere applicate direttamente così come sono sugli oggetti Blender. 
-Purtroppo questo non è però possibile per la rotazione in quanto la funzione produce come risultato un quaternione. Il quaternione deve essere infatti prima convertito in un angolo di eulero per potere poi essere applicato sull’oggetto. 
-\\
+Purtroppo questo non è però possibile per la rotazione in quanto la funzione produce come risultato un quaternione. Il quaternione deve essere infatti prima convertito in un angolo di eulero per potere poi essere applicato sull’oggetto.
 Anche questa conversione è stata possibile grazie ad una funzione della libreria \texttt{transformation.py}.
 Infine l’oggetto viene aggiunto alla scena Blender, pronto per subire l’operazione di bake.
 
