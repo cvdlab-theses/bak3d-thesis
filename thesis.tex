@@ -27,10 +27,17 @@
 \usepackage{tabularx}
 \usepackage[style=numeric-comp,useprefix,hyperref,backend=bibtex]{biblatex}
 \usepackage{algorithm2e}
+\usepackage{fancyhdr}
+\usepackage[top=4cm, bottom=3cm, left=3.75cm, right=2.75cm]{geometry}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{\thepage}
+\fancyhead[C]{\itshape\nouppercase{\rightmark}}
 
 \bibliography{tex_files/bibliography/bibliography}
-
-\pagestyle{headings}
 
 \lstdefinelanguage{JavaScript}{
   morekeywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
