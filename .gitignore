@@ -5,6 +5,7 @@ thesis.blg
 thesis.out
 thesis.run.xml
 thesis.toc
+thesis.lot
 thesis-blx.bib
 *.bcf
 *.lof
