@@ -1,4 +1,220 @@
-\section{Section 2}
-\label{sec:chapter_5_b_section_2}
+\section{Collision Detection}
+\label{sec:chapter_navigazione_scena_collision_detec}
 
-In this section...
+Per collision detection si intende il problema di determinare l’intersezione tra due o più oggetti. 
+\\
+In particolare è necessario determinare quando e dove i due oggetti sono stati intersecati stabilendo in quale momento ed in quale punto, durante il movimento, la collisione è avvenuta.
+\\
+La collision detection viene utilizzata in varie applicazioni come videogiochi, simulazioni basate sulla fisica (come le animazioni grafiche) e robotica.
+\\
+In questo lavoro di tesi è stata utilizzata nel navigatore per fornire all’utente l’illusione di aver creato una scena solida.
+\\
+La collision detection viene infatti attivata quando vengono abilitati i controlli in prima persona e permette durante la navigazione della scena di simulare il comportamento reale di una persona che cammina dentro un appartamento.
+\\
+La gestione delle collisioni permette all’osservatore virtuale pilotato dall’utente di saltare e, quando possibile, salire o scendere (es: salire le scale). Inoltre ha permesso di bloccare i movimenti di navigazione nel caso di attraversamento di oggetti o muri.
+\\
+L’algoritmo che permette le collisioni incide pesantemente sulle performance real-time.
+Questi algoritmi effettuano normalmente effettuano un enorme quantitativo di query e calcoli delle collisioni per ogni frame. 
+\\
+Questi calcoli si aggiungono a quelli già effettuati dal rendering comportando un incremento del carico di lavoro della CPU con conseguente diminuzione degli fps generali. Un algoritmo di questo tipo può infatti facilmente diventare un collo di bottiglia anche con un basso numero di oggetti da renderizzare.
+\\
+Se infatti all’interno di una scena sono presenti n oggetti in cui ogni oggetto può potenzialmente collidere con gli altri, è necessario effettuare il test di collisione tra ogni coppia di oggetti presenti. 
+\\
+Si ottiene in questo modo un algoritmo di complessità quadratica  dipendente dal numero di oggetti nella scena:
+
+\begin{equation}
+(n - 1) + (n - 2) ... + 1 = \frac{n(n - 1)}{2} = \mathcal{O}^2
+\end{equation}
+
+Come intuibile, effettuare il test su ogni coppia risulta impraticabile in ambienti browser in quanto rallenterebbe troppo il servizio di navigazione. 
+\\
+In questo lavoro di tesi è stato quindi essenziale l’ implementazione di un algoritmo che permettesse di diminuire il numero di test di collisione da effettuare, in maniera tale da risultare efficiente in applicazioni real-time su web.
+\\
+Per la creazione dell’algoritmo è stato necessario analizzare il contesto preso in esame da questo elaborato.
+La navigazione in prima persona viene effettuata su una scena su cui è stato applicato il processo di bake e quindi una scena statica. Siccome la scena risulta immodificabile nel tempo, è impossibile che gli oggetti presenti in essa possano collidere in quanto immobili.
+Solamente l’osservatore virtuale si muove all’interno della scena e quindi è l’unico che può collidere con l’ambiente.
+\\
+Di fatto quindi risulta inutile effettuare il test di collisione per ogni coppia di oggetti presenti nella scena, per questo viene effettuato per ogni coppia (osservatore, oggetto x), dove x= 1...n.
+\\
+Questo ha permesso di velocizzare l’algoritmo, permettendo di far scendere la complessità da quadratica a lineare.
+\\
+Viene inoltre ottimizzato ulteriormente l’algoritmo di collisione effettuando una separazione della collisione in due fasi: una fase generale (\texttt{broad phase}) ed una fase ristretta (\texttt{narrow phases}).
+\\
+La fase generale identifica dei piccoli gruppi di oggetti che potrebbero collidere e esclude velocemente quelli che non potrebbero.
+\\
+La fase ristretta effettua il test di collisione solamente sulle coppie dei piccoli gruppi identificati nella fase precedente.
+\\
+Questa strategia dividi e conquista ha permesso di ottenere un enorme miglioramento delle prestazioni dell’algoritmo e dell’applicazione navigatore in generale. Queste due fasi saranno dettagliate nei due paragrafi seguenti.
+
+\subsection{Fase generale}
+La fase generale dell’algoritmo di collision detection permette di individuare le coppie di oggetti rigidi che potenzialmente potrebbero collidere e di escludere quelle che certamente non potrebbero.
+\\
+In questa fase viene inizialmente effettuato un partizionamento dello spazio in dei volumi di delimitazione. Il partizionamento dello spazio permette di raggruppare ed individuare insiemi di oggetti con una elevata probabilità di collidere.
+\\
+In particolare i volumi di delimitazione rappresentano dei volumi chiusi che contengono completamente uno o più oggetti. Essi permettono una efficiente gestione dei test di collisione in quanto la maggior parte delle operazioni geometriche vengono effettuate su volumi costituiti da semplici geometrie.
+\\
+Effettuare infatti un test di collisione direttamente sugli oggetti, contenuti nei volumi, risulta particolarmente inefficiente in quanto potrebbero essere costituiti da geometrie estremamente complesse.
+\\
+Esistono differenti tipi di volumi di delimitazione e la scelta di uno rispetto ad un altro è determinato da differenti fattori come:
+\begin{itemize}
+\item Il costo di computazione del volume di delimitazione dell’oggetto.
+\item Il costo di aggiornamento del volume per gli oggetti in movimento.
+\item Il costo nella determinazione dell’intersezione di collisione.
+\item La precisione desiderata dal test di intersezione.
+\end{itemize}
+In particolare la precisione del test di intersezione è dipendente dalla quantità di spazio in eccesso, nel volume, non associato all’oggetto; chiamato spazio vuoto.
+I volumi di delimitazione che generano meno spazio vuoto solitamente sono computazionalmente più onerosi da calcolare.
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
+ \caption[Bounding Box e Bounding Circle.]{Bounding Box e Bounding Circle.}
+ \label{fig:navigazione_scena_navigator_oculus}
+\end{figure}
+Per il presente lavoro di tesi è stato necessario utilizzare un tipo di volume di delimitazione che permettesse di ottenere un ottimo compromesso tra velocità di computazione e precisione di approssimazione dell’ oggetto contenuto.
+\\
+Nell’immagine è possibile osservare due efficienti tipologie di volumi di delimitazione che sono stati oggetto di studio al fine di valutare quello che meglio si addicesse per questo elaborato: \texttt{Bounding Box} e \texttt{Bounding Circle}.
+\\
+Nell’esempio la Bounding Box approssima meglio l’oggetto, non sempre però questo si verifica. 
+Oggetti curvi infatti sono solitamente delimitati meglio da una Bounding Circle, mentre oggetti cubici vengono approssimati meglio da una Bounding Box.
+\\
+Per questo lavoro di tesi gli oggetti da inserire rappresentano per lo più mobili di arredamento, e solitamente questi difficilmente hanno una forma curvilinea. Gli studi effettuati hanno infatti permesso di verificare come uno o più oggetti di questo tipo fossero solitamente meglio delimitati da una Bounding Box.
+\\
+Inoltre le Bounding Box risultano più efficienti da calcolare rispetto alle Bounding Circle, quindi le prime sono state utilizzate durante la fase generale.
+Inoltre esitono due differenti modalità di utilizzo delle bounding box: le \texttt{Axis-Aligned Bounding Box} (AABB) e le \texttt{Oriented Bounding Box} (OBB).
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
+ \caption[AABB e OBB.]{Le Axis-Aligned Bounding Box e le Oriented Bounding Circle.}
+ \label{fig:navigazione_scena_navigator_oculus}
+\end{figure}
+La AABB rappresenta una scatola rettangolare con sei facce dove ogni normale di faccia è sempre parallela con gli assi di riferimento del sistema di coordinate.
+\\
+Il vantaggio nell’utilizzo di questa notazione rappresenta la velocità di calcolo del volume di delimitazione. Esso viene infatti calcolato/rappresentato tramite due coordinate (x,y,z).
+\\
+La prima rappresenta il valore minimo di coordinata su ogni asse e cioè il minimo valore di x, y e z tra tutti i vertici dell’oggetto. La seconda rappresenta invece il valore massimo su ogni asse x,y,z tra tutti i vertici.
+\\
+Ulteriore vantaggio è la velocità di valutazione della collisione tra due AABB mediante un semplice controllo di sovrapposizione tra le due coordinate della prima Bounding Box e le due coordinate della seconda su ognuno dei tre assi.
+\\
+
+La OBB rappresenta, esattamente come la AABB, una scatola rettangolare con sei facce ma con un orientamento arbitrario.
+\\
+L’utilizzo di volumi OBB comporta notevoli miglioramenti nella delimitazione degli oggetti ruotati, portando alla generazione di meno spazio vuoto.
+\\
+A differenza delle AABB, la creazione di queste ed il test per l’intersezione risulta però estremamente complicato dal punto di vista delle operazioni algebriche da effettuare in quanto deve tenere conto dell’orientamento delle facce nelle tre dimensioni.
+Nel presente lavoro di tesi è stato quindi utilizzato un volume di collisione di tipo AABB poco preciso ma molto performante.
+\\
+La precisione infatti non risulta importante durante la fase generale in quanto questo test preliminare permette solamente di individuare gli oggetti più probabile per la collisione ed a scartare dal calcolo di intersezione gli oggetti che sicuramente non collidono. Sarà poi la fase ristretta ad effettuare il calcolo più preciso, ma anche più dispendioso computazionalmente, sul sottoinsieme ottenuto dalla fase generale.
+\\
+La fase generale si basa sulla supposizione che se due volumi di delimitazione non collidono, allora anche gli oggetti al loro interno non possono collidere.
+\\
+Una metodologia comune per ottenere i volumi di delimitazione di oggetti complessi è quello di partizionare la scena in una rappresentazione gerarchica ad albero.
+\\
+Un albero in cui la radice rappresenta tutti gli oggetti presenti all’interno della scena ed ogni nodo contiene una piccola porzione di oggetti presenti in essa.
+\\
+Maggiore è il livello di profondità minore è la porzione di scena presa in considerazione.
+La gerarchia generalmente viene modellata manualmente da un designer che conosce la scena. In questo lavoro di tesi era però fondamentale automatizzare il processo di generazione della gerarchia, rendendolo totalmente trasparente all’utente.
+\\
+Inoltre risultava essenziale che il processo di partizionamento potesse funzionare per ogni scena inserita all’interno del navigatore, indipendentemente da come essa fosse composta.
+\\
+
+Nella fase di partizionamento, viene suddiviso lo spazio 3D della scena in volumi di delimitazione sempre più piccoli. Questi volumi vengono organizzati secondo una gerarchia ad albero chiamata \texttt{Bounding Volume Hierarchy} (BVH) dove nelle foglie vengono inseriti gli oggetti presenti nella scena. 
+Questi oggetti vengono poi raggruppati in piccoli insiemi diversi e racchiusi dentro un volume di delimitazione. Questi volumi sono a loro volta raggruppati in insiemi e racchiusi in volumi più grandi, questo procedimento continua in maniera ricorsiva fino a quando in cima all’albero non viene creata un volume che racchiude tutti gli oggetti presenti.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/partiz_tree.png}\hfill
+ \caption[Bounding Volume Hierarchy.]{Bounding Volume Hierarchy.}
+ \label{fig:navigazione_scena_partiz_tree}
+\end{figure}
+
+L’albero creato permette di raggruppare all’interno di bounding box sottoinsiemi di oggetti che potrebbero collidere.
+\\
+Ad esempio l’oggetto E potrebbe collidere con l’oggetto B, mentre è impossibile che possa collidere con l’oggetto A.
+\\
+L’algoritmo infatti individua che il padre della foglia dell’albero B è differente dal padre della foglia A, quindi è improbabile che possano collidere.
+Questa fase permette quindi di scremare in maniera veloce tutte le collisioni che risultano improbabili.
+\\
+Nel presente lavoro di tesi è stato utilizzato questo albero per permettere un efficiente algoritmo di collisioni in una scena statica.
+Nel contesto preso in esame, la scena infatti risulta immutabile nel tempo: sono totalmente assenti oggetti animati e quindi è impossibile che gli oggetti possano collidere tra loro.
+Durante la navigazione in prima persona però l’osservatore è libero di muoversi all’interno dell’ambiente creato in Three.js.
+\\
+L’osservatore viene rappresentato come un oggetto inserito all’interno della scena a cui viene assegnato una propria BoundingBox di tipo AABB. 
+Questo oggetto siccome in movimento può collidere con gli oggetti statici presenti nella scena.
+Il calcolo di queste collisioni è essenziale ai fini di ricreare una passeggiata virtuale all’interno della scena, permettendo di camminare, saltare, salire e scendere scale. 
+\\
+Inoltre ha permesso di bloccare i movimenti di navigazione nel caso di attraversamento di oggetti o muri.
+Il fatto che la scena sia statica permette di creare la gerarchia della scena una sola volta, in particolare solo quando viene avviata la navigazione in prima persona.
+Calcolare più volte la gerarchia appesantirebbe inutilmente il ciclo di render in quanto l’albero ottenuto dai calcoli risulterebbe sempre identico.
+\\
+L’unico oggetto che varia è l’osservatore in quanto direttamente pilotato dall’utilizzatore del navigatore.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/partiz_oss.jpg}\hfill
+ \caption[Il partizionamento nello spazio.]{Il partizionamento nello spazio.}
+ \label{fig:navigazione_scena_partiz_oss}
+\end{figure}
+
+Nel dettaglio la scena creata in Three.js viene partizionata in volumi di delimitazione contenenti uno o più oggetti.
+\\
+Una volta calcolata la gerarchia viene valutato quale volume di delimitazione, tra quelli calcolati durante il partizionamento, contenga la  bounding box dell’oggetto che rappresenta l’osservatore.
+\\
+Questo calcolo viene effetuato ad ogni ciclo di render ma risulta estremamente veloce in quanto esegue un semplice test di appartenenza, non comportando quindi rallentamenti durante la renderizzazione.
+\\
+Una volta identificato il volume di delimitazione, gli oggetti presenti all’interno di esso vengono passati alla fase successiva. Tra tutti gli oggetti nella scena, quelli presenti all’interno del volume calcolato sono quelli hanno hanno maggiore probabilità di collidere con l’osservatore.
+\\
+Nella fase successiva viene valutato in maniera estremamente precisa se effettivamente la collisione è avvenuta.
+\\
+Nell’esempio visibile in figura, quando l’osservatore si trova all’interno della bounding box colorata di verde può collidere solamente con i quattro oggetti A,B, C e D. Quindi solamente questi oggetti verrano valutati nella fase successiva mentre gli altri saranno scartati.
+Quando invece si trova nella bounding box blu, gli oggetti che passano nella fase successiva sono E, F e G, mentre gli altri sono scartati.
+\\
+Questo algoritmo permette di ottenere ottime prestazione quando la scena è costituita da un alto numero di oggetti, come le scene di interni prese in esame in questo elaborato.
+Nel presente lavoro di tesi infatti ha permesso, in scene costituite da centinaia di oggetti, di valutare ad ogni ciclo di render solamente un manciata di oggetti e di ignorare completamente gli altri in quanto troppo lontani per potere collidere con l’osservatore virtuale.
+\\
+I dettagli implementati di questa soluzione veranno esaminati nel paragrago X.
+
+\subsection{Fase ristretta}
+
+La fase ristretta ha il compito di calcolare in maniera esatta la collisione tra due o più oggetti. Il sottoinsieme di oggetti che potenzialmente potrebbero collidere, calcolato durante la fase generale, viene utilizzato in questa fase  al fine di valutare se effettivamente la collisione è avvenuta o meno.
+\\
+Inoltre, durante questa fase, viene calcolato il punto di contatto in cui la collisione è avvenuta, permettendo la gestione di differenti casi di collisione.
+\\
+Nel dettaglio, per calcolare con estrema precisione delle collisioni avvenute tra l’osservatore con la scena statica, è stato utilizzato un algoritmo di \texttt{ray casting} specifico per la gestioni delle collisioni.
+Questo tipo di algoritmo risulta particolarmente efficiente e permette di migliorare notevolmente le prestazioni di rendering durante la navigazione.
+\\
+Durante l’algoritmo di ray casting vengono lanciati dei raggi, rappresentati tramite vettori, a partire dall’origine dell’Object 3D (l’osservatore) verso differenti direzioni nello spazio.
+\\
+Se il raggio lanciato colpisce un oggetto e quest’ultimo si trova ad una distanza ravvicinata (all’interno di un intervallo specifico di collisione) dall’osservatore, allora i due collidono.
+In questo lavoro di tesi, l’algoritmo di Ray Tracing è stato opportunamente implementato e parametrizzato al fine di ottenere un ottimo compromesso tra velocità di navigazione in prima persona  e precisione nel riconoscimento delle collisioni.
+\\
+Nel dettaglio la tecnica del Ray Tracing se non gestita correttamente può rallentare le prestazioni di rendering, rendendo impossibile l’utilizzo del navigatore in ambiente web, anche su hardware poco performanti.
+\\
+In particolare durante il lavoro di tesi sono stati inizialmente individuati i fattori che maggiormente incidessero sulle performance dell’algoritmo, e successivamente è stata creata una metodologia efficiente e precisa per la collision detection.
+I fattori che inficiano maggiormente sono:
+\begin{itemize}
+\item Il numero dei raggi lanciati nella scena ad ogni ciclo di render.
+\item Il punto di partenza e la direzione in cui vengono lanciati i raggi.
+\item Il numero di oggetti da valutare per ogni raggio lanciato.
+\item La distanza minima a cui deve trovarsi il primo oggetto intersecato dal raggio rispetto all’osservatore per permettere l’identificazione della collisione.
+\item La forma dell’oggetto che viene intersecato dal raggio.
+\end{itemize}
+
+Ogni fattore sopra descritto è stato studiato approfonditamente ed accompagnato da varie sperimentazioni su scene di media e grandi dimensioni.
+\\
+Nel dettaglio, per la realizzazione di questo algoritmo, si è seguito un approccio iterativo incrementale guidato dai test, che è passato attraverso varie iterazioni.
+Scegliere il numero di raggi da lanciare a partire dall’origine dell’osservatore è stato fondamentale. Risulta infatti essenziale lanciare un raggio in ogni direzione in cui l’osservatore è in grado di muoversi.
+\\
+Questo permette di bloccare la direzione di movimento dell’osservatore in cui è presente l’ostacolo con cui esso collide.
+\\
+La collisione avviene solamente se il raggio colpisce l’oggetto, ed il punto intersecato si trova ad una distanza dall’osservatore in un intervallo compreso tra 0 e 20 cm. 
+Questo intervallo di tolleranza è stato ottenuto in seguito a sperimentazioni ed ha permesso di il riconoscimento di ostacoli con elevata precisioni.
+\\
+Nel dettaglio l’osservatore, esattamente come una persona reale, può muoversi in 8 direzioni: avanti, indietro, a destra, a sinistra e le 4 direzione oblique.
+\\
+Ad ogni direzione di movimento viene associato un diverso vettore nella stessa direzione.
+Per semplicità di trattazione, viene ora supposto che i vettori lanciati siano perpendicolari all’osservatore e paralleli al piano in cui si muove. Verrà spiegato successivamente come questo non sia però sufficiente per la creazione di un algoritmo preciso di collisione.
+
+
+
+
+
