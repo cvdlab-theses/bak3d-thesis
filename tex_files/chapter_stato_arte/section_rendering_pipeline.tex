@@ -9,14 +9,13 @@ Ognuna di queste fasi è essa stessa una pipeline i cui passi possono essere par
 A differenza delle vecchie pipeline di rendering, dove tutto il processo viene eseguito sulla CPU, l’odierna fruibilità di un hardware dedicato all’accelerazione grafica consente di spostare su di esso l’esecuzione di alcuni passi. 
 \\
 Infatti, mentre lo stadio Applicazione è sviluppato interamente in software ed eseguito sulla CPU, gli stadi Geometria e Rasterizzazione sono eseguiti sull’unita di processamento grafico (GPU).
-\\
+\newpage
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_pipeline.png}\hfill
  \caption[Pipeline di rendering]{Pipeline di rendering}
  \label{fig:stato_arte_pipeline}
 \end{figure}
-\\
 Il livello applicazione è quello più flessibile; infatti lo sviluppatore ne ha pieno controllo e ne può modificare l’implementazione. I cambiamenti effettuati su questo livello possono incidere sulle performance dei livelli successivi.
 \\
 Questa prima fase ha due compiti fondamentali: gestire gli input che possono provenire da più sorgenti, come tastiera o mouse, ed inviare allo step successivo la posizione della camera, le informazioni sulle luci presenti nella scena e le primitive di rendering.
@@ -123,7 +122,7 @@ Quando una primitiva deve essere renderizzata su un determinato pixel, il valore
 \end{itemize}
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1.0\linewidth]{images/chapter_stato_arte/stato_arte_z_buffer.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_stato_arte/stato_arte_z_buffer.png}\hfill
  \caption[Z-buffer]{Z-buffer}
  \label{fig:stato_arte_z_buffer}
 \end{figure}
@@ -138,20 +137,19 @@ Quando ad esempio viene osservato un filtro trasparente rosso di fronte ad un og
 Disegnare prima l’oggetto blu, più distante, memorizzandone nei rispettivi z-buffer e pixel-buffer i corrispondenti dati di distanza e colore, permette quando viene disegnato anche il filtro rosso di prelevare queste informazioni dai buffer al fine di miscelare i due colori.
 \\
 Il colore blu del primo oggetto viene infatti combinato con il rosso del secondo oggetto in base alla trasparenza di quest’ultimo.
-\\
+\newpage
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_stato_arte/stato_arte_zbuffer_1.jpg}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_stato_arte/stato_arte_zbuffer_1.jpg}\hfill
  \caption[Z-buffer: ordine di renderizzazione corretto]{Z-buffer: scenario in cui l'ordine di renderizzazione è dall'oggetto più distante, a quello più vicino}
  \label{fig:stato_arte_zbuffer_1}
 \end{figure}
-\\
 Se invece questo ordine fosse invertito e quindi il filtro rosso venisse renderizzato prima dell’oggetto blu, sarebbe impossibile miscelare i due colori.
 Questo perchè l’algoritmo di z-buffer considererebbe il secondo oggetto renderizzato, quello blu, nascosto dal filtro rosso in quanto più distante dall’ occhio. Le informazioni dell’ oggetto blu verrebbero quindi scartate perchè inutili, non permettendo così la combinazione dei due colori.
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_stato_arte/stato_arte_zbuffer_2.jpg}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_stato_arte/stato_arte_zbuffer_2.jpg}\hfill
  \caption[Z-buffer: ordine di renderizzazione errato]{Z-buffer: scenario in cui l'ordine di renderizzazione è l'inverso di quello mostrato in figura \ref{fig:stato_arte_zbuffer_1}}
  \label{fig:stato_arte_zbuffer_2}
 \end{figure}
