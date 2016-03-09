@@ -181,7 +181,7 @@ Descrizione però fondamentale per questo elaborato al fine di mantenere inalter
 \\
 La gerarchia permette alle persone che utilizzano il sistema creato in questo lavoro di tesi di abbracciare un approccio iterativo incrementale. infatti se venisse salvata una scena nel formato JSON 3 e poi quest’ultimo venisse caricato, tutta la gerarchia associata agli oggetti andrebbe persa. Inconveniente non voluto in quanto la scena salvata deve risultare assolutamente identica a come è stata creata.
 \\
-Infine il parser del JSON 3, descritto in [riferim], risulta non solo molto complesso ma anche poco modificabile. La modificabilità del parser in questo lavoro di tesi risulta però essenziale per inserire nuove informazioni all’interno del file .json. Informazioni che permettono sia di aggiungere parametri del linguaggio Three.js non ancora inseriti nelllo standard JSON (lo standard è infatti incompleto) sia di aggiungere caratteristiche completamente nuove.
+Infine il parser del JSON 3, risulta non solo molto complesso ma anche poco modificabile. La modificabilità del parser in questo lavoro di tesi risulta però essenziale per inserire nuove informazioni all’interno del file .json. Informazioni che permettono sia di aggiungere parametri del linguaggio Three.js non ancora inseriti nelllo standard JSON (lo standard è infatti incompleto) sia di aggiungere caratteristiche completamente nuove.
 \\
 Quindi la complessità di questo formato, la totale assenza di gerarchie e la bassa modificabilità del parser hanno fatto propendere la scelta verso il formato JSON 4.
 
@@ -360,7 +360,7 @@ Inoltre la maggiore compressione del JSON 3 non comporta grandi benefici in term
 Il JSON 4 quindi è risultato il formato ideale per effettuare lo scambio dei dati. Esso però, esattamente come il formato JSON 3 è lungi dall’ essere completo. 
 Molte delle strutture dati presenti in Three.js ancora non hanno una descrizione standardizzata sulla controparte JSON, non permettendo quindi lo scambio di alcuni dati che in questo lavoro di tesi era fondamentale trasferire.
 \\
-Fortunatamente però il parser del JSON 4, descritto in [riferim], risulta di semplice comprensione e modificabile. Questa caratteristica ha permesso di aggiungere nuovi parametri, definiti appositamente per questo lavoro di tesi, all’interno del json al fine di descrivere le strutture dati mancanti.
+Fortunatamente però il parser del JSON 4, risulta di semplice comprensione e modificabile. Questa caratteristica ha permesso di aggiungere nuovi parametri, definiti appositamente per questo lavoro di tesi, all’interno del json al fine di descrivere le strutture dati mancanti.
 \\
 Le nuove coppie aggiunte oltre a completare una mancanza dello standard JSON 4, permettendo la mappatura di strutture dati esistenti in Three.js, hanno permesso di descrivere nel JSON le nuove funzionalità uniche dell’ editor creato durante questo lavoro di tesi; funzionalità che l’editor normale Three.js non possiede.
 

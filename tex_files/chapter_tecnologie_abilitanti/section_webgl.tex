@@ -1,6 +1,6 @@
 \section{WebGL}
 \label{sec:chapter_tecnologie_abilitanti_webgl}
-WebGL (Web Graphics Library) è una API Javascript che permette il rendering interattivo su browser web senza il bisogno di installare plug-in aggiuntivi.
+WebGL (Web Graphics Library) è una API Javascript che permette il rendering interattivo su browser web senza il bisogno di installare plug-in aggiuntivi. \cite{webgl1,webgl2}
 Esso è integrato completamente come standard web in tutti i browser che permettono l’utilizzo dell’ accellerazione GPU per il rendering di immagini 2D e 3D.
 Risulta compatibile con la maggior parte dei moderni browser disponibili sul mercato (figura: \ref{fig:stato_arte_webgl_compat}).
 \\
@@ -11,14 +11,14 @@ Risulta compatibile con la maggior parte dei moderni browser disponibili sul mer
  \label{fig:stato_arte_webgl_compat}
 \end{figure}
 \\
-WebGL si basa sulle \emph{OpengGL ES 2.0}, librerie grafiche OpenGL ottimizzate per dispositivi mobili, che forniscono un’ interfaccia di programmazione per la grafica 3D. Utilizza l’ elemento canvas HTML5, che viene acceduto attraverso il DOM (Document Object Model), per renderizzare l’ immagine desiderata.
+WebGL si basa sulle \emph{OpengGL ES 2.0}, librerie grafiche OpenGL ottimizzate per dispositivi mobili, che forniscono un’ interfaccia di programmazione per la grafica 3D. Utilizza l’ elemento canvas HTML5, che viene acceduto attraverso il DOM (Document Object Model), per renderizzare l’ immagine desiderata. \cite{webgl3}
 \\
 Le API WebGL sono di basso livello e funzionano intuitivamente come una sequenza di messaggi da inviare all’ oggetto gl che rappresenta un contesto WebGL costruito su una canvas.
 \begin{lstlisting}[language=JavaScript]
 gl=document.getElementById("canvas_id").getContext("experimental-webgl");
 \end{lstlisting}
 Analizzare la pipeline di rendering di WebGL equivale praticamente ad analizzare la pipeline di OpenGL ES 2.0. Grazie a WebGL il programmatore non deve preoccuparsi dell’ intero processo di rendering in quanto alcune delle fasi più complesse vengono gestite dalla libreria.
-La pipeline di WebGL è implementata per mezzo di Shader programmabili seguendo le specifiche di OpenGL ES 2.0 e di GLSL. Quest’ultimo è un linguaggio di programmazione ad alto livello per la gestione delle unità di shader di una GPU.
+La pipeline di WebGL è implementata per mezzo di Shader programmabili seguendo le specifiche di OpenGL ES 2.0 e di GLSL. Quest’ultimo è un linguaggio di programmazione ad alto livello per la gestione delle unità di shader di una GPU. \cite{webgl5,webgl6}
 \\
 Per shader si intende un’ insieme di istruzioni software che permettono di definire particolari operazioni ed effetti, come colorazione ed illuminazione, per il rendering degli elementi 3D della scena.
 \\
@@ -31,14 +31,14 @@ In figura \ref{fig:tecnologie_abilitanti_webglrender}  è possibile osservare la
  \label{fig:tecnologie_abilitanti_webglrender}
 \end{figure}
 \\
-Le specifiche WebGL richiedono che lo sviluppatore provveda a fornire alla GPU due shader chiamati rispettivamente Vertex Shader e Fragment Shader:
+Le specifiche WebGL richiedono che lo sviluppatore provveda a fornire alla GPU due shader chiamati rispettivamente Vertex Shader e Fragment Shader: \cite{webgl8}
 \begin{itemize}
 \item Il Vertex Shader è un metodo programmabile il cui compito è quello di restituire, per ogni tripletta di coordinate che identificano un vertice nello spazio, una coppia di coordinate che identifichino lo stesso vertice sul piano bidimensionale dello schermo (la canvas). Tale operazione prende in considerazione le informazioni come il punto di vista e l’angolazione dalla quale viene osservata la scena.
 \item Il Fragment Shader è un metodo programmabile il cui compito è quello di definire il colore di ognuno dei pixel della canvas sulla quale giace la rappresentazione bidimensionale della scena calcolata con le informazione del Vertex Shader. Tramite esso è possibile implementare effetti d’ illuminazione, effettuare il texture mapping, applicare le ombre oppure effetti come la rifrazione, riflessione o il bump mapping.
 \end{itemize}
 WebGL utilizza un dialetto del linguaggio di programmazione C chiamato GLSL per la definizione degli shaders. Questo linguaggio è stato appositamente realizzato per svolgere questo compito e per essere facilmente integrato in una pagina web.
 \\
-Un esempio di fragment shader è il seguente:
+Un esempio di fragment shader è il seguente: \cite{webgl7}
 
 
 \begin{lstlisting}[language=html]

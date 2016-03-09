@@ -2,7 +2,7 @@
 \label{sec:chapter_stato_arte_ray_tracing}
 
 In computer grafica, ray tracing è una tecnica di rendering che permette di generare un’ immagine tracciando la direzione della luce attraverso ogni pixel della scena da renderizzare.
-Essa viene utilizzata per determinare quali oggetti sono visibili dall’ osservatore, ovvero la camera, e quali di questi sono illuminati o in ombra.
+Essa viene utilizzata per determinare quali oggetti sono visibili dall’ osservatore, ovvero la camera, e quali di questi sono illuminati o in ombra. \cite{rayt1}
 \\
 Il meccanismo base è semplice, vengono lanciati dei raggi (view ray) da ogni pixel del piano immagine, che rappresenta l’immagine a due dimensioni dell’ ambiente osservato dalla camera, verso la scena.
 \\ 
@@ -35,4 +35,4 @@ Se l’ oggetto intersecato è solido e trasparente, un nuovo raggio può essere
 \end{figure}
 \\
 Il problema principale è il fatto che, oltre alle sorgenti luce, ogni singolo oggetto visibile ad occhio nudo riflette luce ed il 
-ray tracing calcola solamente le luci dirette alle superfici mentre quelle indirette vengono completamente ignorate. L’ algoritmo di path tracing risolve questa limitazione.
+ray tracing calcola solamente le luci dirette alle superfici mentre quelle indirette vengono completamente ignorate. L’ algoritmo di path tracing risolve questa limitazione. \cite{path_ray}

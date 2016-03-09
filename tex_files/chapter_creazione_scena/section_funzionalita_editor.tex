@@ -99,7 +99,7 @@ L’operazione di sottomissione della richiesta viene resa completamente traspar
 Nel momento in l’utente seleziona il modello dal catalogo, l’editor si occupera di invocare il metodo \texttt{download\_obj}, passando come input l’identificativo del modello associato all’immagine selezionata. Tale metodo si occuperà quindi di sottomettere la richiesta al catalogo, e una volta scaricato il modello con la relativa texture provvederà ad aggiungerlo alla scena. 
 \\
 \\
-Per la sottomissione di una richiesta a risorsa remota si è scelto di utilizzare le API \emph{Fetch} . Queste API espongono un’interfaccia per il fetch delle richieste attraverso la rete.
+Per la sottomissione di una richiesta a risorsa remota si è scelto di utilizzare le API \emph{Fetch} \cite{fetchapi} . Queste API espongono un’interfaccia per il fetch delle richieste attraverso la rete.
 \\ 
 La sottomissione di una richiesta avviene mediante il metodo \texttt{fetch()} , il quale prende come argomento il path alla risorsa dalla quale si vuole scaricare il modello. Il path consiste nell’URL alla risorsa del catalogo, concatenata all’id del modello che si intende scaricare.
 \\

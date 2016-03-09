@@ -36,7 +36,7 @@ Per diversificare le azioni in base alle richieste HTTP, il server è controllat
 All’arrivo di una richiesta HTTP il server confronta metodo e URL della richiesta con quelli presenti nella tabella di routing; se c’è una corrispondenza, allora il server invoca la pipeline di Middleware corrispondente. 
 \\
 Il Baking Service è realizzato con la consapevolezza che l’attività di modifica, aggiunta o rimozione di middleware può essere piuttosto frequente, pertanto si è cercato di individuare un framework che semplificasse questo tipo di operazioni. La soluzione è stata quella di realizzare un server HTTP basato su NodeJS. 
-L’ambiente NodeJS, mostrato nel paragrafo \ref{sec:chapter_tecnologie_abilitanti_nodejs}, consente la realizzazione di applicazioni lato server in poche righe di codice, grazie a framework come \texttt{ExpressJS}. Questo framework è lo standard de facto per la realizzazione di applicazioni server-side in ambiente Node, ed offre tutta una serie di strumenti per la realizzazione della routing table, e per la realizzazione dei middleware. 
+L’ambiente NodeJS, mostrato nel paragrafo \ref{sec:chapter_tecnologie_abilitanti_nodejs}, consente la realizzazione di applicazioni lato server in poche righe di codice, grazie a framework come \texttt{ExpressJS} \cite{node5} . Questo framework è lo standard de facto per la realizzazione di applicazioni server-side in ambiente Node, ed offre tutta una serie di strumenti per la realizzazione della routing table, e per la realizzazione dei middleware. 
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_baking_service/ba_se_ex_js.png}\hfill

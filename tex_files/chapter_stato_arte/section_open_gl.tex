@@ -1,7 +1,7 @@
 \section{Open GL}
 \label{sec:chapter_stato_arte_open_gl}
 
-OpenGL è una API, sviluppata dal Khronos Group nel 1992, per il controllo della GPU. L’obiettivo di OpenGL è quello di avere una API uniforme e multipiattaforma, indipendente dal linguaggio, che permette al programmatore di interfacciarsi con l’hardware di accelerazione grafica del sistema, senza occuparsi di come funziona l’hardware e il software sottostanti.
+OpenGL è una API, sviluppata dal Khronos Group nel 1992, per il controllo della GPU. L’obiettivo di OpenGL è quello di avere una API uniforme e multipiattaforma, indipendente dal linguaggio, che permette al programmatore di interfacciarsi con l’hardware di accelerazione grafica del sistema, senza occuparsi di come funziona l’hardware e il software sottostanti. \cite{open11}
 \\
 Inoltre le sue funzionalità e comandi possono essere richiamati da ambienti di sviluppo basati su linguaggi molto differenti fra loro, quali Ada, C, C++, Fortran, Python, Perl e Java, fornendo inoltre una totale indipendenza dai protocolli e dalle tipologie di rete. 
 Normalmente OpenGL viene fornito dai drivers della scheda video.
@@ -9,7 +9,7 @@ Normalmente OpenGL viene fornito dai drivers della scheda video.
 L’API consiste in circa 150 comandi per la definizione di oggetti e per la creazione di applicazioni 3D interattive. Per essere indipendente dalla piattaforma, OpenGL non possiede alcun comando per realizzare operazioni su finestra, o per ricevere input dall’utente.
 \\ 
 A questo ci pensa il software con cui l’utente interagisce mediante GUI, il quale si occuperà di tradurre i comandi utente in direttive OpenGL per controllare l’hardware grafico sottostante. 
-L’approccio di OpenGL con le strutture geometriche che si vogliono renderizzare è molto a basso livello; ogni modello è scomponibile in entità geometriche più semplici, dette primitive.
+L’approccio di OpenGL con le strutture geometriche che si vogliono renderizzare è molto a basso livello \cite{open13} ; ogni modello è scomponibile in entità geometriche più semplici, dette primitive. 
 \\
 Per primitive si intendono punti, linee, poligoni e immagini, ed ognuna di queste è generata considerando:
 \begin{itemize}
@@ -80,7 +80,7 @@ A questo punto inizia il processo di rasterizzazione, in cui i dati sui pixel e 
  \label{fig:stato_arte_raster}
 \end{figure}
 
-Ogni frammento con coordinate di finestra $(x_w,y_w)$ prodotto dalla rasterizzazione, modificherà il pixel nel framebuffer che si trova nella stessa posizione in base a determinati parametri e condizioni. Questi sono valutati attraverso una serie di operazioni sui frammenti, mostrate in figura \ref{fig:stato_arte_frag_op}
+Ogni frammento con coordinate di finestra $(x_w,y_w)$ prodotto dalla rasterizzazione, modificherà il pixel nel framebuffer che si trova nella stessa posizione in base a determinati parametri e condizioni \cite{open12} . Questi sono valutati attraverso una serie di operazioni sui frammenti, mostrate in figura \ref{fig:stato_arte_frag_op}
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.9\linewidth]{images/chapter_stato_arte/stato_arte_frag_op.png}\hfill

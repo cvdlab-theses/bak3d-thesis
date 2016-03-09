@@ -34,14 +34,6 @@ Nel contesto del presente elaborato di tesi il software di grafica 3D è complet
 Generalmente le informazioni luminose calcolate offline vengono memorizzate in una struttura dati separata dalla diffuse texture, in modo da poter usare l’una indipendentemente dall’altra, e sfruttare la riusabilità delle diffuse texture.
 \\ 
 Tuttavia allo stato attuale è previsto un unico setup di illuminazione all’interno della scena, anche se la flessibilità del sistema permetterebbe l’installazione di un supporto per diversi setup di illuminazione all’interno della stessa scena, come il ciclo giorno/notte.  Avere per uno stesso appartamento setup di illuminazione diversi è utile specialmente per branche dell’architettura come l’illuminotecnica. Pertanto il fattore riusabilità di una texture, di cui si è fatto cenno nel paragrafo \ref{sec:chapter_stato_arte_lightmap}, diventa superfluo. 
-\\
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1\linewidth]{images/chapter_lrl/lrl_diff_uvmap.png}\hfill
- \caption[Confronto UV Map]{In foto viene mostrata una mappa uv generata automaticamente da Blender (a sinistra), e una mappa uv creata dall'artista del modello (a destra).}
- \label{fig:lrl_diff_uvmap}
-\end{figure}
-\\
 In questo caso ha poco senso mantenere elementi di immagine e di luce in strutture dati separate, e quindi grazie alla sovrapponibilità delle due strutture dati si può ottenere un’unica texture dove in ogni texel i valori RGB della diffuse texture sono moltiplicati per i valori di irradianza memorizzati nei lumel della lightmap. Questa nuova struttura dati viene detta lightmapped texture. 
 \\
 \begin{figure}[htb]
