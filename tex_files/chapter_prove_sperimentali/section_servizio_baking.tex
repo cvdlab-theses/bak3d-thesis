@@ -76,7 +76,10 @@ Questa tipologia di test ha come obiettivo quello di sottomettere al servizio de
 \\
 Il sampling è il parametro più importante per il controllo della qualità di un bake su di una scena 3D; per determinarne il valore è necessario raggiungere dei compromessi tra qualità desiderata e tempo che si è disposti ad attendere prima di ottenere il risultato. 
 \\
-Il range di valori di sampling scelto per i test corrisponde al processamento di  bake valoci ma di bassa qualità, fino al processamento di bake molto lenti ma di qualità elevata. Per la scena si è deciso di realizzare un ambiente di media complessità che contenesse un buon numero di oggetti ed ombre. Come per le misurazioni descritte nel paragrafo \ref{sec:chapter_prove_sperimentali_servizio_baking_vel_obj} , anche per questa attività di test vengono considerati i tempi di baking su due architetture hardware differenti: CPU e CUDA.
+Il range di valori di sampling scelto per i test corrisponde al processamento di  bake valoci ma di bassa qualità, fino al processamento di bake molto lenti ma di qualità elevata.
+\\
+Per la scena si è deciso di realizzare un ambiente di media complessità che contenesse un buon numero di oggetti ed ombre. Come per le misurazioni descritte nel paragrafo \ref{sec:chapter_prove_sperimentali_servizio_baking_vel_obj} , anche per questa attività di test vengono considerati i tempi di baking su due architetture hardware differenti: CPU e CUDA.
+\\
 I tempi di elaborazione delle richieste sono mostrati in tabella \ref{table:per_samp} :
 \newpage
 \begin{table}[]
@@ -131,29 +134,27 @@ Da questo si può intuire che se si volesse generare una rapida anteprima di com
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/sampl1.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_prove_sperimentali/sampl1.png}\hfill
  \caption[Output sampling 1]{Output di un processo di bake con sampling uguale a 1.}
  \label{fig:sampl1}
 \end{figure}
-
-Per un livello qualitativo medio viene ora mostrato in figura \ref{fig:sampl50} il risultato di un bake con 50 sampling. 
 \\
+Per un livello qualitativo medio viene ora mostrato in figura \ref{fig:sampl50} il risultato di un bake con 50 sampling.
 Come è possibile notare il livello di sgranatura degli effetti luminosi è calato sensibilmente, il che implica un’illuminazione generale molto più fedele e un’immagine decisamente più pulita.
-\\
 Nonostante ciò 50 è un valore di sampling non troppo alto, e nel risultato complessivo è ancora presente del rumore. Tuttavia la possibilità di ottenere tale risultato in circa 30 minuti (15 con CUDA) la rende una soluzione accettabile se si vuole giungere a compromessi con i tempi di servizio del sistema.
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/sampl50.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_prove_sperimentali/sampl50.png}\hfill
  \caption[Output sampling 50]{Output di un processo di bake con sampling uguale a 50.}
  \label{fig:sampl50}
 \end{figure}
-
+\\
 In conclusione è possibile notare in figura \ref{fig:sampl300} il risultato del baking con sampling più alto, ossia 300. Il rumore viene quasi completamente attenutato, ottenendo così un ottimo livello qualitativo della scena, a pattò però di attendere un tempo di processamento decisamente più lungo, di circa le 3 ore (1h30m con CUDA).
 \\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/sampl300.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_prove_sperimentali/sampl300.png}\hfill
  \caption[Output sampling 300]{Output di un processo di bake con sampling uguale a 300.}
  \label{fig:sampl300}
 \end{figure}
@@ -170,9 +171,8 @@ La scena è composta da 30 oggetti di comune utilizzo nell’arredamento di inte
 Tali fonti  luminose sono SpotLight con angolo e intensità di irradiazione costante. Per le attività di test sono state sottomesse 6 richieste differenti, con un numero di sorgenti luminose che varia da 1 a 20.
 \\
 Il sampling con cui viene richiesto il bake è costante e pari 50. 
-Per ogni richiesta di bake è stato misurato il tempo di processamento; tutte le misure sono mostrate in tabella \ref{table:per_luci} .
-
-\begin{table}[]
+Per ogni richiesta di bake è stato misurato il tempo di processamento; tutte le misure sono mostrate in tabella \ref{table:per_luci}.
+\begin{table}[h]
 \centering
 \caption[Performance al variare delle luci]{Tempi di bake, espressi in secondi, al variare del numero di luci all'interno della scena.}
 \begin{tabular}{|l|l|}
@@ -187,7 +187,7 @@ Per ogni richiesta di bake è stato misurato il tempo di processamento; tutte le
 \end{tabular}
 \label{table:per_luci}
 \end{table}
-
+\\
 Come è possibile notare dai risultati in tabella \ref{table:per_luci} , il tempo processamento di bake rimane pressochè costante indipendentemente dal numero di luci aggiunte. 
 \\
 Questa particolarità è del tutto motivata dall’algoritmo di illuminazione indiretta utilizzato dal motore di render scelto in Blender per eseguire il baking. 
@@ -207,25 +207,14 @@ Le attività di test mostrate fino a questo punto hanno avuto come scopo unico q
 \\
 Questo paragrafo vuole concentrare l’attenzione su un’altro aspetto fondamentale, ossia la dimensione dei risultati prodotti dal servizio di bake; nel pragrafo \ref{sec:chapter_architettura_sistema_formato_scambio} è stato già mostrato come la scena costruita dall’utente nell’editor venga memorizzata in un file JSON, in cui vige un formato di intercambio dei dati fruibile dall’Editor così come dal Servizio di baking e dal navigator.
 \\
-In una tipica attività di costruizione di una scena 3D, è possibile che l’utente decida di memorizzare la scena in più fasi del processo costruttivo, ottenendo quindi un numero variabile di file JSON che devono essere memorizzati su disco. Pertanto il JSON deve necessariamente avere dimensioni contenute, il che per giunta ne semplifica l’eventuale interscambio con altri utenti. 
-\\
+In una tipica attività di costruizione di una scena 3D, è possibile che l’utente decida di memorizzare la scena in più fasi del processo costruttivo, ottenendo quindi un numero variabile di file JSON che devono essere memorizzati su disco. Pertanto il JSON deve necessariamente avere dimensioni contenute, il che per giunta ne semplifica l’eventuale interscambio con altri utenti.
 Altro vantaggio non trascurabile è il fatto di avere un volume di dati ridotto da dover inviare al servizio di bake: come già discusso nel paragrafo \ref{sec:chapter_baking_service_architettura_servizio} le richieste di bake vengono sottomesse ad un servizio in remoto, pertanto le informazioni sulla scena sono trasferite via internet. Tali informazioni devono avere un volume contenuto, al fine di non appesantire troppo il traffico di dati, e garantire un tempo di ricezione della richiesta accettabile. 
 \\
 Gli interventi sull’ottimizzazione delle dimensioni del file JSON rappresentante la scena, sono per lo più mirate a ridurre la dimensione dei data URL delle immagini utilizzate per texturizzare le superfici dei modelli.
-\\
 Inoltre nel paragrafo \ref{sec:chapter_lrl_li_te_ba} è stato mostrato come il processo di Blender si impegni nella generazione di nuove immagini chiamate Lightmapped Textures, che andranno a sostituire nella descrizione della scena le immagini preesistenti.
-\\
 Siccome i data URL delle immagini sono il dato più pesante all’interno di un file JSON, qualsiasi attività di ottimizzazione effettuata sulle immagini lato client dovrà essere ripetuta sulle lightmapped texture prima di inviare il risultato; tale mansione viene presa in carico direttamente dal processo di Blender.
-\\
-Ciò che verrà mostrato in questo paragrafo sono i risultati di due differenti attività di test, volte a mostrare la capacità di compressione dei risultati da parte del servizio. 
-\\
-Nella prima attività di test verrano sottomesse al servizio delle richieste contenenti scene con un numero crescente di oggetti; al termine del processamento verrà estratta la dimensione dell’output e la si compara con quella della scena inviata nella richiesta. 
-\\
-Le scene utilizzate per questo test sono composte da oggetti di uso comune nell’arredamento di interni. 
-\\
-Illuminazione e sampling sono fissati, e il numero di oggetti varia da 1 fino ad un massimo di 150 oggetti. In tabella \ref{table:dim_obj} vengono mostrate le dimensioni dei file JSON prodotti nell'editor, e le dimensioni degli stessi file JSON elaborati mediante servizio di bake.
-
-\begin{table}[]
+Ciò che verrà mostrato in questo paragrafo sono i risultati di due differenti attività di test, volte a mostrare la capacità di compressione dei risultati da parte del servizio.
+\begin{table}[h]
 \centering
 \caption[Confronto dimensioni input-output]{Confronto tra dimensione del JSON input prodotto dal servizio editor, e dimensione del JSON output prodotto dal servizio di bake.}
 \begin{tabular}{|l|l|l|}
@@ -239,8 +228,12 @@ Illuminazione e sampling sono fissati, e il numero di oggetti varia da 1 fino ad
 \end{tabular}
 \label{table:dim_obj}
 \end{table}
-
-Come è possibile notare in tabella \ref{table:dim_obj} , le dimensione degli output del processo di bake corrispondono a circa il 16\% dei rispettivi input, segno di un ottimo fattore di compressione. Il grafico in figura \ref{fig:grafico5} mostra come la dimensione dei JSON prodotti dal servizio di bake rimanga contenuta anche per input di dimensioni notevoli.
+\\
+Nella prima attività di test verrano sottomesse al servizio delle richieste contenenti scene con un numero crescente di oggetti; al termine del processamento verrà estratta la dimensione dell’output e la si compara con quella della scena inviata nella richiesta. 
+Le scene utilizzate per questo test sono composte da oggetti di uso comune nell’arredamento di interni. 
+Illuminazione e sampling sono fissati, e il numero di oggetti varia da 1 fino ad un massimo di 150 oggetti. In tabella \ref{table:dim_obj} vengono mostrate le dimensioni dei file JSON prodotti nell'editor, e le dimensioni degli stessi file JSON elaborati mediante servizio di bake.
+\\
+Come è possibile notare in tabella \ref{table:dim_obj}, le dimensione degli output del processo di bake corrispondono a circa il 16\% dei rispettivi input, segno di un ottimo fattore di compressione. Il grafico in figura \ref{fig:grafico5} mostra come la dimensione dei JSON prodotti dal servizio di bake rimanga contenuta anche per input di dimensioni notevoli.
 \\
 \begin{figure}[htb]
  \centering
@@ -248,7 +241,7 @@ Come è possibile notare in tabella \ref{table:dim_obj} , le dimensione degli ou
  \caption[Confronto dimensioni input-output]{Dimensioni del JSON input e JSON output messe a confronto per scene con numero di oggetti variabile.}
  \label{fig:grafico5}
 \end{figure}
-
+\\
 Grazie a ciò è possibile fruire di scene anche molto complesse, con un consumo di memoria su disco decisamente ridotto. 
 \\
 Un’esempio pratico è la riproduzione dell’ambiente domestico mostrato nel paragrafo \ref{sec:chapter_prove_sperimentali_qualita_visiva}. Nonostante la costruzione abbia portato ad una scena dalle dimensioni corpose, circa 117 Mb, è stato possibile ottenere una versione fotorealistica della stessa con 54.2 Mb. Trattandosi di un’intera abitazione il risultato può considerarsi soddisfacente.
@@ -265,8 +258,8 @@ Questa attività prevede dunque la sottomissione al servizio di una serie di ric
 Per la scena si è scelto di utilizzare lo stesso ambiente oggetto dei test descritti nel paragrafo \ref{sec:chapter_prove_sperimentali_servizio_baking_vel_sam}. 
 \\
 Ad ogni richiesta corrisponde un bake di qualità differente, che va dalla qualità più bassa (sampling = 1), ad un livello qualitivo molto alto (sampling = 300). Nella tabella \ref{table:dim_sam} sono mostrate le dimensioni dell’output in corrispondenza di ogni valore di sampling.
-
-\begin{table}[]
+\\
+\begin{table}[h]
 \centering
 \caption[Dimensioni output variando sampling]{Dimensione del JSON output al variare del sampling.}
 \begin{tabular}{|l|l|}
@@ -284,7 +277,7 @@ Ad ogni richiesta corrisponde un bake di qualità differente, che va dalla quali
 \end{tabular}
 \label{table:dim_sam}
 \end{table}
-
+\\
 Come è possibile notare in tabella \ref{table:dim_sam} , mentre con un sampling uguale a 1 si ottiene un’output che in dimensione è il 90\% dell’input, con un fattore di sampling uguale a 300 si riesce ad ottenere una dimensione dell’output pari a circa il 64\% di quella del rispettivo input. 
 \\
 La motivazione principale a favore di questo miglioramento è il fatto che ad elevati valori di sampling le immagini realizzate dal processo di baking sono molto meno rumorose, pertanto la compressione risulta più efficace. 
@@ -297,7 +290,7 @@ Ne è prova ulteriore la comparazione mostrata in figura \ref{fig:dim_sam} , dov
  \caption[Confronto dimensione lightmapped texture]{Una lightmapped texture realizzata con sampling uguale a 1 (a sinistra), e 50 (a destra)}
  \label{fig:dim_sam}
 \end{figure}
-
+\\
 Come è possibile notare in figura \ref{fig:dim_sam} la prima immagine presenta del rumore significativo, mentre la seconda è decisamente più pulita.
 \\ 
 Il particolare fondamentale che distingue le due foto, oltre all’aspetto qualitativo, è la dimensione: mentre la prima immagine pesa 1.3 Mb, la seconda ha una dimensione di 1 Mb, e questo con un sampling pari a 50. 
