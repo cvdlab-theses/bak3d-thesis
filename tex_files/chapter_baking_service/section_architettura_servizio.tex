@@ -54,9 +54,13 @@ Viene dunque creata ed inizializzata una struttura \texttt{bake\_data} contenent
 \item Email utente, nome scena, e sampling (estratti dalla richiesta).
 \item Istante di accettazione della richiesta (viene fatto coincidere con il momento in cui viene creata la struttura dati. Questo dato è utile per conoscere ad esempio il tempo che intercorre tra accettazione della richiesta, e l’inizio del processamento del bake).
 \end{itemize}
-Il passo di elaborazione successivo si occupa di assegnare un id univoco al processo di bake, memorizzandolo nel rispettivo bake\_data. L’id univoco è fondamentale per creare una corrispondenza tra client e processo di bake richiesto dal client, utile specialmente per le funzionalità Jobs, Status, e Delete. 
-Successivamente bisogna rendere persistente su disco la scena fornita dall’utente; siccome il formato delle richieste di bake è sempre lo stesso, bisogna diversificare gli input in base al processo. Per prima cosa viene quindi creata nel file system una directory avente per nome l’id del processo. Il path della directory appena creata verrà memorizzato nei bake\_data del processo. 
-L’operazione successiva prevede la scrittura del file di input, ovvero la scena, all’interno di questa directory. 
+Il passo di elaborazione successivo si occupa di assegnare un id univoco al processo di bake, memorizzandolo nel rispettivo bake\_data. L’id univoco è fondamentale per creare una corrispondenza tra client e processo di bake richiesto dal client, utile specialmente per le funzionalità Jobs, Status, e Delete.
+\\
+Successivamente bisogna rendere persistente su disco la scena fornita dall’utente; siccome il formato delle richieste di bake è sempre lo stesso, bisogna diversificare gli input in base al processo.
+\\
+Per prima cosa viene quindi creata nel file system una directory avente per nome l’id del processo. Il path della directory appena creata verrà memorizzato nei bake\_data del processo.
+L’operazione successiva prevede la scrittura del file di input, ovvero la scena, all’interno di questa directory.
+\\ 
 A questo punto la fase di preprocessamento è conclusa, e può così iniziare la fase principale, ovvero il bake. Per i motivi gia discussi nei capitoli precedenti questa è ovviamente la fase più pesante e che richiede il maggior tempo per essere processata; fungerà quindi da collo di bottiglia per tutta la pipeline. Durante il processamento di un bake è possibile che le richieste per altri bake continuino ad arrivare, pertanto è necessario disciplinare gli arrivi in una struttura dati a coda. 
 \\
 Il server continuerà quindi ad accettare richieste, e per ognuna eseguirà tutti i passi di preprocessamento sopra mostrati; al termine di questi il processo di bake, rappresentato dai rispettivi bake\_data, verrà inserito all’interno di una coda. La disciplina è semplicemente quella di processare il primo bake in coda una volta concluso quello in esecuzione; per la realizzazione di questa disciplina è stato necessario trovare un modo per notificare al gestore della coda che può servire il prossimo bake. Per fare ciò il modo più corretto è quello di far notificare il termine del processo di bake direttamente al processo stesso, mediante invocazione di una callback al concludersi del processo. La callback viene ascoltata dal gestore, che quindi si impegnerà a controllare se ci sono delle richieste in coda, e in caso di elaborare la prima di queste. 
@@ -106,6 +110,7 @@ In qualsiasi momento durante l’utilizzo dell’editor, l’utente ha la possib
 \\
 Questa richiesta viene passata dal server HTTP al middleware che si occuperà di copiare in una lista tutti i bake\_data delle richieste di bake in coda in attesa di essere processate, insieme al bake\_data del processo attualmente in esecuzione. 
 Questa lista verrà inviata in risposta al client, che si occuperà di mostrare sull’editor i nomi dei processi.
+\\
 L’utilità di restituire al client la lista con tutti i bake\_data sta nel fatto che una futura esigenza di utilizzare lato client un’informazione diversa presente nei bake\_data non richiederà alcuna modifca lato server. 
 \\
 Per ogni processo che l’editor mostra all’utente, vengono offerte due funzionalità: chiedere lo stato di esecuzione della richiesta, o annullarla. Per funzionalità di questo tipo diventa essenziale mantenere nell’editor gli id dei processi mostrati all’utente.
@@ -115,12 +120,17 @@ Per quanto riguarda l’elaborazione della richiesta di status da parte del serv
 \\
 Il ciclo di vita di una richiesta di bake prevede una fase precedente all’inserimento in coda, una fase durante l’attesa in coda, e un’ultima fase dopo l’estrazione dalla coda. In ognuna di queste fasi i bake\_data della richiesta possono trovarsi in luoghi differenti. 
 \\
-Per prima cosa si controlla se i bake\_data con quell’id si trovano in coda di attesa. In tal caso viene preparato il messaggio di risposta per l’utente contenente la notifica del fatto, insieme ad una stima del numero di processi che precedono nella coda quello richiesto. Si parla di stima in quanto dalla sottomissione della richiesta dell’utente, alla ricezione della risposta, la situazione nella coda potrebbe essere cambiata. Tuttavia trattandosi il bake di un processo tipicamente lento, la stima è una buona approssimazione della realtà. 
+Per prima cosa si controlla se i bake\_data con quell’id si trovano in coda di attesa. In tal caso viene preparato il messaggio di risposta per l’utente contenente la notifica del fatto, insieme ad una stima del numero di processi che precedono nella coda quello richiesto. 
 \\
-Se questo primo controllo fallisce, è possibile che la richiesta non sia in attesa perchè gia in esecuzione. A questo punto vengono controllati i bake\_data del processo in esecuzione, i quali vengono marcati come tali nel momento esatto in cui l’istanza di Blender inizia il bake. 
+Si parla di stima in quanto dalla sottomissione della richiesta dell’utente, alla ricezione della risposta, la situazione nella coda potrebbe essere cambiata. Tuttavia trattandosi il bake di un processo tipicamente lento, la stima è una buona approssimazione della realtà. 
+\\
+Se questo primo controllo fallisce, è possibile che la richiesta non sia in attesa perchè gia in esecuzione. A questo punto vengono controllati i bake\_data del processo in esecuzione, i quali vengono marcati come tali nel momento esatto in cui l’istanza di Blender inizia il bake.
+\\ 
 Se il bake\_data contiene l’id che si sta cercando, allora non solo verrà notificato all’utente lo stato di esecuzione in corso, ma verrà notificata anche la percentuale di completamento del processo, estratta dai bake\_data e calcolata mediante il parsing dello stdout mostrato in precedenza.
 \\ 
 Se ancora non c’è una corrispondenza con l’id del processo in esecuzione, l’unica possibilità è che il processo sia già terminato da tempo. A questo scopo il sistema mantiene uno storico dei processi di bake terminati, che quindi può essere consultato in ricerca dei bake\_data. Se la ricerca ha esito positivo l’utente verrà notificato a riguardo, esortandolo a controllare le sue mail. 
 \\
-Per quanto riguarda l’elaborazione della richiesta di eliminazione di un bake, anche in questo caso il middleware si impegna dapprima nell’estrazione dell’id dalla richiesta. A questo punto viene effettuata una ricerca su due fronti: o il processo è in attesa in coda, e quindi l’annullamento del processo corrisponderà semplicemente nel rimuovere dalla coda i rispettivi bake\_data, facendo avanzare tutte le richieste antecedenti, o il processo è già in esecuzione. In questo secondo caso bisognerà arrestare il processo di Blender, inviandogli un segnale di terminazione. 
+Per quanto riguarda l’elaborazione della richiesta di eliminazione di un bake, anche in questo caso il middleware si impegna dapprima nell’estrazione dell’id dalla richiesta. 
+\\
+A questo punto viene effettuata una ricerca su due fronti: o il processo è in attesa in coda, e quindi l’annullamento del processo corrisponderà semplicemente nel rimuovere dalla coda i rispettivi bake\_data, facendo avanzare tutte le richieste antecedenti, o il processo è già in esecuzione. In questo secondo caso bisognerà arrestare il processo di Blender, inviandogli un segnale di terminazione. 
 Una volta fermato il processo, il gestore della coda provvederà a soddisfare la richiesta successiva.    

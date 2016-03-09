@@ -24,6 +24,7 @@ Questo si rende possibile in quanto l’utilizzo delle texture lightmap danno l�
  \caption[Scena processata dal servizio di bake ]{Scena processata dal servizio di bake in cui non sono presenti oggetti luce}
  \label{fig:baking_service_bake_no_luci}
 \end{figure}
+\\
 Le fonti luminose per questo motivo non vengono descritte all’interno del formato di scambio JSON4 in uscita da Blender  le luci, permettendo quindi di evitare il mapping delle luci inverso a quello effettuato durante l’importazione.
 \\
 La totale assenza delle luci rende inoltre superfluo mappare in modo accurato i materiali del Cycles render di Blender in quelli utilizzati da Three.js. 
@@ -73,9 +74,9 @@ Inoltre l’exporter originale causava problemi con l’esportazione del colore 
  \label{fig:baking_service_grigio_chiaro}
 \end{figure}
 Questo errore era dovuto dal fatto che l’exporter, specifico per il Blender render, utilizzava dei parametri per prelevare il colore dai materiali differenti da quelli che in realtà vengono usati nel Cycles Render. Quindi nel nuovo exporter sono stati utilizzati i parametri corretti.
+\\
 L’exporter infine non permetteva l’esportazione dell’ immagine applicata come texture. 
 Il plug-in è stato quindi modificato affinchè lo permettesse.
-\\
 L’immagine assegnata all’oggetto, salvata in memoria principale di Blender, viene prelevata, convertita in base 64  e poi scritta all’interno del JSON 4 nel campo corrispondente.  
 In Python la codifica può effettuata tramite l’utilizzo della funzione \texttt{b64encode(image\_file)} che accetta come parametro l’immagine da codificare. 
 \\

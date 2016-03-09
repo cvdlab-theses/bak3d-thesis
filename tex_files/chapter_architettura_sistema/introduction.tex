@@ -16,8 +16,15 @@ Per utilizzare un’applicazione desktop di grafica 3D è necessario:
 \item Imparare il processo di baking delle lightmap.
 \end{itemize}
 \end{itemize}
-Tutto ciò difficilmente rappresenterebbe un problema per un utenza già avvezza con questo tipo di software, ma spesso si ha a che fare con utenti alle prime armi, che non conoscono bene il panorama dei software di grafica 3D e che quindi si ritrovano a dover provare software diversi, rischiando di ripetere i passi sopra descritti più di una volta. Sperimentando con mano l’utilizzo di un software come Blender ci si rende effettivamente conto di quanto procedure come il baking delle lightmap richiedano uno studio preventivo mediante documentazione o tutorial. Inoltre l’utente casual potrebbe sentirsi limitato nell’uso di strumenti di questo tipo per motivi prettamente legati all’hardware:
-Ad esempio il baking delle lightmap prevede che per ogni oggetto della scena venga eseguito un render completo, e per la realizzazione di scene fotorealistiche questo render è un processo oneroso e di durata sensibilmente variabile a seconda dell’hardware di accelerazione grafica a disposizione. Questo limita la maggior parte degli utenti che intendono realizzare scene fotorealistiche complesse, in quanto non possessori di un hardware adatto allo scopo. Sulla base di queste motivazioni si è deciso di realizzare un ecosistema che venisse incontro a tutte le esigenze dell’utente professionale e casual per la realizzazione e la navigazione di interni 3D fotorealistici, garantendo semplicità d’uso e prestazioni compatibili con la maggior parte degli hardware di accelerazione grafica. Le carattestistiche fondamentali di questo sistema sono:
+Tutto ciò difficilmente rappresenterebbe un problema per un utenza già avvezza con questo tipo di software, ma spesso si ha a che fare con utenti alle prime armi, che non conoscono bene il panorama dei software di grafica 3D e che quindi si ritrovano a dover provare software diversi, rischiando di ripetere i passi sopra descritti più di una volta. 
+\\
+Sperimentando con mano l’utilizzo di un software come Blender ci si rende effettivamente conto di quanto procedure come il baking delle lightmap richiedano uno studio preventivo mediante documentazione o tutorial. 
+\\
+Inoltre l’utente casual potrebbe sentirsi limitato nell’uso di strumenti di questo tipo per motivi prettamente legati all’hardware.
+Ad esempio il baking delle lightmap prevede che per ogni oggetto della scena venga eseguito un render completo, e per la realizzazione di scene fotorealistiche questo render è un processo oneroso e di durata sensibilmente variabile a seconda dell’hardware di accelerazione grafica a disposizione. 
+\\Questo limita la maggior parte degli utenti che intendono realizzare scene fotorealistiche complesse, in quanto non possessori di un hardware adatto allo scopo. Sulla base di queste motivazioni si è deciso di realizzare un ecosistema che venisse incontro a tutte le esigenze dell’utente professionale e casual per la realizzazione e la navigazione di interni 3D fotorealistici, garantendo semplicità d’uso e prestazioni compatibili con la maggior parte degli hardware di accelerazione grafica. 
+\\
+Le carattestistiche fondamentali di questo sistema sono:
 \begin{itemize}
 \item Separazione delle responsabilità funzionali di realizzare, rendere fotorealistca, e navigare la scena, incapsulandole in moduli implementati e mantenuti come entità a se stanti.
 \item Realizzazione  web-based del servizio, con architettura client-server. 
@@ -29,9 +36,15 @@ L’implementazione di moduli autocontenuti in ambiente web permette all’utent
 \item Il \textbf{Baking Service}, che rappresenta la funzionalità peculiare del nostro sistema, ciò che permette, data una scena con un determinato setup di illuminazione, di ottenere una scena fotorealistica mediante processo di baking delle lightmap su ogni oggetto della scena. A differenza dell’Editor e del Navigator, il servizio di bake è accessibile mediante feature presente all’interno dell’editor.
 \end{itemize}
 La caratteristica che più contraddistingue tale sistema dalla media dei servizi di editing 3D online che si trovano sul web, è proprio il Baking Service.
+\\
 Questo servizio è stato realizzato appositamente per permettere all’utente di effettuare il bake delle lightmap senza però preoccuparsi di alcun dettaglio circa il modo in cui il bake verrà effettuato. L’utente non ha bisogno di imparare come si fa il baking delle lightmap, e non deve installare alcun software; mediante l’interfaccia offerta dall’Editor è sufficiente premere un bottone, semplificando drasticamente l’esperienza d’uso. 
-Nascondere all’utente gli aspetti più onerosi dell’esecuzione di un bake non è l’unico grande vantaggio di un servizio simile; sfruttando infatti l’architettura client-server è possibile installare il servizio di bake su un nodo fisico completamente diverso da quello sul quale l’utente sta realizzando la scena. 
-Siccome il bake prevede il processamento di algoritmi di illuminazine complessi, si predispone quindi una macchina con una configurazione hardware di fascia alta, il cui compito è esclusivamente quello di effettutare il baking e restituire il risultato. L’Editor si occuperà di trasformare la richiesta di bake dell’utente in una richiesta al servizio remoto in modo completamente trasparente all’utente. 
+\\
+Nascondere all’utente gli aspetti più onerosi dell’esecuzione di un bake non è l’unico grande vantaggio di un servizio simile; sfruttando infatti l’architettura client-server è possibile installare il servizio di bake su un nodo fisico completamente diverso da quello sul quale l’utente sta realizzando la scena.
+\\ 
+Siccome il bake prevede il processamento di algoritmi di illuminazine complessi, si predispone quindi una macchina con una configurazione hardware di fascia alta, il cui compito è esclusivamente quello di effettutare il baking e restituire il risultato. 
+\\
+L’Editor si occuperà di trasformare la richiesta di bake dell’utente in una richiesta al servizio remoto in modo completamente trasparente all’utente.
+\\ 
 Questa caratteristica estende la possibilità di far richiesta di bake onerosi anche a computer che non hanno i requisiti sufficienti per far girare il processo in locale. 
 \\
 Nonostante la parte computazionalmente più onerosa, ovvero il bake, sia assegnata ad un nodo di calcolo differente da quello in uso dall’utente, si consideri che l’Editor, così come il Navigator, girano sul client; questo vuol dire che la complessità computazionale del rendering real-time di ThreeJS è tutta a carico dell’hardware su cui l’utente sta creando, o navigando la scena. 
@@ -40,6 +53,8 @@ Il vantaggio è però quello di avere lato client solamente la pipeline di rende
 \\  
 A questo punto è possibile individuare tre servizi implementati in modo completamente diverso tra loro; mentre l’Editor e il Navigator si basano sulla stessa tecnologia, ovvero ThreeJS, Baking Service è un entità completamente diversa, scritta in Python. 
 \\
-Ciononostante i tre servizi devono comunicare; in particolare la scena creata nell’Editor deve poter essere inviata al servizio remoto di baking, e lo stesso servizio deve fornire in output un dato comprensibile sia dall’Editor che dal Navigator. Per consentire questo scambio di informazioni si è scelto un formato comune di interscambio dei dati, ovvero il JSON, e su ogni servizio è stato implementato un supporto per il riconoscimento del formato. Per semplificare l’installazione dei supporti al formato si è partiti da standard di formati JSON già definiti in ThreeJS per la descrizione di scene; studiando tutte le possibilità offerte si è arrivati a scegliere lo standard che meglio si adattasse al presente lavoro di tesi. 
+Ciononostante i tre servizi devono comunicare; in particolare la scena creata nell’Editor deve poter essere inviata al servizio remoto di baking, e lo stesso servizio deve fornire in output un dato comprensibile sia dall’Editor che dal Navigator. 
+\\
+Per consentire questo scambio di informazioni si è scelto un formato comune di interscambio dei dati, ovvero il JSON, e su ogni servizio è stato implementato un supporto per il riconoscimento del formato. Per semplificare l’installazione dei supporti al formato si è partiti da standard di formati JSON già definiti in ThreeJS per la descrizione di scene; studiando tutte le possibilità offerte si è arrivati a scegliere lo standard che meglio si adattasse al presente lavoro di tesi. 
 \\
 Nel paragrafo \ref{sec:chapter_architettura_sistema_formato_scambio} verrà mostrato un modo per riuscire a descrivere in un unico file tutte le informazioni presenti in una scena generata nell’Editor, ed elaborata dal servizio di bake.

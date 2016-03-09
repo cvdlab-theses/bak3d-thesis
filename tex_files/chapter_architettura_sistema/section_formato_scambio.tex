@@ -31,7 +31,7 @@ Nello specifico queste strutture vengono rappresentate tramite oggetti, array e 
 \item Un valore può essere di tipo booleano (true, false), un numero (intero, reale o in virgola mobile), una stringa, un oggetto o un array. Queste strutture possono essere annidate.
 \begin{figure}[htb]
  \centering
- \includegraphics[width=0.9\linewidth]{images/chapter_architettura_sistema/valore_json.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_architettura_sistema/valore_json.png}\hfill
  \caption[Un valore JSON]{Un valore JSON}
  \label{fig:architettura_sistema_valore_json}
 \end{figure}
@@ -124,7 +124,8 @@ La bitmask utilizzata è la seguente:
 Al fine di comprendere meglio il funzionamento della bitmask verrà fornito un esempio:
 
 ``faces'' : [34,\textcolor{red}{0,1,2,}\textcolor{blue}{0,}\textcolor{purple}{0,0,0,}    34,\textcolor{red}{3,0,2,}\textcolor{blue}{0,}\textcolor{purple}{0,0,0,}    34,\textcolor{red}{4,5,6,}\textcolor{blue}{1,}\textcolor{purple}{0,0,0,}   34,\textcolor{red}{6,4,5,}\textcolor{blue}{1,}\textcolor{purple}{0,0,0}]
-Come riportato precedentemente nell’array faces sono rappresentate le diverse facce che compongono l’oggetto da renderizzare. 
+\\
+Come riportato precedentemente nell’array faces sono rappresentate le diverse facce che compongono l’oggetto da renderizzare.
 Ogni faccia è descritta medianti diversi valori nell’ array, il numero di valori dell’array da assegnare alla faccia e cosa rappresentano questi valori viene indicato dal codice univoco in questo caso 34.
 \\
 Nell’esempio infatti il codice 34 viene convertito nel binario 00100010 e poi sovrapposto sulla bitmask. La sovrapposizione viene effettuata bit a bit a partire da destra verso sinistra.
@@ -136,15 +137,9 @@ Nell’ ordine da destra verso sinistra avvengono quindi le seguenti tre sovrapp
 \item \texttt{Face Vertex Normal} (secondo uno a partire da destra): alla faccia sono associate delle normali di vertice. Siccome è la terza sovrapposizione i 3 valori dopo l’indice del materiale (in viola nell'esempio) rappresentano le normali di vertice. La prima normale è associata al primo vertice, la seconda normale al secondo vertice e la terza normale al terzo vertice.
 \end{itemize}
 
-Le tre sovrapposizione calcolate permettono di indicare al parser il numero di indici (oltre al codice) da considerare per la faccia, in base al codice ad essa assegnato; in questo caso 7 (3+1+3). 
+Le tre sovrapposizioni calcolate permettono di indicare al parser il numero di indici (oltre al codice) da considerare per la faccia in base al codice ad essa assegnato, in questo caso 7 (3+1+3). 
 Questo permette di fatto al parser di distringuere le diverse facce presenti nell’array.
-\\
-Inoltre è utile specificare come  i vertici, nel punto 1, vengono prelevati dall’array a triplette; ad esempio per l’indice 0 vengono prelevati i tre valori a partire dalla posizione zero mentre per l’indice 1 i tre valori a partire dalla posizione tre e così via. I tre valori presi rappresentano infatti, nell’ ordine, il valore della coordinata (x, y, z).
-Stesso discorso per il punto 2 dove le normali nell’array normals sono prelevate a triplette.
-
-Le tre sovrapposizione calcolate permettono di indicare al parser il numero di indici (oltre al codice) da considerare per la faccia in base al codice ad essa assegnato, in questo caso 7 (3+1+3). 
-Questo permette di fatto al parser di distringuere le diverse facce presenti nell’array.
-I vertici, nel punto 1, vengono prelevati dall’array vertices tramite gli indici (rossi nell’esempio) inseriti dopo il codice. Ad esempio se l’indice è uguale a 0 vengono prelevati i tre valori a partire dalla posizione zero, mentre se l’indice è uguale ad 1 vengono presi i tre valori a partire dalla posizione tre. Essi rappresentano infatti, nell’ ordine, il valore della coordinata (x, y, z).
+I vertici, nel punto 1, vengono prelevati dall’array vertices grazie agli indici (rossi nell’esempio) inseriti dopo il codice. Ad esempio se l’indice è uguale a 0 vengono prelevati i tre valori a partire dalla posizione zero, mentre se l’indice è uguale ad 1 vengono presi i tre valori a partire dalla posizione tre. Essi rappresentano infatti, nell’ ordine, il valore della coordinata (x, y, z).
 Stesso discorso per il punto 2 dove le normali nell’array normals sono prelevate a triplette.
 \\
 Viene ora fornito un ulteriore esempio, in cui vengono utilizzate facce quadrangolari invece che triangolari. Inoltre viene esaminata la modalità di utilizzo dell’array colors.
@@ -163,10 +158,8 @@ Il codice inserito nell' array faces per questo esempio è 65.
 }
 \end{lstlisting}
 
-Anche per questo esempio verrà analizzata una faccia dell'array faces:
-
-``faces'' : [65,\textcolor{red}{3,2,1,0,}\textcolor{blue}{0,}]
-
+Anche per questo esempio verrà analizzata una faccia dell'array faces = [65,\textcolor{red}{3,2,1,0,}\textcolor{blue}{0}].
+\\
 Il codice viene convertito nel binario 01000001 e sovrapposto sulla bitmask.
 Nell’ ordine da destra verso sinistra avvengono due sovrapposizioni con il binario 0\textcolor{blue}{1}00000\textcolor{red}{1}:
 
@@ -467,10 +460,5 @@ In questo lavoro di tesi ad ogni oggetto possono essere assegnate due nuove copp
 \end{itemize}
 Not\_project\_shadow viene invece utilizzata quando si vuole che un oggetto riceva gli effetti di luce ed ombra dall’ambiente ma che esso non proietti la sua ombra sull’ambiente.
 Avoid\_bake invece è utile per nascondere completamente un oggetto dal processo di bake. Questo attributo è stato fondamentale per permettere l’utilizzo di skybox. Per definizione le texture che costituiscono la skybox non devono essere influenzate dalla scena creata. Ad esempio è impensabile che una skybox che rappresenta il cielo possa ricevere ombra.
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1\linewidth]{images/chapter_architettura_sistema/skybox.jpg}\hfill
- \caption[Esempio di skybox influenzata dalla scena]{Una skybox influenzata dalla scena}
- \label{fig:architettura_sistema_skybox}
-\end{figure}
-Inoltre questo parametro quando viene aggiunto ad un oggetto permette di velocizzare il processo di bake in quanto questo oggetto non viene valutato. Quindi può essere utilizzato su quegli oggetti che influenzano poco la scena (ad esempio un libro di una libreria) per migliorare le prestazioni generali del sistema. Questi due attributi verrano approfonditi nel capitolo X.
+\\
+Inoltre questo parametro quando viene aggiunto ad un oggetto permette di velocizzare il processo di bake in quanto questo oggetto non viene valutato. Quindi può essere utilizzato su quegli oggetti che influenzano poco la scena (ad esempio un libro di una libreria) per migliorare le prestazioni generali del sistema. Questi due attributi verrano approfonditi nel capitolo \ref{cha:chapter_baking_service} .

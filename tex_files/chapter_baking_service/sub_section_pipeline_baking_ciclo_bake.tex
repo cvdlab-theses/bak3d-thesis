@@ -1,3 +1,4 @@
+\newpage
 \subsection{Ciclo di Bake}
 \label{sec:chapter_baking_service_pipeline_baking_ciclo_bake}
 
@@ -14,9 +15,8 @@ Come già discusso nel capitolo \ref{sec:chapter_lrl_cond_app}, tra le condizion
 \\
 Come già visto nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}, per il processo di bake si farà uso del node editor di Blender, che consente una manipolazione dei materiali molto più semplice a livello di API offerte. 
 \\
-Con riferimento a quanto discusso nel paragrafo \ref{sec:chapter_baking_service_architettura_servizio}, le notifiche che il processo di Blender invia per comunicare lo stato di completamento del bake verranno emesse al termine di ogni iterazione del processo che verrà ora mostrato in pseudocodice:
-\\
-\\
+Con riferimento a quanto discusso nel paragrafo \ref{sec:chapter_baking_service_architettura_servizio}, le notifiche che il processo di Blender invia per comunicare lo stato di completamento del bake verranno emesse al termine di ogni iterazione del processo che verrà ora mostrato in pseudocodice.
+\newpage
 Algoritmo di baking: Le funzioni implementate sono due separate,ma qui vengono rappresentate in un unico pseudocodice.
 \\
 \begin{algorithm}[H]
@@ -55,23 +55,30 @@ Algoritmo di baking: Le funzioni implementate sono due separate,ma qui vengono r
 
 E’ possibile notare da subito come l’operazione di bake venga ripetuta per ogni elemento della scena.
 \\
-Gli oggetti ammissibili per il bake devono avere almeno un materiale attivo; inoltre l’utente dell’editor può decidere che alcuni elementi della scena vengano esclusi dal bake. Per questo l’editor offre un flag \texttt{avoid\_bake} da impostare per gli oggetti che si vogliono escludere dal processo di baking. Se tale parametro è settato a \texttt{True}, allora l’oggetto sarà escluso dal bake, indipendentemente dalle sue caratteristiche. 
+Gli oggetti ammissibili per il bake devono avere almeno un materiale attivo; inoltre l’utente dell’editor può decidere che alcuni elementi della scena vengano esclusi dal bake. 
+\\
+Per questo l’editor offre un flag \texttt{avoid\_bake} da impostare per gli oggetti che si vogliono escludere dal processo di baking. Se tale parametro è settato a \texttt{True}, allora l’oggetto sarà escluso dal bake, indipendentemente dalle sue caratteristiche. 
 Per gli oggetti ammessi, il processo di bake è il seguente:
 \\
-Inizialmente si effettua un controllo se l’oggetto ha associato almeno un \texttt{uv\_layer}. Un uv\_layer è una struttura interna di Blender contenente una UV Map, e che referenzia una o più texture. Se l’oggetto contiene già un uv\_layer, allora ha già mappate le UV; questo è il caso ad esempio di un modello precostruito e importato nella scena ThreeJS. In tal caso verrà utilizzata la mappa uv gia presente nella geometria. In caso contrario sarà necessario chiedere a Blender una generazione automatica delle UV. 
+Inizialmente si effettua un controllo se l’oggetto ha associato almeno un \texttt{uv\_layer}. Un uv\_layer è una struttura interna di Blender contenente una UV Map, e che referenzia una o più texture. Se l’oggetto contiene già un uv\_layer, allora ha già mappate le UV; questo è il caso ad esempio di un modello precostruito e importato nella scena ThreeJS. 
+\\
+In tal caso verrà utilizzata la mappa uv gia presente nella geometria. In caso contrario sarà necessario chiedere a Blender una generazione automatica delle UV. 
 \\
 E’ importante sottolineare che gli uv\_layer di ogni oggetto possono contenere più canali di UV: tipicamente il primo canale contiene l’uv\_layer utilizzato per mappare la diffuse texture sulla superficie dell’oggetto, mentre il secondo canale contiene l’ uv\_layer per mappare la lightmap.
 \\
 Questi uv\_layer vengono aggiunti invocando un metodo apposito di Blender, che si occupa di inserire un layer all’interno della struttura uv\_layers. Dopodichè mediante la procedura di unwrap, già descritta nel capitolo \ref{sec:chapter_stato_arte_baking_lightmap}, verrà generata una nuova mappa uv ed inserità all’interno dell’ultimo layer aggiunto. 
 \\
 Siccome nel momento in cui verrà processato il bake si terrà conto solo del secondo canale, e siccome l’oggetto non contiene alcun uv\_layer, sarà necessario aggiungerne due.
+\\
 Nella struttura uv\_layers verranno inseriti quindi due layer, e il secondo sarà quello che conterrà la uv map della lightmap. Per effettuare questa azione è necessario che Blender si trovi in modalità \emph{Object}, e che l’oggetto in questione sia selezionato come oggetto attivo; questo perchè l’azione di inserire un layer in uv\_layers fa riferimento all’oggetto attivo attualmente selezionato in Blender. 
 \\ 
 Il passo successivo prevede la generazione dell’uv map, che verrà  memorizzarla nel layer; per fare ciò Blender deve cambiare in modalità \emph{Edit}, dove il software è abilitato all’utilizzo di operazioni che interagiscono direttamente con la geometria dell’oggetto. In questa modalità Blender può eseguire l’operazione di unwrap di un modello 3D su una superficie 2D. Grazie all’operazione di unwrap viene quindi generata la mappa uv necessaria per poter applicare la lightmap sulla superficie. 
 \\
 A questo punto viene inizializzata la struttura dati nella quale verrano memorizzati i valori di irradianza calcolati durante il processo di baking.
 \\
-Siccome nel contesto del presente lavoro di tesi si utilizzano lightmapped textures, i valori di irradianza saranno moltiplicati per le componenti di colore diffuse memorizzate nei texel della diffuse texture. La struttura dati inizializzata è dunque un immagine; questa immagine deve essere completamente nera, perchè ogni texel deve essere inizializzato con un contributo di colore nullo ($R,G,B = 0,0,0$); questo perchè quando verrà memorizzato il prodotto tra irradianza e diffuse color in un texel, in esso non dovrà esserci nessun’altro contributo di colore che alteri il risultato.
+Siccome nel contesto del presente lavoro di tesi si utilizzano lightmapped textures, i valori di irradianza saranno moltiplicati per le componenti di colore diffuse memorizzate nei texel della diffuse texture. 
+\\
+La struttura dati inizializzata è dunque un immagine; questa immagine deve essere completamente nera, perchè ogni texel deve essere inizializzato con un contributo di colore nullo ($R,G,B = 0,0,0$); questo perchè quando verrà memorizzato il prodotto tra irradianza e diffuse color in un texel, in esso non dovrà esserci nessun’altro contributo di colore che alteri il risultato.
 \\
 Oltre al colore, altra proprietà fondamentale è la risoluzione dell’immagine.
 \\
@@ -83,10 +90,11 @@ Questa scelta fu motivata per lo più da ragioni qualitative, in quanto le uv ge
 \\
 Successive attività di sperimentazione hanno mostrato che i benefici qualitativi di texture a 2048x2048  non ripagano l’aumento di carico computazionale causato dall’utilizzo di texture a risoluzione troppo elevata.
 \\ 
-E’ stato possibile infatti notare come, in presenza di molti oggetti per i quali era necessaria la generazione automatica delle uv da Blender, le performance in termini di FPS durante la fruizione della scena diminuissero drasticamente. Inoltre lightmap a tale risoluzione appesantiscono troppo la dimensione del JSON contenente la descrizione della scena, arrivando, dopo il processamento del bake, a dimensioni di troppo superiori rispetto alla scena di partenza. Di conseguenza si è deciso di utilizzare, indipendentemente dalle uv dell’oggetto, una risoluzione di 1024x1024. Tale risoluzione è inoltre adatta per la stragrande maggioranza dei modelli gia pronti che si importano dal web, i quali tipicamente hanno diffuse texture in 1024x1024; questo implica che nel processo di baking non sarà necessario ridimensionare la texture, operazione che può inficiarne la qualità. 
+E’ stato possibile infatti notare come, in presenza di molti oggetti per i quali era necessaria la generazione automatica delle uv da Blender, le performance in termini di FPS durante la fruizione della scena diminuissero drasticamente. 
 \\
-Una volta inizializzata la lightmapped texture bisogna associarla all’oggetto di cui si sta facendo il bake. 
+Inoltre lightmap a tale risoluzione appesantiscono troppo la dimensione del JSON contenente la descrizione della scena, arrivando, dopo il processamento del bake, a dimensioni di troppo superiori rispetto alla scena di partenza. Di conseguenza si è deciso di utilizzare, indipendentemente dalle uv dell’oggetto, una risoluzione di 1024x1024. Tale risoluzione è inoltre adatta per la stragrande maggioranza dei modelli gia pronti che si importano dal web, i quali tipicamente hanno diffuse texture in 1024x1024; questo implica che nel processo di baking non sarà necessario ridimensionare la texture, operazione che può inficiarne la qualità. 
 \\
+Una volta inizializzata la lightmapped texture bisogna associarla all’oggetto di cui si sta facendo il bake.
 A tale scopo si utilizza il Node Editor di Blender. 
 \\
 Come già discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}, per la texturizzazione di un modello viene istanziato un nodo di tipo Image Texture, che conterrà l’immagine che si vuole mappare sul modello.
@@ -94,14 +102,15 @@ Come già discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking
 Per prima cosa si estrae quindi il materiale attivo dell’oggetto, e da questo si estrae l’albero dei nodi che descrivono il materiale. A questo albero viene aggiunto un nuovo nodo di tipo Image Texture, nel quale viene inserita l’immagine sopra inizializzata; in questa fase il nodo è isolato, e non è necessario che venga connesso ad altri nodi. 
 \\
 A questo punto il nodo deve essere selezionato con selezione attiva, perchè anche in questo caso la funzione di Blender che verrà invocata è relativa all’oggetto in selezione attiva.
-\\ 
 Con l’oggetto e il nodo Image Texture in selezione attiva non rimane che entrare in modalità Edit di Blender, ed invocare l’operazione di \emph{bake}. 
 \\
 Questa operazione effettuerà una precomputazione di tutte le luci all’interno della scena, memorizzando nell’immagine selezionata gli effetti sulla superficie dell’oggetto. 
 \\
 Per l’operazione di bake esistono molteplici soluzioni; in questo caso è stato scelto un bake di tipo \emph{combined}. 
 \\
-Questo tipo di bake precomputa gli effetti di tutti i materiali, tutte le texture, e tutte le luci all’interno della scena, memorizzando quindi nell’immagine selezionata non solo i valori di irradianza, ma anche i colori diffuse delle texture, ed eventuali effetti dovuti ai materiali utilizzati. Questa soluzione è esattamente in linea con l’esigenza di realizzare una lightmapped texture, e non una semplice lightmap. Inoltre in questo modo è possibile memorizzare nella lightmapped texture anche gli effetti del materiale Phong, il cui metodo di replicazione in Blender è mostrato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}. 
+Questo tipo di bake precomputa gli effetti di tutti i materiali, tutte le texture, e tutte le luci all’interno della scena, memorizzando quindi nell’immagine selezionata non solo i valori di irradianza, ma anche i colori diffuse delle texture, ed eventuali effetti dovuti ai materiali utilizzati. Questa soluzione è esattamente in linea con l’esigenza di realizzare una lightmapped texture, e non una semplice lightmap. 
+\\
+Inoltre in questo modo è possibile memorizzare nella lightmapped texture anche gli effetti del materiale Phong, il cui metodo di replicazione in Blender è mostrato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}. 
 \\
 Una volta terminato il bake la lightmapped texture è pronta; a questo punto ciò che avviene è una riorganizzazione dei nodi che compongono il materiale dell’oggetto.
 \\ 
@@ -113,12 +122,10 @@ Ciò che viene fatto è quindi potare l’intero albero dei nodi che descrivono 
 \\
 A questo punto viene creato un nodo Diffuse BSDF e un nodo UV Map, nel quale viene inserita la UV Map memorizzata nel secondo canale dell’uv\_layers dell’oggetto, e quest’ultimo nodo viene collegato al nodo Image Texture, che a sua volta viene collegato al nodo Diffuse. Lo shader risultante sul nodo Diffuse viene dato in input al nodo Material Output, che si occuperà di applicare lo shader alla superficie dell’oggetto. 
 \\
-La lightmapped texture è quindi applicata in modo corretto sull’oggetto, ma affinchè possa essere esportata è necessaria un'ultima operazione, in cui viene resa consistente e memorizzata all’interno di una struttura dati \emph{Texture} di Blender. 
-\\
+La lightmapped texture è quindi applicata in modo corretto sull’oggetto, ma affinchè possa essere esportata è necessaria un'ultima operazione, in cui viene resa consistente e memorizzata all’interno di una struttura dati \emph{Texture} di Blender.
 Questa Texture deve essere inserita all’interno del materiale dell’oggetto.
 \\
 Per accogliere una o più strutture Texture, ai materiali viene associata una struttura dati a pila, contenente un numero variabile di slot per le Texture.
-\\ 
 Per aggiungere una Texture bisogna allocare uno slot all’interno di questa pila, per ospitare il blocco dati constenuto nella struttura Texture. 
 \\
 Ad ogni slot è associato un \texttt{blend\_type}, ossia il modo in cui la texture deve essere applicata sull’oggetto; per far si che al momento dell’export l’immagine contenuta nella texture venga interpretata come una lightmap si utilizza blend\_type = \texttt{MULTIPLY}. 
