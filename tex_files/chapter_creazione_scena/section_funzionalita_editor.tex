@@ -1,10 +1,14 @@
 \section{Funzionalità dell'editor}
 \label{sec:chapter_creazione_scena_funzionalita_editor}
 
-Allo stato attuale il servizio di editor si mostra come in figura [rif foto]:
-
-FOTO
-
+Allo stato attuale il servizio di editor si mostra come in figura \ref{fig:editor_1} :
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_1.png}\hfill
+ \caption[Editor: stato attuale]{Impostazione attuale dell'editor}
+ \label{fig:editor_1}
+\end{figure}
 In parte centrale è presente la vista 3D dove viene renderizzata la scena che si sta costruendo.
 \\ 
 In alto a destra una piccola mappa 2D riprende la scena dall’alto, per avere una vista planimetrica della scena.
@@ -21,7 +25,7 @@ Tali funzionalità si dividono in cinque categorie principali:
 Il menu insert fornisce inoltre gli strumenti per inserire una skybox all’interno della scena; questa funzionalità è del tutto nuova, e la sua implementazione, così come quella per l’inserimento dei muri, sarà descritta nei paragrafi successivi.
 \item Object: Pannello delle proprietà contestuali all’oggetto attualmente in selezione. Gli oggetti selezionabili all’interno di una scena realizzata nell’editor sono Mesh o Luci; di conseguenza le proprietà nel pannello Object possono essere inerenti a:
 \begin{itemize}
-\item Geometria e materiale della mesh: E’ possibile applicare trasformate sulla geometria dell’oggetto (rotazione, scalatura, traslazione), così come stabilire la partecipazione o meno della mesh al processo di bake mediante i parametri \texttt{project\_shadow} o \texttt{avoid\_bake} , già menzionato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_ciclo_bake} . Per quanto riguarda il materiale è possibile definirne il tipo tra quelli standard offerti da ThreeJS, e per ognuno modificarne le proprietà che lo caratterizzano, come il colore. Inoltre è possibile texturizzare le superfici dell’oggetto, e tra le normali opzioni di texturizzazione come l’aggiunta di una diffuse map, viene offerta anche un’opzione per generare automaticamente sull’oggetto le già menzionate env map di riflessione o rifrazione. I dettagli implementativi di quest’ultma opzione verranno discussi nel paragrafo [gen env map].
+\item Geometria e materiale della mesh: E’ possibile applicare trasformate sulla geometria dell’oggetto (rotazione, scalatura, traslazione), così come stabilire la partecipazione o meno della mesh al processo di bake mediante i parametri \texttt{project\_shadow} o \texttt{avoid\_bake} , già menzionato nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_ciclo_bake} . Per quanto riguarda il materiale è possibile definirne il tipo tra quelli standard offerti da ThreeJS, e per ognuno modificarne le proprietà che lo caratterizzano, come il colore. Inoltre è possibile texturizzare le superfici dell’oggetto, e tra le normali opzioni di texturizzazione come l’aggiunta di una diffuse map, viene offerta anche un’opzione per generare automaticamente sull’oggetto le già menzionate env map di riflessione o rifrazione. I dettagli implementativi di quest’ultma opzione verranno discussi nel paragrafo \ref{sec:chapter_creazione_scena_funzionalita_editor_envmap} .
 \item Sorgente luminosa: E’ possibile configurare tutte le proprietà standard delle luci in ThreeJS, come colore e intensità. Anche qui vi sarà un paragrafo dedicato, il \ref{sec:chapter_creazione_scena_mapping_illuminazione} , per l’adattamento delle luci in ThreeJS al sistema di illuminazione di Blender.
 \end{itemize}
 \end{itemize}
@@ -116,9 +120,14 @@ In questo modo è possibile quindi avvalersi delle Fetch API per definire una ca
 L’utilizzo delle promesse è una scelta possibile per la realizzazione del catalogo, in quanto per scaricare obj e texture del modello sarà necessario sottomettere due richieste.
 \\
 Siccome un’oggetto per essere texturizzato deve trovarsi all’interno della scena, la procedura di texturizzazione potrà essere fatta solo nel momento in cui si è certi che il file obj del modello sia stato completamente scaricato e importato nella scena. In questo caso si utilizzerà dunque una promessa, che l’oggetto è stato scaricato correttamente e aggiunto alla scena. Solo in questo caso verrà eseguito il secondo fetch alla risorsa contenente la texture del modello.
-La procedura di scaricamento di un modello dal catalogo è riassunta in figura [fig sotto].
-
-FOTO
+La procedura di scaricamento di un modello dal catalogo è riassunta in figura \ref{fig:editor_2} .
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_2.png}\hfill
+ \caption[Catalogo prodotti]{Funzionamento generale del catalogo prodotti all'interno dell'editor. Si noti come la seconda richiesta per la texture del modello venga sottomessa solamente a seguito dell'importazione nella scena dell'obj dello stesso.}
+ \label{fig:editor_2}
+\end{figure}
 
 \subsection{Invocazione e gestione del processo di bake}
 \label{sec:chapter_creazione_scena_funzionalita_editor_bake}
@@ -211,9 +220,14 @@ Tale ExtrudeGeometry necessita di un’ulteriore passo di elaborazione:
 Se si considerano delle mura domestiche, è tipicamente possibile che le due pareti che compongono alcuni muri siano diverse; questo si traduce nella necessità di diver texturizzare le due pareti del muro in maniera differente.
 \\
 Utilizzando una sola ExtrudeGeometry questa attività risulta impossibile, in relazione soprattutto al fatto che nel processo di baking verrebbe fatto l’unwrap dell’intera geometria, rendendo impossibile un calcolo delle lightmap diversificato su due pareti.
-Pertanto si è scelto di combinare l’oggetto ExtrudeGeometry con due oggetti 2D ShapeGeometry identici al muro, entrambi posizionati in corrispondenza delle due parenti, uno con le normali di faccia in posizione frontale (\texttt{FrontSide} ), l’altro con le normali invertite (\texttt{BackSide} ). Quest’ultimo caso ha reso necessario l’inserimento del metodo per il flip delle normali, discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_caricam_scena} . In questo modo è possibile texturizzare le pareti del muro in maniera differente, come mostrato in figura [rif figura].
-
-FOTO
+Pertanto si è scelto di combinare l’oggetto ExtrudeGeometry con due oggetti 2D ShapeGeometry identici al muro, entrambi posizionati in corrispondenza delle due parenti, uno con le normali di faccia in posizione frontale (\texttt{FrontSide} ), l’altro con le normali invertite (\texttt{BackSide} ). Quest’ultimo caso ha reso necessario l’inserimento del metodo per il flip delle normali, discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_caricam_scena} . In questo modo è possibile texturizzare le pareti del muro in maniera differente, come mostrato in figura \ref{fig:editor_3} .
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_3.png}\hfill
+ \caption[Creazione muri]{Processo di creazione di un muro all'interno dell'editor, mediante funzionalità interattiva. Si noti come, nella parte destra della figura, entrambe le pareti del muro siano texturizzabili in maniera differente.}
+ \label{fig:editor_3}
+\end{figure}
 
 \subsection{Creazione Skybox}
 \label{sec:chapter_creazione_scena_funzionalita_editor_skybox}
@@ -227,8 +241,13 @@ Una volta che tali parametri sono stati configurati, l’editor si impegna nell�
 Siccome la skybox risulta un elemento della scena, in caso di sottomissione di una richiesta di bake verrebbe passata al relativo servizio insieme ad essa. Tuttavia gli elementi della skybox non dovrebbero partecipare al processo di baking delle lightmap, pertanto è stato necessario istruire il processo di baking affinchè non considerasse gli elementi della skybox, considerandoli tuttavia per il processo di esportazione della scena finale.
 \\
 Per risolvere questo problema ad ogni faccia della skybox viene associato il parametro \texttt{avoid\_bake} (di cui si è già discusso nel capitolo \ref{sec:chapter_baking_service_pipeline_baking_ciclo_bake} ), tramite cui Blender è in grado di comprendere se l’oggetto deve o meno partecipare al baking delle lightmap. Siccome il parametro avoid\_bake, per essere letto da Blender, dovrà trovarsi all’interno del JSON contenente la descrizione della scena 3D, si è reso necessario modificare ThreeJS affinchè il metodo per la conversione della scena 3D in formato JSON trascrivesse anche questo nuovo parametro insieme a quelli standard per la descrizione degli oggetti. 
-
-FOTO 
+\\
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_4.png}\hfill
+ \caption[Creazione Skybox]{Dettaglio sul pannello dell'editor dedicato alla creazione delle sei facce della skybox, e risultato corrispondente; ogni faccia è distanziata per migliorare la percezione in foto dei singoli elementi che compongono la skybox.}
+ \label{fig:editor_4}
+\end{figure} 
 
 \subsection{Generazione delle env map}
 \label{sec:chapter_creazione_scena_funzionalita_editor_envmap}

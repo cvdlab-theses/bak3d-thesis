@@ -2,7 +2,7 @@
 \label{sec:chapter_stato_arte_path_tracing}
 
 In computer grafica, path tracing è una tecnica di rendering che fornisce una soluzione molto più realistica al problema del calcolo della luce rispetto al ray casting.
-Il rendering che si ottiene mediante questo algoritmo è una vera simulazione di come la luce percorre la scena e non solamente una approssimazione artistica. Permette di simulare effetti quali ad esempio luci indirette come la luce che rimbalza da una superficie (Fig. \ref{fig:stato_arte_luci_dir_ind}), ombre leggere ed effetti caustici (Fig. \ref{fig:stato_arte_ombre_caust} 
+Il rendering che si ottiene mediante questo algoritmo è una vera simulazione di come la luce percorre la scena e non solamente una approssimazione artistica. Permette di simulare effetti quali ad esempio luci indirette come la luce che rimbalza da una superficie (Fig. \ref{fig:stato_arte_luci_dir_ind}), ombre leggere ed effetti caustici (Fig. \ref{fig:stato_arte_ombre_caust}) 
 \\
 \begin{figure}[htb]
  \centering
@@ -43,7 +43,7 @@ Siccome i raggi lanciati quando intersecano un oggetto rimbalzano in una direzio
 Lanciando quindi pochi raggi per ogni pixel del piano immagine, la probabilità che per quel pixel siano conteggiate nel calcolo tutte le fonti da cui riceve la luce è bassa. 
 Molto probabile invece è che per alcuni pixel non vengano conteggiate delle luci, che invece verranno conteggiate per altri pixel. Questo provoca rumore nell’ immagine renderizzata. 
 Il rumore è facilmente identificabile dall’ alternanza continua di pixel illuminati diversamente, ma che in realtà dovrebbero avere un’illuminazione identica.
-Maggiore è il sample, quindi, maggiore è la probabilità che per quel pixel vengano conteggiate tutte le fonti di luce che riceve (figura).
+Maggiore è il sample, quindi, maggiore è la probabilità che per quel pixel vengano conteggiate tutte le fonti di luce che riceve \ref{fig:stato_arte_effetto_sampling} .
 \\
 \begin{figure}[htb]
  \centering

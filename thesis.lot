@@ -18,13 +18,11 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.1}{\ignorespaces Richieste utente e middleware}}{137}{table.caption.75}
+\contentsline {table}{\numberline {5.1}{\ignorespaces Richieste utente e middleware}}{136}{table.caption.75}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.2}{\ignorespaces Luci ThreeJS e Blender\relax }}{158}{table.caption.82}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Luci ThreeJS e Blender\relax }}{156}{table.caption.82}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.3}{\ignorespaces Mappatura intensity Blender\relax }}{163}{table.caption.85}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.3}{\ignorespaces Mappatura intensity Blender\relax }}{161}{table.caption.85}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
@@ -32,23 +30,25 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.1}{\ignorespaces Performance al variare degli oggetti}}{232}{table.caption.119}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.2}{\ignorespaces Performance al variare del sampling}}{235}{table.caption.122}
+\contentsline {table}{\numberline {9.1}{\ignorespaces Performance al variare degli oggetti}}{263}{table.caption.125}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.3}{\ignorespaces Performance al variare delle luci}}{240}{table.caption.128}
+\contentsline {table}{\numberline {9.2}{\ignorespaces Performance al variare del sampling}}{266}{table.caption.128}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.4}{\ignorespaces Confronto dimensioni input-output}}{243}{table.caption.129}
+\contentsline {table}{\numberline {9.3}{\ignorespaces Performance al variare delle luci}}{271}{table.caption.134}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.5}{\ignorespaces Dimensioni output variando sampling}}{245}{table.caption.131}
+\contentsline {table}{\numberline {9.4}{\ignorespaces Confronto dimensioni input-output}}{274}{table.caption.135}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{249}{table.caption.133}
+\contentsline {table}{\numberline {9.5}{\ignorespaces Dimensioni output variando sampling}}{276}{table.caption.137}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{250}{table.caption.134}
+\contentsline {table}{\numberline {9.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{279}{table.caption.139}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{256}{table.caption.141}
+\contentsline {table}{\numberline {9.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{281}{table.caption.140}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {9.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{258}{table.caption.142}
+\contentsline {table}{\numberline {9.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{287}{table.caption.147}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {9.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{288}{table.caption.148}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
