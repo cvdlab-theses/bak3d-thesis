@@ -2,7 +2,7 @@
 \section{Path Tracing}
 \label{sec:chapter_stato_arte_path_tracing}
 In computer grafica, path tracing è una tecnica di rendering che fornisce una soluzione molto più realistica al problema del calcolo della luce rispetto al ray casting.
-Il rendering che si ottiene mediante questo algoritmo è una vera simulazione di come la luce percorre la scena e non solamente una approssimazione artistica. Permette di simulare effetti quali ad esempio luci indirette come la luce che rimbalza da una superficie (Fig. \ref{fig:stato_arte_luci_dir_ind}), ombre leggere ed effetti caustici (Fig. \ref{fig:stato_arte_ombre_caust}) 
+Il rendering che si ottiene mediante questo algoritmo è una vera simulazione di come la luce percorre la scena e non solamente una approssimazione artistica. Permette di simulare effetti quali ad esempio luci indirette come la luce che rimbalza da una superficie (Fig. \ref{fig:stato_arte_luci_dir_ind}), ombre leggere ed effetti caustici \cite{path1,monte_path} (Fig. \ref{fig:stato_arte_ombre_caust}) 
 \\
 \begin{figure}[htb]
  \centering
@@ -56,7 +56,7 @@ Maggiore è il sample, quindi, maggiore è la probabilità che per quel pixel ve
  \label{fig:stato_arte_effetto_sampling}
 \end{figure}
 \\
-È chiaro quindi quanto questo algoritmo sia computazionalmente oneroso, permettendo di ottenere risultati corretti solamente con sample alto. Maggiore è il sample, maggiore è il tempo di attesa per il completamento del rendering, migliore è il risultato dell’ illuminazione globale della scena ottenuta.
+È chiaro quindi quanto questo algoritmo sia computazionalmente oneroso, permettendo di ottenere risultati corretti solamente con sample alto. Maggiore è il sample, maggiore è il tempo di attesa per il completamento del rendering, migliore è il risultato dell’ illuminazione globale della scena ottenuta. \cite{path3}
 Oltre a quella appena descritta, esistono diverse implementazioni del path tracing, che permettono di ottenere alcuni vantaggi in determinate situazioni.
 Un approccio prevede, quando un raggo colpisce una superficie, di lanciare un nuovo raggio sia nella direzione di rimbalzo che verso le fonti di luce dirette.
 \\

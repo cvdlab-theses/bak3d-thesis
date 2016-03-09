@@ -31,14 +31,14 @@ Il caricamento della scena prevede l’analisi del file in entrata al fine di ri
 Questo adattamento è specifico per le due tecnologie utilizzate ed è ugualmente valido per entrambi i render di Blender: Blender render e Cycles render.
 \\
 Il mapping risulta un’operazione complessa in quanto ha il compito di mappare specificatamente un rendering di tipo rasterization in un rendering di tipo path tracing (chiamato Cycles render in Blender).
-Questo tipo di mappatura è stato oggetto di studio e sperimentazioni in questo lavoro di tesi in quanto non esiste una metodologia standard che permettesse di effettuarla. Questa operazione in particolare viene dettagliata nel paragrafo\ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}.
+Questo tipo di mappatura è stato oggetto di studio e sperimentazioni in questo lavoro di tesi in quanto non esiste una metodologia standard che permettesse di effettuarla. Questa operazione in particolare viene dettagliata nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}.
 \\
 Anche l’operazione di bake è stata studiata approfonditamente al fine di comprendere come Blender la effettuasse. Sono state effettuate sperimentazioni tramite l’interfaccia grafica fornita dal software al fine di comprendere quali parametri influenzassero il Bake e quali valori assegnare ad essi per ottenere i risultati voluti. L’operazione di bake è stata poi replicata tramite codice sfruttando le API messe a disposizione da Blender.
 \\
 Il ciclo di bake viene effettuato grazie all’utilizzo di CUDA, l'architettura di elaborazione in parallelo di NVIDIA. 
 CUDA ha infatti permesso, in questo lavoro di tesi, miglioramenti netti nei tempi di bake rispetto a computazioni basate su CPU grazie allo sfruttamento della potenza di calcolo delle GPU (unità di elaborazione grafica).
 \\
-Per l’esportazione è stato utilizzato come base un addon (scritto in Python) già esistente, descritto in [X], che permettesse di effettuare questa operazione. Esso però risultava incompleto in quanto non permetteva la scrittura di alcune strutture dati fondamentali. Le modifiche apportate all’ exporter verrano approfondite nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_esport_scena}.
+Per l’esportazione è stato utilizzato come base un addon (scritto in Python) già esistente, descritto in \cite{io_three} , che permettesse di effettuare questa operazione. Esso però risultava incompleto in quanto non permetteva la scrittura di alcune strutture dati fondamentali. Le modifiche apportate all’ exporter verrano approfondite nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_esport_scena}.
 \\
 Realizzare lo script è risultata quindi un’operazione complessa in quanto ha reso necessario un accurato studio delle strutture dati utilizzate da Three.js e dalle API di Blender.
 Inoltre è stato effettuato un accurato lavoro di ricerca su come effettuare il mapping tra due rendering differenti, anch’ essi studiati dettagliatamente.
@@ -54,7 +54,7 @@ Inoltre durante la realizzazione dello script sono state utilizzate due differen
 \item \texttt{Edit Mode}: permette di effettuare le operazioni che agiscono sulla geometria dell’oggetto, ma non sulle proprietà globali. Ad esempio permette la modifica dei vertici della geometria.
 \end{itemize}
 Le due modalità inoltre utilizzano strutture dati differenti, non è però compito di questo elaborato trattare le differenze.
-Salvo dove diversamente specificato in questo capitolo si assume che le operazioni vengano effettuate in modalità Objec Mode. 
+Salvo dove diversamente specificato in questo capitolo si assume che le operazioni vengano effettuate in modalità Object Mode. 
 
 
 \subsection{Caricamento della scena}

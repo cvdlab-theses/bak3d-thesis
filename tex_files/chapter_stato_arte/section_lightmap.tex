@@ -3,7 +3,7 @@
 
 Le lightmap sono strutture dati identiche a normali texture ma, mentre quest’ultime sono array di elementi d’immagine chiamati texels, le lightmap sono array di elementi di luce , o irradianza, detti lumels. Questi elementi di luce vengono pre-computati offline.
 Il fattore scala di un lumel definisce la risoluzione della lightmap: ad esempio un fattore scala 16 indica che il lumel ha un fattore scala 16:1 rispetto all’unità geometrica usata dal sistema per misurare distanze o definire coordinate. 
-Un fattore scala 1 indica invece che il lumel è grande esattamente quanto un unità geometrica. 
+Un fattore scala 1 indica invece che il lumel è grande esattamente quanto un unità geometrica. \cite{light1}
 \\
 \begin{figure}[htb]
  \centering
@@ -39,7 +39,7 @@ Questa infatti è decisamente più riusabile di una lightmap, ad esempio è poss
 \subsection{Baking delle lightmap}
 \label{sec:chapter_stato_arte_baking_lightmap}
 
-Il processo di precomputazione delle informazioni di luce all’interno di una scena con oggetti e luci statiche, e la memorizzazione dei risultati all’interno di una struttura dati del tipo sopra descritto, è detto baking delle lightmap. 
+Il processo di precomputazione delle informazioni di luce all’interno di una scena con oggetti e luci statiche, e la memorizzazione dei risultati all’interno di una struttura dati del tipo sopra descritto, è detto baking delle lightmap. \cite{light6}
 \\
 Questo approccio è il migliore se si vogliono sfruttare algoritmi di illuminazione indiretta nelle applicazioni real-time, come i videogiochi. In generale, il baking delle lightmap porta in dote tutta una serie di vantaggi.
 A livello qualitativo, il bake permette la fruizione di:
@@ -93,7 +93,7 @@ un software per la computer grafica 3D che verrà esposto in un paragrafo dedica
 \end{figure}
 Questa prima fase è fondamentale, perchè senza eseguire l’unwrap dell’oggetto 3D sulla lightmap è impossibile stabilire, dato il valore di radianza di un poligono dell’oggetto 3D, qual’è il lumel corrispondente in cui memorizzarlo.
 \\
-La seconda fase prevede di calcolare la posizione in coordinate mondo e la normale, per ogni lumel in ogni lightmap.
+La seconda fase prevede di calcolare la posizione in coordinate mondo e la normale, per ogni lumel in ogni lightmap. \cite{light10,light9}
 \\
 Ogni lumel di una lightmap deve essere mappato in una posizione nel sistema di riferimento in coordinate mondo. Finchè le geometrie nella scena rimarrano statiche, e la dimensione delle lightmap rimarrà invariata, le corrispondenze tra coordinate texture e coordinate mondo risulteranno invariate, e quindi possono essere preprocessate offline una volta sola e poi riutilizzate.
 \\
@@ -258,11 +258,11 @@ Gli algoritmi di illuminazione globale, o indiretta, sono onerosi dal punto di v
 Tuttavia in una scena statica, o parzialmente statica, l’illuminazione indiretta può essere pre-processata, memorizzando i risultati per utilizzarli durante il rendering.
 \\
 I rimbalzi multipli di luce su delle superfici creano giochi di luci e ombre che sono alla base di una scena realistica. Le interriflessioni portano inoltre al fenomeno del color blending, dove il colore di un oggetto appare su un oggetto adiacente. 
-Radiosity è stata la prima tecnica nella computer grafica a simulare i rimbalzi di luce tra superfici diffuse.
+Radiosity è stata la prima tecnica nella computer grafica a simulare i rimbalzi di luce tra superfici diffuse. \cite{light5,light2}
 \\
 L’idea alla base di questo algoritmo è relativamente semplice. Se in un ambiente viene accesa una luce, le particelle luminose cominceranno a rimbalzare per tutto l’ambiente, fino a raggiungere una condizione di equilibrio. In questa condizione di equilibrio, la superficie può essere considerata essa stessa una fonte luminosa.
 \\
-Una superficie colpita da una fonte luminosa può assorbire o riflettere la luce stessa. L’algoritmo radiosity pone dapprima l’assunzione base che tutte le luci indirette provengono da superfici diffuse: una tesi questa che crolla nel momento in cui si ha a che fare ad esempio con un pavimento di marmo lucido, o uno specchio, ma in generale per la maggior parte degli ambienti può rivelarsi una buona approssimazione. Basandosi su questa tesi, la funzione di distribuzione bidirezionale della riflettanza (BRDF) per superfici diffuse, ovvero la funzione che regola come la luce viene riflessa su di una superficie opaca, è una semisfera uniforme.
+Una superficie colpita da una fonte luminosa può assorbire o riflettere la luce stessa. L’algoritmo radiosity pone dapprima l’assunzione base che tutte le luci indirette provengono da superfici diffuse: una tesi questa che crolla nel momento in cui si ha a che fare ad esempio con un pavimento di marmo lucido, o uno specchio, ma in generale per la maggior parte degli ambienti può rivelarsi una buona approssimazione. Basandosi su questa tesi, la funzione di distribuzione bidirezionale della riflettanza (BRDF) per superfici diffuse \cite{brdf}, ovvero la funzione che regola come la luce viene riflessa su di una superficie opaca, è una semisfera uniforme.
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.4\linewidth]{images/chapter_stato_arte/stato_attuale_brdf_semistefa.png}\hfill
@@ -303,7 +303,7 @@ In questo modo durante il ciclo di rendering, nella fase calcolo dello shading s
  \caption[Vertex shading lightmap]{Dettaglio circa l'operazioni di vertex shading utilizzando le lightmap.}
  \label{fig:stato_arte_ver_sh}
 \end{figure}
-La Id Software nel 1997 fu la prima software house che, per la realizzazione del videogioco Quake II, processò offline l’algoritmo radiosity, memorizzando le informazioni di luce su delle lightmap.
+La Id Software nel 1997 fu la prima software house che, per la realizzazione del videogioco Quake II, processò offline l’algoritmo radiosity, memorizzando le informazioni di luce su delle lightmap. \cite{light7}
 \\
 \begin{figure}[htb]
  \centering
@@ -312,7 +312,7 @@ La Id Software nel 1997 fu la prima software house che, per la realizzazione del
  \label{fig:stato_arte_quake_lightmap}
 \end{figure}
 \\
-Nonostante gli anni, il pre-calcolo offline delle luci rimane una tecnica attuale; ne è la prova The Witness, un gioco di avventura con elementi puzzle sviluppato da Thekla e uscito il 26 gennaio 2016. 
+Nonostante gli anni, il pre-calcolo offline delle luci rimane una tecnica attuale; ne è la prova The Witness, un gioco di avventura con elementi puzzle sviluppato da Thekla e uscito il 26 gennaio 2016. \cite{light3,light4,light8}
 \\
 Per lo stile grafico dell’opera l’autore Jonathan Blow vide l’illuminazione indiretta come soluzione migliore, in modo da poter simulare i rimbalzi di luce attraverso la scena ed ottenere un aspetto più ricco e delicato rispetto a soluzioni come quelle adottate generalmente dagli shooter in prima persona, dove si fa largo uso di illuminazione diretta, ombre dinamiche, ed effetti particellari. Siccome calcolare la luce indiretta in tempo reale sarebbe stato troppo gravoso, la soluzione finale fu quella di pre-computarla e mappare i risultati su delle   lightmap.	
 \\

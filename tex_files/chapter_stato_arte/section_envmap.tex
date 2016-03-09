@@ -17,7 +17,7 @@ Questo errore è particolarmente riscontrabile su superfici in cui la riflession
 Il presente aspetto verrà analizzato più nel dettaglio a fine paragrafo.
 La seconda assunzione invece non permette di ottenere riflessioni multiple come ad esempio quelle ottenute da due oggetti vicini che si riflettono tra loro. Per questo motivo, è preferibile utilizzare l’environment map su oggetti convessi piuttosto che su oggetti concavi, i quali riflettono se stessi.
 \\
-Un oggetto viene detto convesso se comunque vengono presi due punti che gli appartengono anche il segmento che li congiunge gli appartiene interamente. In caso contrario l’ oggetto viene detto concavo.
+Un oggetto viene detto convesso se comunque vengono presi due punti che gli appartengono anche il segmento che li congiunge gli appartiene interamente. In caso contrario l’ oggetto viene detto concavo. \cite{env1}
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.5\linewidth]{images/chapter_stato_arte/stato_arte_conc_conv.jpg}\hfill
@@ -52,7 +52,7 @@ Le superfici riflettenti, riflettono il raggio di incidenza $i$ (partito dall’
 Per superfici perfettamente riflettenti (ad esempio uno specchio) l’angolo di incidenza $\Theta_i$ è lo stesso dell’ angolo di riflessione $\Theta_r$.
 Il calcolo del vettore $r$ è essenziale per l’ algoritmo di env-map di riflessione ed il suo utilizzo verrà spiegato a breve durante la trattazione completa dei passi dell’algoritmo.
 \begin{equation}
-r = i - 2(n * i)n
+r = i - 2(n * i)n 
 \end{equation}
 Le superfici rifrangenti, invece, rifrangono  il raggio di incidenza $i$ che le colpisce in una direzione $t$ dipendente dal mezzo attraversato.
 \\
@@ -63,7 +63,7 @@ Le superfici rifrangenti, invece, rifrangono  il raggio di incidenza $i$ che le 
  \label{fig:stato_arte_refr}
 \end{figure}
 \\
-La \emph{legge di Snell} descrive la relazione tra l’ angolo di incidenza e di rifrazione di un raggio che transita tra due mezzi con indice di rifrazione differente.
+La \emph{legge di Snell} \cite{env2} descrive la relazione tra l’ angolo di incidenza e di rifrazione di un raggio che transita tra due mezzi con indice di rifrazione differente.
 \begin{equation}
 n_1sin\Theta_1 = n_2sin\Theta_2 
 \end{equation}
@@ -78,7 +78,7 @@ t = \frac{\eta_1}{\eta_2}i + (\frac{\eta_1}{\eta_2}cos\Theta_i - \sqrt[2]{1 - si
 Il calcolo del vettore $r$ e del vettore $t$ è semplice e questo rende l’environment map il metodo più veloce per renderizzare una superficie che rifrae o riflette.
 L’ env-map prende il nome di \emph{env-map di riflessione} , quando viene utilizzata per simulare la riflessione e di \emph{env-map di rifrazione} quando viene utilizzata per simulare la rifrazione. Nulla vieta di utilizzare la stessa env-map per simulare entrambi gli effetti.
 L’algoritmo usa il vettore $r$ quando viene utilizzata una env-map di riflessione e $t$ quando viene utilizzata una env-map di rifrazione.
-Le operazione che l’ algoritmo effettua sono le seguenti:
+Le operazione che l’ algoritmo effettua sono le seguenti: \cite{real_time_book}
 \begin{itemize}
 \item Generare o caricare una immagine a due dimensioni che rappresenta l’ ambiente ( l’env-map stessa).
 \item Per ogni pixel che contiene un oggetto riflettente, calcolare la normale alla superficie dell’oggetto.
@@ -115,7 +115,7 @@ Viene preferito questo approccio in quanto risulta più veloce e crea un credibi
 \subsection{Env map cubica}
 \label{sec:chapter_stato_arte_envmap_cubica}
 
-Una env map cubica o cube map utilizza le immagini ottenute da sei facce di un cubo come env map.
+Una env map cubica o cube map utilizza le immagini ottenute da sei facce di un cubo come env map \cite{env3} . 
 L’ ambiente viene proiettato su ogni faccia del cubo e salvato tramite sei texture quadrate oppure disposte in sei diverse regioni di una singola texture (Fig. \ref{fig:stato_arte_cubo_envmap} ).
 \begin{figure}[htb]
  \centering
