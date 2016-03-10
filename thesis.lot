@@ -14,21 +14,29 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.1}{\ignorespaces Performance al variare degli oggetti}}{53}{table.caption.44}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.2}{\ignorespaces Performance al variare del sampling}}{55}{table.caption.47}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.3}{\ignorespaces Performance al variare delle luci}}{59}{table.caption.53}
+\contentsline {table}{\numberline {5.1}{\ignorespaces Richieste utente e middleware}}{119}{table.caption.74}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.4}{\ignorespaces Confronto dimensioni input-output}}{61}{table.caption.54}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Luci ThreeJS e Blender\relax }}{137}{table.caption.81}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.5}{\ignorespaces Dimensioni output variando sampling}}{63}{table.caption.56}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Mappatura intensity Blender\relax }}{141}{table.caption.84}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{67}{table.caption.58}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{68}{table.caption.59}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {3.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{74}{table.caption.66}
+\contentsline {table}{\numberline {7.1}{\ignorespaces Performance al variare degli oggetti}}{173}{table.caption.100}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.2}{\ignorespaces Performance al variare del sampling}}{175}{table.caption.103}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.3}{\ignorespaces Performance al variare delle luci}}{179}{table.caption.109}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.4}{\ignorespaces Confronto dimensioni input-output}}{181}{table.caption.110}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {7.5}{\ignorespaces Dimensioni output variando sampling}}{183}{table.caption.112}
 \defcounter {refsection}{0}\relax 
 \contentsline {table}{\numberline {7.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{187}{table.caption.114}
 \defcounter {refsection}{0}\relax 
@@ -36,6 +44,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {table}{\numberline {7.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{194}{table.caption.122}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{195}{table.caption.123}
+\contentsline {table}{\numberline {7.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{194}{table.caption.123}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
