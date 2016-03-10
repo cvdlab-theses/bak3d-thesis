@@ -38,24 +38,40 @@ Questa permette di osservare la scena in modo simile a come si farebbe nella vit
  \caption[Navigazione in prima persona]{Una immagine della navigazione in prima persona.}
  \label{fig:navigazione_scena_navigator_persp}
 \end{figure}
-Questa modalità permette all’utente di avere una visione completa dell’ambiente realizzato. Inoltre l’utente può modificare la camera a proprio piacimento, permettendogli di osservare ogni dettaglio della scena.
 \\
+Questa modalità permette all’utente di avere una visione completa dell’ambiente realizzato. Inoltre l’utente può modificare la camera a proprio piacimento, permettendogli di osservare ogni dettaglio della scena.
 In particolare la vista dall’alto risulta utile, quando viene caricato un appartamento, per osservare la struttura esterna ed interna dell’abitazione creata dall’ angolazione desiderata.
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/navigator_est.png}\hfill
+ \includegraphics[width=0.96\linewidth]{images/chapter_navigazione_scena/navigator_est.png}\hfill
  \caption[Navigazione dall'alto: veduta esterna]{Una immagine della navigazione in prima persona con veduta esterna dell'abitazione.}
  \label{fig:navigazione_scena_navigator_est}
 \end{figure}
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/navigator_int.png}\hfill
+ \includegraphics[width=0.96\linewidth]{images/chapter_navigazione_scena/navigator_int.png}\hfill
  \caption[Navigazione dall'alto: veduta esterna]{Una immagine della navigazione in prima persona con veduta interna dell'abitazione.}
  \label{fig:navigazione_scena_navigator_int}
 \end{figure}
+\\
 La modalità in prima persona rappresenta la caratteristica principale del servizio di navigazione e permette all’osservatore virtuale di camminare liberamente all’interno della scena creata.
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=0.99\linewidth]{images/chapter_navigazione_scena/vis_sin_des.png}\hfill
+ \caption[Esempio 1 di osservazione virtuale]{Sguardo dell'osservatore virtuale rivolto verso sinistra e verso destra.}
+ \label{fig:navigazione_scena_vis_sin_des}
+\end{figure}
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.80\linewidth]{images/chapter_navigazione_scena/vis_alta_bassa.png}\hfill
+ \caption[Esempio 2 di osservazione virtuale]{Sguardo dell'osservatore virtuale rivolto verso l'alto e verso il basso.}
+ \label{fig:navigazione_scena_vis_alta_bassa}
+\end{figure}
 \\
 Quando questa modalità viene avviata, il menu in alto a destra (visibile in figura \ref{fig:navigazione_scena_navigator_int}) viene nascosto per permettere una navigazione a schermo intero, inoltre viene nascosto il puntatore del mouse.
+\\
+Inoltre esattamente come nei videogiochi, viene permesso all’utente di mettere in pausa la navigazione.
 \\
 L’osservatore virtuale che si muove nella scena è costituito da un oggetto 3D a cui è associata una camera prospettica.
 \\
@@ -67,21 +83,7 @@ La camera invece rappresenta gli “occhi” dell’osservatore; è possibile ru
 Questo ha permesso di dare l’illusione all’utilizzare del servizio di navigazione che lui stesso stia visitando l’ambiente.
 In particolare viene permesso di osservare la scena da una altezza di 1.80 metri. Questa modalità risulta molto utile per permettere all’utilizzatore di farsi una idea concreta dello spazio occupato dalla scena creata.
 \\
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/vis_sin_des.png}\hfill
- \caption[Esempio 1 di osservazione virtuale]{Sguardo dell'osservatore virtuale rivolto verso sinistra e verso destra.}
- \label{fig:navigazione_scena_vis_sin_des}
-\end{figure}
-\\
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/vis_alta_bassa.png}\hfill
- \caption[Esempio 2 di osservazione virtuale]{Sguardo dell'osservatore virtuale rivolto verso l'alto e verso il basso.}
- \label{fig:navigazione_scena_vis_alta_bassa}
-\end{figure}
-Inoltre esattamente come nei videogiochi, viene permesso all’utente di mettere in pausa la navigazione. 
-\\
+Inoltre esattamente come nei videogiochi, viene permesso all’utente di mettere in pausa la navigazione.
 Quando questo avviene, i controlli di movimento vengono bloccati e torna visibile il menu ed il puntatore del mouse. Questo permette all’utente di scegliare se cambiare modalità di navigazione  oppure continuare con quella in prima persona.
 \begin{figure}[htb]
  \centering
@@ -89,6 +91,7 @@ Quando questo avviene, i controlli di movimento vengono bloccati e torna visibil
  \caption[Navigazione in pausa.]{Navigazione in pausa.}
  \label{fig:navigazione_scena_navigator_pause}
 \end{figure}
+\newpage
 Quando viene visitata una abitazione, la navigazione in prima persona, permette all’utente di valutare la grandezza delle stanze in rapporto all’osservatore virtuale inserito nella scena. Questo permette di fornire all’utente una idea migliore della larghezza e dell’altezza di ogni stanza creata.
 \\
 In particolare nel presente lavoro di tesi vengono navigate scena fotorealistiche prodotte dal sistema creato. In queste scene sono inserite informazioni di luci ed ombre estremamente realistiche.
@@ -115,10 +118,11 @@ In particolare in questo lavoro di tesi sono stati sperimentati due tipi di viso
 L’Oculus Rift è un visore steroscopico di realtà virtuale sviluppato dalla società Oculus VR.
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/oculus.jpg}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_navigazione_scena/oculus.jpg}\hfill
  \caption[Il visore Oculus Rift.]{Il visore Oculus Rift.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
+\\
 Esso permette la visione stereoscopica di un ambiente virtuale ad una qualità elevata tramite due display che girano ad una risoluzione HD di 2160x1200 (1080x1200 per occhio) con un refresh rate di 60HZ.
 \\
 Inoltre permette un campo di visione di 100 gradi in orizzontale, il massimo raggiunto da visori di questo tipo. Questo permette all’utilizzatore del dispositivo di non osservare eccessive zone scure, dovute al rivestimento del sensore, intorno ai bordi del display. 
@@ -147,29 +151,25 @@ L’Oculus Rift non si adattava bene ad essere utilizzato per questo elaborato p
 \\
 Sarebbe quindi inutile inserire una funzionalità come quella della realtà virtuale tramite il sensore Oculus se poi  essa non può essere fruita in tale contesto.
 \\
-
 Per questo motivo, nel presento lavoro di tesi è stato invece utilizzato il visore stereoscopico Google Cardboard sviluppato da Google.
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/oculus.jpg}\hfill
+ \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/cardboard.png}\hfill
  \caption[Il visore Google Cardboard.]{Il visore Google Cardboard.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
-Questo visore è costituito da semplici componenti a basso costo:
-\begin{itemize}
-\item Cartone da ritagliare.
-\item Due lenti da 45 mm di distanza focale, che permettono un angolo di visione di 90 gradi.
-\item Un magnete.
-\item Elastici.
-\end{itemize}
+\\
+Questo visore è costituito da semplici componenti a basso costo: Cartone da ritagliare, Due lenti con distanza focale di 45 mm (che permettono un angolo di visione di 90 gradi), un magnete e degli elastici.
+\\
 Le parti acquistate devono essere assemblate insieme dall’utilizzatore al fine di costruire il Cardboard (figura \ref{fig:navigazione_scena_navigator_cardboard_pezzi}).
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/cardboard_pezzi.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_navigazione_scena/cardboard_pezzi.png}\hfill
  \caption[Le componenti del CardBoard.]{Le componenti del CardBoard.}
  \label{fig:navigazione_scena_navigator_cardboard_pezzi}
 \end{figure}
-
+\\
 Una volta costruito il visore di cartone è necessario inserire lo smartphone all’interno della fessura presente in esso. Lo smartphone funge infatti da display delle immagini da visualizzare.
 \\
 Le immagine proiettate dal cellulare sulle due lenti permettono la visione stereoscopica (3D).
@@ -190,6 +190,7 @@ La canvas, in cui viene disegnata la scena, viene divisa a metà in larghezza. L
  \caption[Visione stereoscopica.]{La visione stereoscopica.}
  \label{fig:navigazione_scena_navigator_immag_virt}
 \end{figure}
+\\
 Per ogni ciclo di render vengono disegnate due immagini di questo tipo che, tramite l’utilizzo delle lenti presenti nel visore, permettono la visione stereoscopica.
 \\
 Inoltre sono stati sfruttati l’accelerometro ed il giroscopio per permettere di modificare la vista sulla scena virtuale in maniera proporzionale a come l’utente muove la testa.
@@ -219,13 +220,14 @@ Durante il movimento del giocatore nella scena, l’indicatore del personaggio r
 \\
 La mappa quindi segue il movimento del giocatore all’interno della scena mostrando di volta in volta l’ambiente intorno ad esso. 
 Il fatto che il giocatore sia centrato nella mappa permette di ottenere una visione completa dell’ambiente circostante tramite una vista aerea, vista utile ai fini dell’orientamento.
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/map_lost_odissey.jpg}\hfill
  \caption[Mappe nei videogiochi.]{Mappa proveniente dal videogioco \emph{Lost Odissey} (2008).}
  \label{fig:navigazione_scena_map_lost_odissey}
 \end{figure}
-
+\\
 In questo lavoro di tesi è stato preso spunto dalle mappe utilizzate nei videogiochi per la realizzazione di una mappa visualizzabile durante la navigazione delle scene fotorealistiche create.
 \\
 Esattamente come per quelle dei videogiochi, la mappa disegna l’area navigabile della scena e disegna l’osservatore virtuale tramite un indicatore blu a forma di chiocciola. In particolare la punta della chiocciola indica la direzione di movimento dell’osservatore.
