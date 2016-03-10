@@ -30,7 +30,13 @@ Permettere la navigazioni di qualsiasi tipo di scena Three.js ha richiesto una l
 Un’ operazione di questo tipo risulta estremamente complessa in quanto il navigatore deve fornire la possibilità di visitare appartamenti fotorealistici completi, anche arredati.
 \\
 La renderizzazione di una scena di tali dimensioni risulta di per sé estremamente complessa dal punto di vista del carico computativo. Risulta chiaro quindi quanto sia essenziale diminuire al massimo il numero di calcoli da effettuare ad ogni ciclo di render per permettere una navigazione fluida ad un frame rate costante. 
-
-
-
-
+\\
+La gestione del carico computazionale ha permesso la realizzazione di un servizio di navigazione fruibile sulla stragrande maggioranza delle piattaforme hardware, compresi portatili e smartphone.
+\\
+Inoltre risulta essenziale che l’utente sia ignaro di tutte le ottimizzazione effettuate, per consentire l’utilizzo del servizio di navigazione a qualsiasi tipo di utenza. 
+\\
+Infine viene data la possibilità di osservare la scena tramite una visione stereoscopica grazie all’utilizzo del visore Google Cardboard.
+In commercio esistono applicazioni web che consentono la navigazione di scene, come ad esempio ShapeSpark (ref). In esse la navigazione risulta però supervisionata.
+\\
+La scena infatti non può essere navigata immediatamente ma deve prima subire una fase di processamento a mano, in cui viene configurata una esperienza di navigazione ad hoc per il tipo di ambiente creato. 
+Configurazione che, tramite il servizio di navigazione creato in questo lavoro, avviene invece in maniera automatica.

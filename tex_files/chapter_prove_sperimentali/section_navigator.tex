@@ -1,3 +1,4 @@
+\newpage
 \section{Navigatore}
 \label{sec:chapter_prove_sperimentali_navigator}
 
@@ -9,7 +10,7 @@ La presenza di luci, all’interno di una normale scena creata in Three.js, rapp
 I confronti effettuati tra le due scene differenti, sopra descritte, hanno permesso di sperimentare quanto le luci incidano sulle prestazioni di rendering.
 \\ 
 Inoltre hanno permesso di valutare qualitativamente i miglioramenti visivi nella riproduzione delle fonti luminose ottenuti da un rendering di tipo Cycles rispetto ad uno di tipo Rasterization.
-\subsection{Confronto prestazionale tra scena con o senza bake}
+\subsection{Confronto prestazionale tra scena prima e dopo il bake}
 \label{sec:chapter_prove_sperimentali_navigator_confronto_prestazionale}
 Il test effettuato prevede di sperimentare i benefici prestazionali, osservabili durante l’utilizzo del navigatore, di una scena che ha subito il processo di bake (senza luci) rispetto ad una non processata tramite il servizio bake (con luci).
 \\
@@ -84,9 +85,8 @@ Adesso vengono presentati i risultati di performance ottenuti su un calcolatore 
 \end{itemize}
 
 La scena processata tramite il servizio di bake, esattamente come con il calcolatore di fascia bassa, ha permesso di ottenere un frame rate stabile a 60 frame al secondo sia durante la navigazione dall'alto sia durante quella in prima persona.
-I risultati della scena senza bake all'aumentare del numero di luci inserite sono invece descritti in tabella \ref{table:luci_alte_prest} 
-
-\begin{table}[]
+I risultati della scena senza bake all'aumentare del numero di luci inserite sono descritti in tabella \ref{table:luci_alte_prest} 
+\begin{table}[h]
 \centering
 \caption{Numero di luci e fluidità (architettura 2).}
 \begin{tabular}{|l|l|l|l|}
@@ -101,23 +101,16 @@ I risultati della scena senza bake all'aumentare del numero di luci inserite son
 \end{tabular}
 \label{table:luci_alte_prest}
 \end{table}
-
 Dai risultati ottenuti è possibile osservare come la renderizzazione nel navigatore di una scena che non è stata processata tramite bake risulti fluida in presenza di poche luci, con un frame rate elevato ma fortemente variabile.
-\\ 
 Il frame rate esattamente come per il calcolatore di basse prestazioni risulta più basso quando la camera renderizza direttamente una o più luci.
-\\
 Con l’inserimento di un numero maggiore di 20 luci la navigazione comincia a diventare problematica, con gli fps che subiscono un notevole decremento, e prosegue fino a risultare impossibile quando le luci raggiungono un numero vicino a 50.
-\\
 Di fatto si ottiene una navigazione a scatti che alterna pochissimi momenti fluidi ad altri in cui essa risulta praticamente bloccata.
-\\
 Esattamente come per l’archittettura con prestazioni più basse anche in questo caso la scena con 30 luci con ampiezza 180 ha prestazioni simili a quella in cui sono presenti 50 luci con piccola ampiezza.
-\\
 Inoltre è possibile riscontrare come la vista dall’alto risulti per ogni scena generalmente meno fluida rispetto rispetto a quella in prima persona, questo perchè nella vista dall’alto vengo di solito renderizzate tutte le luci presenti nella scena.
 \\
 Invece la scena in cui è stato applicato il processo di bake è risultata fluida ed ha permesso di riscontrare un frame rate ancorato a 60 fps fissi sia per la vista dall’alto che per quella in prima persona.
 \\
 I risultati ottenuti in fase di sperimentazione hanno quindi confermato gli enormi vantaggi comportati dal renderizzare in ambiente web una scena processata mediante il servizio creato in questo lavoro di tesi.
-\\
 Vantaggi che  migliorano all’aumentare del numero di luci inserite nella scena originale utilizzata come input nel processo.
 \\
 I risultati ottenuti hanno permesso di confermare il raggiungimento di uno degli obiettivi principali prefissati in questo lavoro di tesi e cioè rendere fruibile la scena anche su architetture meno performanti.
@@ -127,63 +120,63 @@ Nel paragrafo seguente verranno presentati i miglioramenti visivi ottenuti dalle
 
 \subsection{Confronto qualitativo tra scena prima e dopo il bake}
 In questo paragrafo vengono presentati i risultati visivi della scena ottenuta dal processo di bake. Quest’ultima viene confrontata con la scena creata in Three.js in cui non sono state applicate sole lightmap.
-\\
 Questo confronto diretto permette di verificare i miglioramenti ottenuti nella riproduzione di luci ed ombre all’interno delle scene create tramite il servizio.
-\\
 Inoltre permette di testare, a fronte del miglioramento, il grado di fedeltà tra le due scene prese in esame. Fedeltà ottenuta tramite la mappatura dei parametri di rendering Three.js-Blender creata nel presente lavoro di tesi.
 \\
 In particolare vengono qui proposti i risultati visivi ottenuti dal processo di bake di una scena che ricrea un appartamento reale.
-\\
 La scena con applicate le lightmap ha impiegato 9 ore e 57 minuti di tempo per essere processata dal servizio; il valore di sampling utilizzato è stato 300.
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_vetrata_nobake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_vetrata_nobake.png}\hfill
  \caption[Salone senza lightmap, veduta 1]{Immagine del salone senza lightmap, veduta 1}
  \label{fig:prove_sperimentali_navigatore_vetrata_nobake}
 \end{figure}
-\begin{figure}[htb]
+\\
+\begin{figure}[h]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_vetrata_bake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_vetrata_bake.png}\hfill
  \caption[Salone con lightmap, veduta 1]{Immagine del salone con lightmap, veduta 1}
  \label{fig:prove_sperimentali_navigatore_vetrata_bake}
 \end{figure}
-
-Come visibile dalle immagini, nella scena processata con il bake sono mappate luci ed ombre estremamente realistiche.  
 \\
-Inoltre è possibile notare come le due luci visibili nella scena creata in Three.js (fig: \ref{fig:prove_sperimentali_navigatore_vetrata_nobake}) vengano correttamente mappate dal servizio di baking permettendo di ricreare la luce luminosa solare proveniente dall’esterno delle fineste (fig:\ref{fig:prove_sperimentali_navigatore_vetrata_bake}).
+Come visibile dalle immagini, nella scena processata con il bake sono mappate luci ed ombre estremamente realistiche.
+Inoltre è possibile notare come le due luci visibili nella scena creata in Three.js (fig: \ref{fig:prove_sperimentali_navigatore_vetrata_nobake}) vengano correttamente mappate dal servizio di baking permettendo di ricreare la luce solare proveniente dall’esterno delle fineste (fig:\ref{fig:prove_sperimentali_navigatore_vetrata_bake}).
+Inoltre è possibile notare come la luce sfumi di intensità mano a mano che entra all’interno dell’abitazione, effetto non riproducibile dal Rasterization Render.
 \\
-Inoltre è possibile notare come la luce sfumi di intensità mano a mano che entra all’interno dell’abitazione, effetto non riproducibile dal Rasterization Render di Three.js.
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_scale_nobake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_scale_nobake.png}\hfill
  \caption[Salone senza lightmap, veduta 2]{Immagine del salone senza lightmap, veduta 2}
  \label{fig:prove_sperimentali_navigatore_scale_nobake}
 \end{figure}
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_scale_bake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_scale_bake.png}\hfill
  \caption[Salone con lightmap, veduta 2]{Immagine del salone con lightmap, veduta 2}
  \label{fig:prove_sperimentali_navigatore_scale_bake}
 \end{figure}
+\\
 Ulteriore confronto atto a mostrare i miglioramenti nel realismo della scena ottenuti tramite questo lavoro di tesi.
-\\
 La fonte luminosa in questa scena è posizionata in basso a destra dell’immagine ed è rivolta verso l’appartamento. In questa foto è possibile osservare la riproduzione di ombre che sono ben definite quando vicino alla fonte luminosa e diventano più leggere con l’allontanarsi da essa.
-\\
 Anche in questo caso è possibile notare come la mappatura dei parametri del servizio di bake abbia permesso di ricreare una scena fedele all’originale: per oggetti, colori, texture e luci.
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_camino_nobake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_camino_nobake.png}\hfill
  \caption[Salone senza lightmap, veduta 3]{Immagine del salone senza lightmap, veduta 3}
  \label{fig:prove_sperimentali_navigatore_scale_nobake}
 \end{figure}
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_prove_sperimentali/salone_camino_bake.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_prove_sperimentali/salone_camino_bake.png}\hfill
  \caption[Salone con lightmap, veduta 3]{Immagine del salone con lightmap, veduta 3}
  \label{fig:prove_sperimentali_navigatore_scale_bake}
 \end{figure}
-Nella foto scattata dalla scena con il bake è possibile notare come il servizio abbia permesso la creazione di ombre appena distinguibili che si dissolvono verso i bordi. 
 \\
+Nella foto scattata dalla scena con il bake è possibile notare come il servizio abbia permesso la creazione di ombre appena distinguibili che si dissolvono verso i bordi. 
 Questo tipo di ombre estremamente realistiche vengono chiamate soft shadow e sono impossibili da ricreare con il Rasterization render di Three.js. 
 \\
 In questo paragrafo sono stati quindi presentati i miglioramenti ottenuti nella creazioni di luci ed ombre. Miglioramenti che hanno permesso di aumentare notevolmente il grado di realismo delle scene create con il motore di rendering Three.js.
@@ -213,8 +206,7 @@ Nella prima scena vengono calcolati il numero di fotogrammi al secondo erogati d
 Nella seconda vengono invece valutati gli fps all’ aumentare del numero delle env-map, anche in questo caso da due a sette.
 \\
 Al variare del numero di oggetti Three.Mirror nella prima scena i risultati ottenuti sono stati i seguenti:
-
-\begin{table}[]
+\begin{table}[h]
 \centering
 \caption{Three.Mirror e fluidità (architettura 1).}
 \begin{tabular}{|c|c|}
@@ -229,18 +221,15 @@ Al variare del numero di oggetti Three.Mirror nella prima scena i risultati otte
 \end{tabular}
 \label{table:three_mirror}
 \end{table}
-
 Come osservabile anche solo l’inserimento di due specchi incide pesantemente sulle performance di renderizzazione e quindi sulla fluidità di navigazione.
 \\
 Navigazione che diventa impossibile già dopo l’inserimento di quattro specchi.
 Bisogna però sottolineare come nella scena, creata per questo test, vengano inseriti un numero ristretto di oggetti (al massimo sette).
 \\
 Inserire infatti anche un solo oggetto Three.Mirror all’interno di una scena con molti oggetti, come gli interni creati per questo elaborato, abbasserebbe enormemente il valore frame rate al di sotto di dieci.
-
-
+\\
 Invece al variare del numero di envmap nella seconda scena i risultati ottenuti sono stati i seguenti:
-
-\begin{table}[]
+\begin{table}[h]
 \centering
 \caption{Env map e fluidità (architettura 1).}
 \begin{tabular}{|c|c|}
@@ -255,7 +244,6 @@ Invece al variare del numero di envmap nella seconda scena i risultati ottenuti 
 \end{tabular}
 \label{table:env-map}
 \end{table}
-
 Come osservabile il numero di fotogrammi al secondo si è mantenuto costante sui 60 frame anche con l’inserimento di sette effetti di riflessione ottenuti tramite le envmap, fluidità che sarebbe stata impossibile da raggiungere utilizzando i Three.Mirror.
 \\
 La tecnica delle env-map ha permesso inoltre di mantenere un frame rate ancorato sui 60 fino all’inserimento di 30 env-map dopodichè il frame-rate è improvvisamente sceso a 4,6 fps.
