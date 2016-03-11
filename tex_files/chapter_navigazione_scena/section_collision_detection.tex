@@ -21,11 +21,9 @@ Questi calcoli si aggiungono a quelli già effettuati dal rendering comportando 
 Se infatti all’interno di una scena sono presenti n oggetti in cui ogni oggetto può potenzialmente collidere con gli altri, è necessario effettuare il test di collisione tra ogni coppia di oggetti presenti. 
 \\
 Si ottiene in questo modo un algoritmo di complessità quadratica  dipendente dal numero di oggetti nella scena:
-
 \begin{equation}
 (n - 1) + (n - 2) ... + 1 = \frac{n(n - 1)}{2} = \mathcal{O}^2
 \end{equation}
-
 Come intuibile, effettuare il test su ogni coppia risulta impraticabile in ambienti browser in quanto rallenterebbe troppo il servizio di navigazione. 
 \\
 In questo lavoro di tesi è stato quindi essenziale l’ implementazione di un algoritmo che permettesse di diminuire il numero di test di collisione da effettuare, in maniera tale da risultare efficiente in applicazioni real-time su web.
@@ -38,7 +36,7 @@ Di fatto quindi risulta inutile effettuare il test di collisione per ogni coppia
 \\
 Questo ha permesso di velocizzare l’algoritmo, permettendo di far scendere la complessità da quadratica a lineare.
 \\
-Viene inoltre ottimizzato ulteriormente l’algoritmo di collisione effettuando una separazione della collisione in due fasi: una fase generale (\texttt{broad phase}) ed una fase ristretta (\texttt{narrow phases}).
+Viene inoltre ottimizzato ulteriormente l’algoritmo di collisione effettuando una separazione della collisione in due fasi: una fase generale (\texttt{broad phase}) ed una fase ristretta (\texttt{narrow phases}) \cite{real_time_collision}.
 \\
 La fase generale identifica dei piccoli gruppi di oggetti che potrebbero collidere e esclude velocemente quelli che non potrebbero.
 \\
@@ -66,7 +64,7 @@ In particolare la precisione del test di intersezione è dipendente dalla quanti
 I volumi di delimitazione che generano meno spazio vuoto solitamente sono computazionalmente più onerosi da calcolare.
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
  \caption[Bounding Box e Bounding Circle.]{Bounding Box e Bounding Circle.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
@@ -83,7 +81,7 @@ Inoltre le Bounding Box risultano più efficienti da calcolare rispetto alle Bou
 Inoltre esitono due differenti modalità di utilizzo delle bounding box: le \texttt{Axis-Aligned Bounding Box} (AABB) e le \texttt{Oriented Bounding Box} (OBB).
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_navigazione_scena/box1.png}\hfill
  \caption[AABB e OBB.]{Le Axis-Aligned Bounding Box e le Oriented Bounding Circle.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
@@ -213,14 +211,13 @@ Nel dettaglio l’osservatore, esattamente come una persona reale, può muoversi
 \\
 Ad ogni direzione di movimento viene associato un diverso vettore nella stessa direzione.
 Per semplicità di trattazione, viene ora supposto che i vettori lanciati siano perpendicolari all’osservatore e paralleli al piano in cui si muove. Verrà spiegato successivamente come questo non sia però sufficiente per la creazione di un algoritmo preciso di collisione.
-
+\newpage
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collisioni1.png}\hfill
+ \includegraphics[width=0.8\linewidth]{images/chapter_navigazione_scena/collisioni1.png}\hfill
  \caption[Esempio di collisione.]{Scena vista dall'alto. Esempio di collisione.}
  \label{fig:navigazione_scena_collisioni1}
 \end{figure}
-
 Nell’esempio in figura \ref{fig:navigazione_scena_collisioni1}  viene rappresentato l’osservatore visto dall’alto con gli otto vettori direzionati nelle otto direzioni principali di movimento.
 \\
 Nell’immagine a sinistra il vettore frontale interseca il muro, questo permette di impedire il movimento in avanti. L’osservatore in questo modo non attraversa il muro, rimanendo bloccato da esso.
@@ -235,9 +232,10 @@ Risulta quindi fondamentale che questi vettori ruotino insieme all’osservatore
  \caption[Veduta dall'alto dei vettori dell'osservatore.]{La rotazione dei vettori associati all'osservatore.}
  \label{fig:navigazione_scena_coll_rotat}
 \end{figure}
+\\
 Questi otto vettori risultano quindi fondamentali al fine di individuare all’interno della scena virtuale oggetti con cui l’osservatore può collidere.
 \\
-Questi vettori però non possono essere lanciati perpendicolarmente all’osservatore e paralleli rispetto al piano in cui si muove in quanto probabilmente non intersecherebbero oggetti con forme convesse come tavolini.
+Essi però non possono essere lanciati perpendicolarmente all’osservatore e paralleli rispetto al piano in cui si muove in quanto, con una elevata probabibilità, non intersecherebbero oggetti con forme convesse come tavolini.
 \\
 I raggi infatti, molto probabilmente, non colpirebbero il tavolino in quanto lanciati nella zona vuota sopra o sotto di esso (figura \ref{fig:navigazione_scena_collision_tav1}).
 \begin{figure}[htb]
@@ -246,26 +244,25 @@ I raggi infatti, molto probabilmente, non colpirebbero il tavolino in quanto lan
  \caption[Raggi su oggetti convessi.]{Intersezione dei raggi su oggetti convessi.}
  \label{fig:navigazione_scena_collision_tav1}
 \end{figure}
-
+\\
 Una possibile metodologia per la risoluzione di questo inconveniente è quella di considerare gli oggetti tramite la loro Bounding box e di lanciare i raggi a partire dal basso dell’osservatore virtuale (i piedi dell’osservatore virtuale).
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_tav2.jpg}\hfill
+ \includegraphics[width=0.6\linewidth]{images/chapter_navigazione_scena/collision_tav2.jpg}\hfill
  \caption[Raggi sulle Bounding Box.]{Intersezione dei raggi sulle Bounding Box degli oggetti convessi}
  \label{fig:navigazione_scena_collision_tav2}
 \end{figure}
-
+\\
 Se infatti i raggi vengono lanciati da una altezza bassa, vicina alla superficie che sorregge l’osservatore, allora certamente colpiranno la Bounding Box che racchiude l’oggetto della scena. Se invece i raggi vengono lanciati da un punto elevato allora avranno una bassa probabilità di intersecare il volume di delimitazione, non permettendo quindi il riconoscimento della collisione.
 \\
 Utilizzare le Bounding Box permette di risolvere questo problema ma comporta, per particolari geometrie di oggetti, un problema non indifferente: il rischio di collisione in punti in cui non si dovrebbe. Valutare le collisioni con questi volumi comporta di fatto una notevole diminuzione dello spazio di movimento dell’osservatore.
-
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/divano.png}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_navigazione_scena/divano.png}\hfill
  \caption[Problemi utilizzo Bounding Box.]{Bounding Box che non delimita perfettamente il volume del divano}
  \label{fig:navigazione_scena_divano}
 \end{figure}
-
+\\
 Nell’immagine di esempio è possibile notare come la Bounding Box non permetta di delimitare perfettamente il volume del divano.
 \\
 Siccome i raggi lanciati collidono con la Bounding Box invece che con l’oggetto, l’algortimo non permette all’osservatore di entrare all’interno della zona segnata in verde. Zona che di fatto dovrebbe essere invece accessibile.
@@ -275,16 +272,16 @@ Questa imprecisione soprattutto in piccole abitazioni, comporta problemi non ind
 Inoltre in questo lavoro di tesi è risultato fondamentale ottenere l’algoritmo di collisione più preciso possibile in ambienti web, per questo motivo la Bounding Box è stata abbandonata in favore di una tecnica differente.
 \\
 Gli otto vettori vengono sempre lanciati ad una altezza bassa dell’osservatore ma vengono inclinati verso l’alto. Questo permette il riconoscimento di tutti gli oggetti convessi in maniera estremamente precisa. L’altezza da cui vengono lanciati viene esaminata quando verrano descritti i vettori che permettono di salire/scendere le scale.
-
+\\
+L’angolo con cui vengono inclinati questi raggi è stato oggetto di studio e sperimentazione, 
+Gli angoli di inclinazione verso l’alto dei vettori associati alle quattro direzioni principali risultano di 65 gradi, mentre quelli delle quattro direzioni oblique risultano di circa 80 gradi.
+\\
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_tav3.jpg}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_navigazione_scena/collision_tav3.jpg}\hfill
  \caption[Raggi inclinati verso l'alto.]{Raggio dell'osservatore inclinato verso l'alto.}
  \label{fig:navigazione_scena_collision_tav3}
 \end{figure}
-
-L’angolo con cui vengono inclinati questi raggi è stato oggetto di studio e sperimentazione, 
-Gli angoli di inclinazione verso l’alto dei vettori associati alle quattro direzioni principali risultano di 65 gradi, mentre quelli delle quattro direzioni oblique risultano di circa 80 gradi.
 \\
 Quando l’osservatore collide un oggetto e si muove in una delle quattro direzioni principali (aventi, indietro,destra,sinistra), l’unico vettore ad intersecare è proprio quello associato alla direzione principale di movimento in quanto meno inclinato.
 \\
@@ -307,21 +304,20 @@ I quattro vettori sono direzionati in avanti, indietro, a destra ed a sinistra m
 \\
 Questi quattro vettori sono lanciati verso il basso con un angolo di inclinazione di 57 gradi, scelto in base ad opportune prove, a partire da uno specifico punto dell’altezza dell’osservatore. Questo punto viene calcolato in base a quanto è alto l’osservatore virtuale; tutti e 13 i raggi vengono lanciati dal 15\% dell’altezza dell’osservatore.
 \\
-Quindi supponendo l’osservatore è alto 1.80 m, non solo i quattro raggi direzionati verso il basso, ma anche gli otto verso l’alto saranno lanciati a partire da una altezza di 27 cm.
+Quindi supponendo l’osservatore alto 1.80 m, non solo i quattro raggi direzionati verso il basso, ma anche gli otto verso l’alto saranno lanciati a partire da una altezza di 27 cm.
 Questo vuol dire che l’osservatore virtuale al massimo sarà in grado di salire gradini alti 27 cm.
-
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/scala.jpg}\hfill
+ \includegraphics[width=0.7\linewidth]{images/chapter_navigazione_scena/scala.jpg}\hfill
  \caption[Dimensioni di una scala da interno.]{Dimensioni di una scala da interno.}
  \label{fig:navigazione_scena_collision_scala}
 \end{figure}
-
-Normalmente i gradini hanno una alzata (altezza) compresa tra i 15 ed i 20 cm.
+\\
+Normalmente i gradini hanno una alzata (altezza) compresa tra i 17 ed i 20 cm \cite{scale_pedata}.
 I raggi inviati verso il basso dall’algoritmo permettono di salire su questo tipo di scale, inoltre permettono anche, in base all’altezza dell’osservatore, di salire gradini più alti. 
 Questo per consentire una navigazione fluida anche in ambienti in cui le scale sono particolarmente ripide o in cui sono presenti salite molto pendenti.
 \\ 
-L’algoritmo creato permette infatti di salire agevolmente le comuni scale da abitazioni con pendenza compresa tra i 20 ed i 45 gradi, ma anche di salire scale particolarmente ripide con pendenza fino a 60 gradi, utilizzate soprattutto all’interno di locali tecnici.
+L’algoritmo creato permette infatti di salire agevolmente le comuni scale da abitazioni con pendenza compresa tra i 20 ed i 45 gradi, ma anche di salire scale particolarmente ripide con pendenza fino a 60 gradi, utilizzate soprattutto all’interno di locali tecnici \cite{scale_gradi}.
 \\
 La pedata, cioè la profondità del gradino, non deve essere riconosciuta in quanto l’algoritmo permette all’osservatore di rimanere sopra una superficie piana, qualunque sia la grandezza di essa. Il piano che lo sorregge viene valutato dal vettore lanciato verso il basso.
 \\
@@ -332,21 +328,19 @@ La collisione avviene se il raggio interseca una superficie che si trova ai pied
 Se la collisione avviene allora l’osservatore rimane poggiato sopra l’oggetto con cui ha intersecato.
 \\
 Se invece la collisione non avviene allora l’osservatore cade in direzione verticale perpendicolare al piano e diretta verso il basso fino a quando il vettore non interseca con una superficie. La velocità con cui cade l’osservatore virtuale, esattamente come nella vita reale, dipende dall’ accelerazione di gravità: $g = 9,8 \frac{m}{s^2}$
-
+\\
 Il corpo che cade si muove quindi con un moto rettilineo uniformemente accelerato in quanto viene supposto che non ci sia attrito dovuto dall’aria.
 Questo vettore è stato inoltre fondamentale per simulare virtualmente il movimento del salto.
 In figura è possibile osservare da una veduta laterale le angolazioni dei vettori principali utilizzati.
-
-\begin{figure}[htb]
- \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/collision_gradini.jpg}\hfill
- \caption[I raggi che permetto di salire.]{I raggi che permettono di salire e scendere scale.}
- \label{fig:navigazione_scena_collision_gradini}
-\end{figure}
-
+\\
 Di fatto quindi l’utilizzo di soli 13 vettori ha permesso di creare una metodologia di collision detection precisa e, grazie al basso numero di raggi utilizzato, efficiente.
 \\
 Efficiente anche perché ogni raggio viene valutato sul piccolo sottoinsieme degli oggetti con cui l’osservatore ha la più alta probabilità di collisione, calcolati durante la fase generale.
 \\
 Questa metodologia si adatta ad ogni scena creabile tramite l’editor, rendendo trasparente all’utente tutta la tecnologia su cui è basata la navigazione della scena.
-
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=0.9\linewidth]{images/chapter_navigazione_scena/collision_gradini.jpg}\hfill
+ \caption[I raggi che permetto di salire.]{I raggi che permettono di salire e scendere scale.}
+ \label{fig:navigazione_scena_collision_gradini}
+\end{figure}
