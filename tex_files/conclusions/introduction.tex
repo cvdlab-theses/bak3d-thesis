@@ -1,10 +1,8 @@
-Il lavoro di tesi svolto all’interno del laboratorio di computer grafica dell’Università degli Studi Roma Tre ha permesso la realizzazione di un servizio web per la costruzione e fruizione di scene fotorealistiche. Fruizione che viene permessa anche su hardware di basse prestazioni.
+Il lavoro di tesi svolto all’interno del CVD Lab presso l’Università degli Studi Roma Tre ha permesso la realizzazione di un servizio web per la costruzione e fruizione di scene fotorealistiche. Fruizione che viene permessa anche su hardware di basse prestazioni.
 \\
-In particolare il servizio offre all’utente gli strumenti che consentono di realizzare, rendere fotorealistici e navigare ambienti 3D con estrema facilità.
+In particolare il servizio permette di automatizzare una procedura come il baking delle lightmap, nascondendo completamente all’utente la complessa logica di funzionamento che permette la realizzazione di ombre e luci realistiche, e le ottimizzazioni effettuate sulla scena per renderla fruibile su web. 
 \\
-Il sistema creato nasconde completamente all’utente la complessa logica di funzionamento che permette la realizzazione di ombre e luci realistiche, e le ottimizzazioni effettuate sulla scena per renderla fruibile su web. 
-\\
-Questo consente a qualsiasi tipologia di utilizzatore di effettuare una operazione estremamente complessa come il baking delle lightmap tramite una semplice richiesta al servizio remoto creato, sul quale è installato il software Blender.
+Questo consente a qualsiasi tipologia di utilizzatore di effettuare una operazione estremamente complessa come il baking delle lightmap tramite una richiesta al servizio remoto creato, sul quale è installato il software Blender.
 \\
 Inoltre l’intero servizio è accedibile mediante browser web, non richiedendo alcun attività di installazione o aggiornamento software da parte dell’utente.
 \\
@@ -14,14 +12,7 @@ In particolare tali attività di ricerca hanno portato all’ utilizzo del Cycle
 \\
 Le attività di sperimentazione effettuate hanno inoltre permesso di confermare la correttezza del mapping dei parametri tra Three.js e Blender, mapping essenziale per permettere a Blender la realizzazione di luci ed ombre.
 \\
-Ulteriore aspetto chiave dell’intero elaborato è stata la creazione di un sistema che fosse facile da utilizzare da qualsiasi tipologia di utente.
-\\
-Nonostante l’intero sistema sia stato progettato con il fine di renderlo facile da utilizzare, non è chiaro quanto l’obiettivo sia stato raggiunto.
-\\
-Per misurare l’effettiva usabilità del servizio è infatti necessario ricevere un elevato numero di feedback da utenti differenti per età e professione.
-\\
-A tal proposito è previsto che il sistema venga utilizzato all’interno del corso di Grafica Computazionale, cosa che permetterà di raccogliere informazioni sull’esperienza d’uso degli studenti, grazie alle quali individuare e risolvere eventuali difficoltà di utilizzo.
-\\
+Il sistema, realizzato secondo le specifiche individuate dovrà essere sottoposto ad una sperimentazione utente per studiarne l’effettiva usabilità. La sperimentazione punta a raccogliere informazioni sull’esperienza d’uso degli utenti, differenti per età e professione, grazie alle quali individuare e risolvere eventuali difficoltà di utilizzo.
 \\
 Gli obiettivi prefissati per la presente attività di tesi possano pertanto considerarsi raggiunti; ciononostante il sistema realizzato lascia aperto il campo a possibili miglioramenti. 
 Inoltre la natura aperta del sistema rende possibile integrarvi nuove funzionalità provenienti anche da contributi esterni, come l’imminente integrazione all’interno del servizio di una widget per la creazione dei muri mediante pianta 2D. 
@@ -44,7 +35,6 @@ Altra attività prossima all’implementazione sarà l’aggiunta delle utenze a
 \\ 
 Inoltre sono previste delle attività di ottimizzazione volte a ridurre il quantitativo di memoria richiesto dal baking delle lightmap. In particolare si potrebbe pensare di decomporre la scena in sezioni più piccole, dove ogni oggetto influenza o è influenzato dal baking solo all’interno della sezione. Ognuna di queste può quindi essere renderizzata separatamente, riducendo quindi il consumo di memoria da parte del processo di rendering.
 \\
-\\
 In conclusione può considerarsi ultimata la realizzazione un sistema che nella sua interezza presenta caratteristiche innovative.
 \\
-L’innovazione risiede proprio nella possibilità di creare, rendere fotorealistica e navigare una scena 3D mediante servizio web, accedibile da qualunque dispositivo munito di browser e connessione ad internet. Grazie al sistema realizzato queste funzionalità, normalmente fruibili su calcolatori ad alte prestazioni, sono permesse anche su dispositivi di fascia medio/bassa.
+L’innovazione risiede proprio nella possibilità di creare, rendere fotorealistica e navigare una scena 3D mediante servizio web, accessibile da qualunque dispositivo munito di browser e connessione ad internet. Grazie al sistema realizzato queste funzionalità, normalmente fruibili su calcolatori ad alte prestazioni, sono permesse anche su dispositivi di fascia medio/bassa.
