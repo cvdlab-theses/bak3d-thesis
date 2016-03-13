@@ -20,7 +20,7 @@ Vengono quindi ricreate le informazioni delle CubeCamera, prelevate le sei immag
 \\
 L’oggetto a cui viene applicato l’effetto, a differenza degli altri presenti nella scena, deve essere necessariamente costituito da un materiale di tipo \texttt{MeshBasic} in quanto nell’ambiente caricato sono totalmente assenti fonti luminose. Questo tipo di materiale infatti non viene influenzato dalle luci nella scena e permette di osservare l’oggetto a cui viene assegnato anche in assenza di esse. Quindi durante il parsing, quando viene riconosciuto un oggetto a cui è associata una env-map, ad esso viene assegnato un materiale di tipo MeshBasic.
 
-Durante la navigazione dell’alto viene sfruttata la libreria \texttt{THREE.TrackballControls}, che permette di modificare la camera a piacimento in base al movimento del mouse, trackpad o touch. Durante la navigazione in prima persona è stata utilizzata la libreria \texttt{THREE.PointerLockControls}.
+Durante la navigazione dell’alto viene sfruttata la libreria THREE.TrackballControls, che permette di modificare la camera a piacimento in base al movimento del mouse, trackpad o touch. Durante la navigazione in prima persona è stata utilizzata la libreria \texttt{THREE.PointerLockControls}.
 \\
 Quest’ultima è stata utilizzata come punto di partenza e poi completamente ristrutturata e modificata per permettere costruire un algoritmo di navigazione in prima persona estremamente preciso e fluido con caratteristiche uniche.
 Inoltre i PointerLockControls comportano alcuni problemi nella fluidità dei movimenti dell’osservatore e problemi nella posizione dell’osservatore quando i controlli vengono messi in pausa.
@@ -33,7 +33,7 @@ Inoltre non permette la gestione delle collisioni, funzionalità essenziale in q
 Durante l’algoritmo delle collisioni viene utilizzata la libreria \texttt{threeoctree.js} per la suddivisione dello spazio e viene utilizzata la classe Raycaster per permettere di gestire le intersezioni dei raggi lanciati con gli oggetti.
 \texttt{Octree} permette di dividere lo spazio in cubi; l’algoritmo inizia a dividere da un nodo radice che costituisce un cubo che circonda l’intero ambiente.
 \\
-Successivamente questo nodo viene ulteriormente suddiviso in 8 parti. Le divisioni continuano dividendo ogni cubo presente in 8 parti fino a quando una soglia di suddivisione massima non viene raggiunta.
+Successivamente questo nodo viene ulteriormente suddiviso in 8 parti. Le divisioni continuano dividendo ogni cubo presente in 8 parti fino a quando una soglia di suddivisione massima non viene raggiunta \cite{octree}.
 
 \begin{figure}[htb]
  \centering
@@ -54,14 +54,16 @@ Se viene effettuata la divisione altre due volte, i cubi vengono nuovamente crea
 
 \begin{figure}[htb]
  \centering
- \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/div_2sfere.png}\hfill
+ \includegraphics[width=0.6\linewidth]{images/chapter_navigazione_scena/div_2sfere.png}\hfill
  \caption[Octree e la suddivisione dello spazio.]{La suddivisione dello spazio tramite Octree.}
  \label{fig:navigazione_scena_collision_full_octree}
 \end{figure}
 
-Come spiegato nel paragrafo \ref{sec:chapter_navigazione_scena_collision_detec}, la suddivisione dello spazio viene calcolata una sola volta in quanto le scene caricate rimangono statiche nel tempo. L’unico oggetto in movimento all’interno dell’ambiente è rappresentato dall’osservatore virtuale.
+Come spiegato nel paragrafo \ref{sec:chapter_navigazione_scena_collision_detec}, la suddivisione dello spazio viene calcolata una sola volta in quanto le scene caricate rimangono statiche nel tempo. 
+\\
+L’unico oggetto in movimento all’interno dell’ambiente è rappresentato dall’osservatore virtuale.
 
-Per poter iniziare a dividere lo spazio è necessario aggiungere alla scena un oggetto Octree, da istanziare nella seguente maniera:
+Per poter iniziare a dividere lo spazio è necessario aggiungere alla scena un oggetto Octree, da istanziare nella seguente maniera: \cite{octree_git}
 \begin{lstlisting}[language=javascript]
 var octree = new THREE.Octree({
     radius: radius, 
@@ -71,7 +73,6 @@ var octree = new THREE.Octree({
     overlapPct: 0.15,
 } );
 \end{lstlisting}
-
 L'attributo \texttt{radius} indica la grandezza del cubo più piccolo da creare durante la suddivisione nello spazio.
 \begin{figure}[htb]
  \centering
@@ -79,7 +80,6 @@ L'attributo \texttt{radius} indica la grandezza del cubo più piccolo da creare 
  \caption[Octree radius.]{A sinistra viene utilizzato radius = 1, a destra radius = 300}
  \label{fig:navigazione_scena_collision_boxradius}
 \end{figure}
-
 Nel presente contesto di lavoro ad esso è stato assegnato il valore uguale ad 1, il minimo valore di grandezza possibile. 
 Questo per permettere all’oggetto Octree di suddividere lo spazio con il maggior numero di cubi possibili.
 \\
@@ -142,7 +142,7 @@ L’utilizzo di due renderer e di due scene differenti ha permesso di disaccopia
 \\
 L’ambiente mostrato dalla mappa risulta differente in base al tipo di modalità della mappa scelto e viene utilizzata una camera di tipo Ortographic.
 \\
-Durante la navigazione in realtà virtuale viene utilizzato l’oggetto \texttt{StereoEffect} che divide la canvas in due parti per permettere la visione stereoscopica 3D.
+Durante la navigazione in realtà virtuale viene utilizzato l’oggetto \texttt{StereoEffect} che divide la canvas in due parti per permettere la visione stereoscopica 3D \cite{stereo_effect}.
 Siccome il navigatore permette l’utilizzo del visore Google Cardboard, viene supposto che questa modalità venga avviata solamente quando il servizio di navigazione viene avviato su smartphone.
 \\
 In questa modalità non risulta però possibile utilizzare il cellulare tramite i comandi touch in quanto viene inserito all’interno del visore.

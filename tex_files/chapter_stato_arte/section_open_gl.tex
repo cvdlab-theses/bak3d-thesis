@@ -81,12 +81,15 @@ A questo punto inizia il processo di rasterizzazione, in cui i dati sui pixel e 
 \end{figure}
 
 Ogni frammento con coordinate di finestra $(x_w,y_w)$ prodotto dalla rasterizzazione, modificherà il pixel nel framebuffer che si trova nella stessa posizione in base a determinati parametri e condizioni \cite{open12} . Questi sono valutati attraverso una serie di operazioni sui frammenti, mostrate in figura \ref{fig:stato_arte_frag_op}
+\\
 \begin{figure}[htb]
  \centering
  \includegraphics[width=0.9\linewidth]{images/chapter_stato_arte/stato_arte_frag_op.png}\hfill
  \caption[Operazioni sui frammenti]{Operazioni sui frammenti generati nella fase di rasterizzazione di OpenGL.}
  \label{fig:stato_arte_frag_op}
 \end{figure}
+\\
+
 \emph{Pixel ownership test} : si valuta se il pixel in posizione $(x_w,y_w)$ è presente nel framebuffer. Se non è presente, il frammento potrebbe essere scartato, oppure processato solamente da un sottoinsieme delle operazioni sui frammenti.
 \\
 

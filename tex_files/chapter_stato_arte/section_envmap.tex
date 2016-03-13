@@ -88,12 +88,11 @@ Le operazione che l’ algoritmo effettua sono le seguenti: \cite{real_time_book
 \end{itemize}
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.6\linewidth]{images/chapter_stato_arte/stato_arte_env_alg.png}\hfill
+\includegraphics[width=0.5\linewidth]{images/chapter_stato_arte/stato_arte_env_alg.png}\hfill
 \caption[Algoritmo environment mapping]{Environment mapping.}
 \label{fig:stato_arte_env_alg}
 \end{figure}
 Il vettore r o t $(x,y,z)$, tramite una funzione di proiezione, viene convertito in un valore a due dimensioni $(u,v)$. Di fatto la env map viene utilizzata come una tabella a due dimensioni; il valore a due dimensioni viene utilizzato come indice e viene prelevato il valore di radianza del pixel da mostrare su schermo.
-\\
 Questo approccio produce risultati simili al ray tracing per quanto riguarda la riflessione o rifrazione, risultando però  più efficiente. 
 Calcolare l’ angolo di incidenza e riflessione seguito da una ricerca nella env-map rispetto a calcolare l’esatta riflessione o rifrazione della luce tracciando un raggio e seguendo il suo percoso ottico semplifica di molto il lavoro eseguito dalla GPU. 
 
@@ -103,10 +102,10 @@ Inoltre nel caso di env map di rifrazione, l’algoritmo simula solo il primo ra
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.5\linewidth]{images/chapter_stato_arte/stato_arte_refr_2.png}\hfill
-\caption[Environment mapping: rifrazione]{Environment mappin: rifrazione}
+\caption[Environment mapping: rifrazione]{Environment mapping: rifrazione}
 \label{fig:stato_arte_refr_2}
 \end{figure}
-\newpage
+\\
 Il raggio in realtà dovrebbe essere rifratto due volte: la prima quando entra nel mezzo, la seconda quando esce (vettore $T’$). Nella pratica però la seconda rifrazione non viene simulata ed il raggio prosegue nella direzione $T$ invece che in quella di $T’$. 
 Questo tipo di semplificazione permette di alleggerire il carico di lavoro del render permettendo di ottenere una rifrazione convincente utilizzando un solo raggio.
 Il risultato ottenuto da quest’ ultimo è sicuramente non accurato fisicamente come quello che si otterrebbe utilizzando due raggi ma comunque risulta molto simile.
