@@ -68,6 +68,7 @@ I volumi di delimitazione che generano meno spazio vuoto solitamente sono comput
  \caption[Bounding Box e Bounding Circle.]{Bounding Box e Bounding Circle.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
+\\
 Per il presente lavoro di tesi è stato necessario utilizzare un tipo di volume di delimitazione che permettesse di ottenere un ottimo compromesso tra velocità di computazione e precisione di approssimazione dell’ oggetto contenuto.
 \\
 Nell’immagine è possibile osservare due efficienti tipologie di volumi di delimitazione che sono stati oggetto di studio al fine di valutare quello che meglio si addicesse per questo elaborato: \texttt{Bounding Box} e \texttt{Bounding Circle}.
@@ -85,6 +86,7 @@ Inoltre esitono due differenti modalità di utilizzo delle bounding box: le \tex
  \caption[AABB e OBB.]{Le Axis-Aligned Bounding Box e le Oriented Bounding Circle.}
  \label{fig:navigazione_scena_navigator_oculus}
 \end{figure}
+\\
 La AABB rappresenta una scatola rettangolare con sei facce dove ogni normale di faccia è sempre parallela con gli assi di riferimento del sistema di coordinate.
 \\
 Il vantaggio nell’utilizzo di questa notazione rappresenta la velocità di calcolo del volume di delimitazione. Esso viene infatti calcolato/rappresentato tramite due coordinate (x,y,z).
@@ -117,17 +119,15 @@ Inoltre risultava essenziale che il processo di partizionamento potesse funziona
 
 Nella fase di partizionamento, viene suddiviso lo spazio 3D della scena in volumi di delimitazione sempre più piccoli. Questi volumi vengono organizzati secondo una gerarchia ad albero chiamata \texttt{Bounding Volume Hierarchy} (BVH) dove nelle foglie vengono inseriti gli oggetti presenti nella scena. 
 Questi oggetti vengono poi raggruppati in piccoli insiemi diversi e racchiusi dentro un volume di delimitazione. Questi volumi sono a loro volta raggruppati in insiemi e racchiusi in volumi più grandi, questo procedimento continua in maniera ricorsiva fino a quando in cima all’albero non viene creata un volume che racchiude tutti gli oggetti presenti.
-
+\\
+L’albero creato permette di raggruppare all’interno di bounding box sottoinsiemi di oggetti che potrebbero collidere.
+Ad esempio l’oggetto E potrebbe collidere con l’oggetto B, mentre è impossibile che possa collidere con l’oggetto A.
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/partiz_tree.png}\hfill
  \caption[Bounding Volume Hierarchy.]{Bounding Volume Hierarchy.}
  \label{fig:navigazione_scena_partiz_tree}
 \end{figure}
-
-L’albero creato permette di raggruppare all’interno di bounding box sottoinsiemi di oggetti che potrebbero collidere.
-\\
-Ad esempio l’oggetto E potrebbe collidere con l’oggetto B, mentre è impossibile che possa collidere con l’oggetto A.
 \\
 L’algoritmo infatti individua che il padre della foglia dell’albero B è differente dal padre della foglia A, quindi è improbabile che possano collidere.
 Questa fase permette quindi di scremare in maniera veloce tutte le collisioni che risultano improbabili.

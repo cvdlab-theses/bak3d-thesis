@@ -1,7 +1,7 @@
 \section{Caratteristiche del navigatore}
 \label{sec:chapter_navigazione_scena_caratt_navigat}
 
-Il navigatore offre una interfaccia grafica di semplice utilizzo, grazie alla quale l’utente è in grado di fruire una scena fotorealistica.
+Il navigatore offre una interfaccia grafica grazie alla quale l’utente è in grado di fruire una scena fotorealistica.
 \\
 In particolare permette all’utilizzatore di caricare la scena e di scegliere la modalità di navigazione che preferisce tra: visione dall’alto e visione in prima persona. 
 Inoltre, in ogni momento, risulta possibile cambiare la modalità e rimuovere la scena, importandone una nuova.
@@ -23,6 +23,7 @@ In questo lavoro di tesi sono state sperimentate queste tecnologie, in particola
 In dettaglio è stato valutato quanto queste tecnologie riescano ad immergere l’utilizzatore all’interno delle scena fotorealistiche create, dandogli l’illusione di trovarsi fisicamente all’interno di esse.
 
 \subsection{Navigazione dall' alto ed in prima persona}
+\label{sec:chapter_navigazione_scena_caratt_navigat_navig_alto}
 Il servizio di navigazione offre all’utente, una volta caricata la scena, di scegliere tra due differenti modalità: navigazione dall’alto o navigazione in prima persona.
 \\
 La prima modalità permette di osservare la scena dall’alto e di interagire con essa muovendo la camera nella direzione desiderata o zoomando su di essa. 
@@ -181,7 +182,7 @@ Inoltre è compatibile con praticamente tutti gli smartphone, anche con quelli d
 Nel presente contesto di lavoro ha permesso la fruizione stereoscopica di una scena fotorealistica realizzata dal sistema creato.
 Il navigatore, quando viene avviata questa modalità, effettua delle operazioni atte a permettere la fruizione in 3D della scena. 
 \\
-La canvas, in cui viene disegnata la scena, viene divisa a metà in larghezza. La metà sinistra e  quella destra rappresentano di fatto due immagini del medesimo ambiente riprese alla stessa distanza ma scostate lateralmente con uno scarto pari alla distanza binoculare (5,5-7,5cm).
+La canvas, in cui viene disegnata la scena, viene divisa a metà in larghezza. La metà sinistra e  quella destra rappresentano di fatto due immagini del medesimo ambiente riprese alla stessa distanza ma scostate lateralmente con uno scarto pari alla distanza binoculare (5-7,5cm).
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/immag_virt.png}\hfill
@@ -193,13 +194,13 @@ Per ogni ciclo di render vengono disegnate due immagini di questo tipo che, tram
 \\
 Inoltre sono stati sfruttati l’accelerometro ed il giroscopio per permettere di modificare la vista sulla scena virtuale in maniera proporzionale a come l’utente muove la testa.
 \\
-Quando viene avviata questa modalità, la visione passa in prima persona, ma a differenza del paragrafo \ref{Navigazione dall' alto ed in prima persona}, i controlli utilizzati sono differenti.
+Quando viene avviata questa modalità, la visione passa in prima persona, ma a differenza del paragrafo \ref{sec:chapter_navigazione_scena_caratt_navigat_navig_alto}, i controlli utilizzati sono differenti.
 \\
 Non è possibile infatti sfruttare i normali controlli in prima persona in quanto lo smartphone è inserito all’interno del visore e non è possibile interagire con esso tramite comandi touch o tramite tastiera.
 \\
-Durate questa modalità infatti Il movimento avviene automaticamente in avanti secondo la direzione di osservazione, quest’ultima viene modificata mediante l’utilizzo dell’oscilloscopio del cellulare.
-\\
+Durante questa modalità il movimento avviene automaticamente in avanti secondo la direzione di osservazione, quest’ultima viene modificata mediante l’utilizzo dell’oscilloscopio del cellulare.
 Il movimento automatico in avanti avviene ad una velocità tale da simulare una normale passeggiata all’interno di una abitazione.
+\\
 I dettagli implementativi di come è stato realizzata questa modalità del navigatore verrano descritti nel paragrafo \ref{sec:chapter_navigazione_scena_implementazione}.
 
 \subsection{Mappa di navigazione}
@@ -296,6 +297,6 @@ L’utente può ricorrere a questo tipo di mappa quando i muri o i pavimenti non
 \begin{figure}[htb]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_navigazione_scena/map_2d_json.png}\hfill
- \caption[Mappa creata dal file JSON4.]{Mappa creata dal file JSON4.}
+ \caption[Mappa creata dal file JSON4.]{Mappa creata dal file JSON4 in cui viene disegnata anche la scrivania.}
  \label{fig:navigazione_scena_map_2d_json}
 \end{figure}
