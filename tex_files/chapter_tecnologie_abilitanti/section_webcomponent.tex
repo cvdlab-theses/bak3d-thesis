@@ -123,7 +123,7 @@ Se incluso in un elemento template, un contenuto HTML gode delle seguenti propri
 \begin{itemize}
 \item Il contenuto è inattivo e nascosto finchè non viene attivato esplicitamente.
 \item Il contenuto inattivo non ha alcun effetto collaterale: non verrà eseguito alcuno script, non verrà caricata nessuna immagine, o eseguiti file audio.
-\item Il contenuto inattivo è come se non fosse presente nel documento: usando \texttt{document.getElementById()} o \texttt{querySelector()} nella pagina principale non verrà restituito alcun nodo figlio di un \texttt{<template>}
+\item Il contenuto inattivo è come se non fosse presente nel documento: usando document.getElementById() o \texttt{querySelector()} nella pagina principale non verrà restituito alcun nodo figlio di un \texttt{<template>}
 \item Il template può essere posizionato ovunque all’interno di \texttt{<head>}, \texttt{<body>}, o \texttt{<frameset>}, e può includere qualsiasi tipo di contenuto ammissibile nei tre tag sopra citati. Può essere posizionato anche come figlio di una \texttt{<table>} o di una \texttt{<select>}. 
 \end{itemize}
 Per utilizzare un template bisogna attivarlo. Il modo più semplice per farlo è creare un clone della proprietà .content del template mediante \texttt{document.importNode()}. la proprietà \texttt{.content} è un \texttt{DocumentFragment} di sola lettura, contenente il template content. Una volta appeso al DOM, il clone si attiva.
