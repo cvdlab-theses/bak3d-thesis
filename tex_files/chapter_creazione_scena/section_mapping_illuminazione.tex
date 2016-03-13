@@ -10,7 +10,7 @@ In particolare le SpotLight di ThreeJS, così come le DirectionalLight, nel mome
 \\ 
 Ciò che avviene in Blender è che invece le SpotLamp, così come le Sun Lamp, inizialmente non sono ancorate a nulla; pertanto sono completamente orientabili in qualsiasi punto all’interno della scena. In caso poi l’utente decidesse di ancorare la luce ad un punto preciso, potrà farlo mediante apposità funzionalità.
 \\
-\begin{figure}[htb]
+\begin{figure}[h]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_5.png}\hfill
  \caption[Confronto luci]{Confronto tra una Spot Lamp standard generata in Blender, a sinistra, ed una SpotLight generata in una prima versione dell'editor, a destra. Si noti come nel primo caso, nonostante lo spostamento, la Spot Lamp con segua alcun target all'interno della scena, contrariamente a quanto a accade con la SpotLight, a sinistra, la quale rimane orientata verso il centro della scena.}
@@ -28,7 +28,7 @@ In questo modo sono stati concatenati due eventi:
 \end{itemize}
 Di conseguenza la luce è tecnicamente ancorata ad un target fisso, in quanto il target condivide il sistema di riferimento del modello della sorgente luminosa, quindi rispetto ad essa l’oggetto target appare immobile. In verità nel sistema di riferimento in coordinate mondo entrambi si muovono insieme, come fossero un’unica entità. Ciò conferisce alla sorgente luminosa la possibilità di essere orientata in qualsiasi modo all’interno della scena, come avviene appunto per la configurazione standard delle sorgenti luminose in Blender.
 \\
-\begin{figure}[htb]
+\begin{figure}[h]
  \centering
  \includegraphics[width=1\linewidth]{images/chapter_creazione_scena/editor_6.png}\hfill
  \caption[Adattamento illuminazione]{In foto, il risultato dell'adattamento delle SpotLight di ThreeJS alle Spot Lamp di Blender. Notare come adesso sia possibile muovere le luci nello stesso modo, grazie al doppio legame tra la SpotLight e il rispettivo target (la sfera rossa in ogni foto della sequenza in alto).}

@@ -1,6 +1,6 @@
-L’attività di analisi delle componenti del sistema, iniziata nel capitolo precedente con il servizio di bake, prosegue a questo punto con la componente dedicata alla realizzazione di scene 3D da poter sottomettere al suddetto servizio. Tale componente è detta Editor.
+L’attività di analisi delle componenti del sistema, iniziata nel capitolo precedente con il servizio di bake, prosegue a questo punto con la componente dedicata alla realizzazione di scene 3D da poter sottomettere al suddetto servizio. Tale componente è detta editor.
 \\
-L’Editor rappresenta dunque una soluzione per la costruzione e l’arredamento di interni virtuali fruibile dall’utente come servizio web.
+L’editor rappresenta dunque una soluzione per la costruzione e l’arredamento di interni virtuali fruibile dall’utente come servizio web.
 \\
 Avente come unico requisito una connessione ad internet e un browser, il servizio è accessibile mediante apposità URL, senza necessità alcuna di installare software.
 \\ 
@@ -8,27 +8,27 @@ Nonostante esistano già soluzioni per la realizzazione di ambienti 3D su web, s
 \\
 Nel capitolo \ref{cha:chapter_lrl} si è discusso circa la realizzazione di un ciclo di rendering leggero, o \emph{ligthweitght render loop}; questa variante di un normale render loop permette il rendering di ambienti 3D fotorealistici anche su piattaforme hardware che normalmente non soddisferebbero i requisiti per sostenerne il carico computazionale.
 \\
-Il servizio Editor deve dunque integrare un supporto alla realizzazione di ambienti 3D che soddisfino le condizioni abilitanti per un lightweight render loop. Tali condizioni sono l’assenza di luci all’interno della scena, e l’utilizzo di env map per gli effetti di riflessione o rifrazione.
+Il servizio editor deve dunque integrare un supporto alla realizzazione di ambienti 3D che soddisfino le condizioni abilitanti per un lightweight render loop. Tali condizioni sono l’assenza di luci all’interno della scena, e l’utilizzo di env map per gli effetti di riflessione o rifrazione.
 \\
-L’assenza di luci è giustificata dal calcolo delle lightmap ad opera del servizio di baking discusso nel capitolo precedente. Tale servizio è installato su un server remoto, ad accetta richieste di bake da parte dell’utente, comprensive di scena da elaborare.
+L’assenza di luci è giustificata dal calcolo delle lightmap ad opera del servizio di baking discusso nel capitolo precedente. Tale servizio è installato su un server remoto, ed accetta le richieste di bake da parte dell’utente, comprensive di scena da elaborare.
 \\ 
 Pertanto la prima funzionalità che l’editor deve integrare è la possibilità di sottomettere richieste di bake al servizio di editor.
 \\
 La seconda funzionalità è invece legata alla generazione di effetti riflettenti o rifrangenti sugli oggetti presenti all’interno della scena; l’editor quindi implementa anche un supporto alla creazione di envmap di riflessione o rifrazione.
 \\
-Inoltre, per quanto riguarda la costruzioni di ambienti, l’editor implementa tutte le funzionalità necessarie, come la creazione o l’importazione di modelli, l’aggiunta di materiali, textures, o luci.
+Inoltre, per quanto riguarda la costruzione di ambienti, l’editor implementa tutte le funzionalità necessarie, come la creazione o l’importazione di modelli, l’aggiunta di materiali, texture, o luci.
 \\ 
 Ovviamente è garantita anche la possibilità di esportare il lavoro compiuto, in un formato di interscambio dei dati già discusso nel paragrafo \ref{sec:chapter_architettura_sistema_formato_scambio}.
 \\
-Obiettivo di questo capitolo è descrivere come tutte queste funzionalità siano state implementate nell’editor, con riferimento alle tecnologie utilizzate.
+Obiettivo di questo capitolo è descrivere come tutte queste funzionalità siano state realizzate nell’editor, con riferimento alle tecnologie utilizzate.
 \\ 
-Infatti, dal momento che per la realizzazione di ambienti 3D su browser esiste già una soluzione comprovata, ovvero ThreeJS, l’intero editor si basa su questa tecnologia.
+Infatti, dal momento che per la realizzazione di ambienti 3D su browser esiste già una soluzione comprovata, ovvero ThreeJS, l’intero editor si baserà su questa tecnologia.
 \\
-In particolare la base di realizzazione dell’Editor è un editor ThreeJS preesistente, il quale però è stato completamente ristrutturato per venire incontro ad alcune esigente realizzative, prima fra tutte l’integrazione delle funzionalità sopra citate.
+In particolare la base di realizzazione dell’editor è un editor ThreeJS preesistente, il quale però è stato completamente ristrutturato per venire incontro ad alcune esigenze realizzative, prima fra tutte l’integrazione delle funzionalità sopra citate.
 \\  
-Inoltre, come discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}, a fronte della diversità tecnologica tra threejs e Blender è stata necessaria una mappatura esplicita dei parametri, che ha portato ad alcune modifiche sull’editor (in particolare sulle caratteritiche delle SpotLight). Nel paragrafo [sistema di illuminazione] verranno descritte tutte le modifiche apportate all’interno dell’editor, e in particolare all’interno di ThreeJS, per ottenere un sistema di illuminazione simile a quello di Blender.
+Inoltre, come discusso nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri}, a fronte della diversità tecnologica tra threejs e Blender è stata necessaria una mappatura esplicita dei parametri, che ha portato ad alcune modifiche sull’editor (in particolare sulle caratteritiche delle SpotLight). Nel paragrafo \ref{sec:chapter_creazione_scena_mapping_illuminazione} verranno descritte tutte le modifiche apportate all’interno dell’editor, e in particolare all’interno di ThreeJS, per ottenere un sistema di illuminazione simile a quello di Blender.
 \\  
-Il paragrafo [funzionalità dell’editor] si focalizzerà invece su come le principali funzionalità dell’editor, alcune delle quali sopra citate, sono state implementate nel servizio.
+Il paragrafo \ref{sec:chapter_creazione_scena_funzionalita_editor} si focalizzerà invece su come le principali funzionalità dell’editor, alcune delle quali sopra citate, sono state implementate nel servizio.
 \\
 La motivazione della ristrutturazione completa dell’editor su cui si basa il servizio, e la reimplementazione di alcune componenti dello stesso, non è da cercarsi solamente nella necessità di integrare funzionalità o mappare dei parametri, ma anche nella volontà di realizzare nel complesso un servizio che sia flessibile ai cambiamenti.
 \\ 
@@ -36,14 +36,13 @@ L’idea è infatti quella di realizzare un servizio per la creazione di ambient
 \\
 Questa flessibilità permette di ottenere un editor aperto e integrabile con widget realizzate anche da terze parti.
 \\ 
-Per garantire questa qualità il servizio è stato ristrutturato completamente utilizzando le tecnologie Web Component, discusse nel capitolo \ref{sec:chapter_tecnologie_abilitanti_webcomp_poly} . Ogni funzionalità è rappresentata dunque da un elemento html, che può essere integrato nell’applicazione web importando semplicemente il relativo tag.
+Per garantire questa qualità il servizio è stato ristrutturato completamente utilizzando le tecnologie Web Components, discusse nel capitolo \ref{sec:chapter_tecnologie_abilitanti_webcomp_poly} . Ogni funzionalità è rappresentata dunque da un elemento html, che può essere integrato nell’applicazione web importando il relativo tag.
 \\
-Nel paragrafo [Implementazione] verrà mostrato il modo in cui il servizio è stato riorganizzato utilizzando Polymer, un framework che semplifica l’utilizzo delle tecnologie web componente per la realizzazione di elementi html custom.
+Nel paragrafo \ref{sec:chapter_creazione_scena_design} verrà mostrato il modo in cui il servizio è stato riorganizzato utilizzando Polymer, un framework che semplifica l’utilizzo delle tecnologie Web Components per la realizzazione di elementi html custom.
 \\
 Quanto discusso fin’ora permette di individuare tre qualità principali che l’editor intende soddisfare:
 \begin{itemize}
-\item Usabilità: Richiedere solo un browser ed una connessione ad internet
-\item Flessibilità: Il servizio è flessibile ai cambiamenti, e pensato per poter essere integrato con nuove funzionalità in modo semplice.
-\item Semplicità: Il servizio espone tutte le funzionalità base per la realizzazione di ambienti 3D, in modo facile da comprendere.
+\item Usabilità: Richiede solo un browser ed una connessione ad internet.
+\item Flessibilità: Il servizio è flessibile ai cambiamenti, e pensato per poter essere integrato con nuove funzionalità.
 \end{itemize}
-Il paragrafo a seguire fornirà una panoramica generale delle funzionalità offerte dal serizio, descrivendo i dettagli implementativi circa le funzionalità introdotte esclusivamente nel contesto del presente elaborato di tesi.
+Il prossimo paragrafo fornirà una panoramica generale delle principali funzionalità attualmente offerte dal servizio.
