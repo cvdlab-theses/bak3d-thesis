@@ -1,62 +1,44 @@
-L’evoluzione tecnologica nel corso degli anni, ha sempre saputo coadiuvare innovazione ed accessibilità.
+L’evoluzione tecnologica nel corso degli anni, ha sempre saputo coniugare innovazione ed accessibilità.
 \\
-Ciò che nasce come prodotto innovativo e proibitivo per la maggior parte dei consumatori, diventa in poco tempo di dominio pubblico, grazie ai minori costi di produzione.
+Ciò che nasce come prodotto innovativo e dai costi proibitivi per la maggior parte dei consumatori, diventa in poco tempo di dominio pubblico, grazie ai minori costi di produzione.
 \\ 
-Uno degli esempi più lampanti in questo senso, sono gli smartphone. 
+Uno dei migliori esempi di questo fenomeno è il mercato degli smartphone.
 \\
-Negli ultimi anni c’è stata una fortissima spinta tecnologica verso la realtà virtuale, con molti produttori hardware che tutt’oggi sono all’opera per la realizzazione di visori che annullano la realtà intorno all’utilizzatore, immergendolo in un’esperienza virtuale che ben si sposa con il mondo dei videogiochi. Nonostante si tratti ancora di una tecnologia d’elite, esistono sul mercato delle soluzioni molto più semplici e dai costi contenuti, come i cardboard di Google, che rendono la realtà virtuale sperimentabile da chiunque disponga di uno smartphone. 
+Negli ultimi anni c’è stata una fortissima spinta tecnologica verso la realtà virtuale, con molti produttori hardware che tutt’oggi sono all’opera per la realizzazione di visori che annullano la realtà intorno all’utilizzatore, immergendolo in un’esperienza virtuale che ben si sposa con il mondo dei videogiochi. Nonostante si tratti ancora di una tecnologia dai costi molto elevati, esistono sul mercato delle soluzioni molto più semplici e dai costi contenuti, come i cardboard di Google, che rendono la realtà virtuale sperimentabile da chiunque disponga di uno smartphone. 
 \\
 L’accessibilità del mondo 3D mediante tali dispositivi, nonchè un’interesse per la computer grafica, sono stati il movente principale che ha spinto verso la realizzazione di quanto verrà mostrato nel presente elaborato di tesi.
 \\
-In particolare il lavoro svolto in congiunta con il collega Michele D’Antimi all’interno del CVD Lab presso l’Università degli Studi Roma Tre, ha avuto come scopo quello di rendere fruibili su tali dispositivi delle scene 3D fotorealistiche, costruite dall’utente.
+Il lavoro è frutto di un'attività di tesi congiunta, svolta con il collega Michele D'Antimi presso il CVD Lab dell'Università degli Studi Roma Tre. 
 \\
-Il contesto applicativo che prima di ogni altro ha fomentato l’interesse verso lo sviluppo di sistema di questo tipo, è quello architetturale. Si è immaginato infatti come un sistema di questo tipo possa risultare utile nel momento in cui un’architetto permetta al cliente la navigazione virtuale del progetto di un’appartamento da lui richiesto. Un’altro contesto di interesse è stimolato per lo più dalla passione per i videgiochi, ed è quello in cui poter fornire uno strumento per la creazione di ambientazioni, da importare direttamente all’interno di un videogioco.
+L'obiettivo di questo lavoro è la realizzazione di un sistema per fruizione su ambient web di scene 3D fotorealistiche.
 \\
-La navigazione, così come la resa fotorealistica e la creazione di scene 3D, sono resi fruibili all’utente come servizio. Ciò ha permesso la realizzazione di un’applicazione indipendente dalla piattaforma sulla quale viene utilizzato, avente come unico requisito un browser ed una connessione ad internet. 
-\\
-La realizzazione di un servizio di questo tipo si scontra sin da subito con una problematica fondamentale, dovuta al fotorealismo. In particolare la navigazione di una scena 3D fotorealistica è un’attività computazionalmente insostenibile a meno che non si disponga di un piattaforma hardware di fascia opportuna, requisito che uno smartphone non è attualmente in grado di soddisfare. 
+Il problema nella realizzione di un sistema di questo tipo è che scene estese e con molti dettagli tali da renderle fotorealistiche, come texture ad alta risoluzione ed effetti luce realistici, risultano insostenibili su browser, a meno che non si disponga di un'hardware di fascia opportuna, requisito che uno smartphone non è attualmente in grado di soddisfare. 
 \\
 Una delle caratteristiche che più influenza l’aspetto qualitativo di una scena è l’illuminazione, che per essere realistica necessita di essere calcolata mediante algoritmi onerosi dal punto di vista computazionale. All’illuminazione si aggiungono eventuali effetti di rifrazione o riflessione, come la presenza di uno specchio all’interno della scena, anch’essi gravosi sulle performance del calcolatore.
-Per conseguire l’obiettivo prefissato è stato quindi necessario partire da una precondizione fondamentale, la quale è abilitante per tutto un’insieme di tecniche che permettono di abbassare notevolmente il carico computazionale di un render fotorealistico.
+Per fronteggiare questa problematica si è operata una semplificazione delle condizioni al contorno, in particolare scegliendo di indirizzare il problema del fotorealismo per scene statiche, ovvero in cui gli oggetti della scena non fossero soggetti a movimenti. La conseguente perdita di generalità mantiene comunque la possibilità di operare su quelle che erano le tipologie di scene di interesse, ovvero le scene di interni.
 \\
-La precondizione è che la scena 3D sia statica.
-\\
-La scaticità di ogni oggetto all’interno dello spazio 3D della scena permette di implementare delle tecniche che alleggeriscono notevolmente il carico di lavoro del ciclo di render, rendendolo più leggero. 
+La staticità di ogni oggetto all’interno dello spazio 3D della scena permette di implementare delle tecniche che alleggeriscono notevolmente il carico di lavoro per renderizzare le scene 3D.
 La prima tecnica consiste nell’utilizzare le lightmap sugli oggetti della scena, calcolate mediante processo di baking delle lightmap; la seconda tecnica consiste nell’utilizzo di envmap di rifrazione o riflessione. 
 \\
-Per il processo di baking delle lightmap viene utilizzato il software di grafica 3D Blender. Siccome il sistema che si vuole realizzare è accessibile come servizio, e non richiede l’installazione di software, è impensabile richiedere all’utilizzatore del sistema di installare Blender sulla propria macchina, considerato poi che il baking è un processo oneroso da calcolare.
+Per raggiungere l'obiettivo preposto è stato realizzato un sistema composto da tre macro-componenti: un editor di scene 3D, un servizio di baking, e un navigatore.
+L'utente può quindi costruire una scena nell'editor, richiederne il baking delle lightmap mediante servizio di baking, e navigare in prima persona il risultato. Ognuna delle componenti è accessibile e fruibile mediante web browser; l'utilizzatore può quindi usufruire del sistema senza necessità alcuna di installare del software, e indipendentemente dalla piattaforma in uso, purchè munita di browser ed una connessione ad internet.
 \\
-Pertanto la soluzione apportata è quella di sfruttare l’ambiente web, per separare la responsabilità di elaborare il baking delle lightmap su di un servizio remoto.
+Il processo di baking delle lightmap viene quindi completamente automatizzato sfruttando l'ambiente web; in particolare l'utente viene assolto dagli oneri di eseguire tale processo, sottomettendo una richiesta direttamente ad un servizio remoto, che si occupa di realizzare il processo mediante il software di grafica 3D Blender. 
 \\
-Il workflow generale del sistema è dunque il seguente: l’utente accede da browser al servizio editor, mediante cui può realizzare la sua scena 3D in completa autonomia.
-\\
-Al termine del lavoro, mediante apposita funzionalità offerta dall’editor, può sottomettere una richiesta ad un servizio remoto di baking, inviando nella richiesta la scena di cui vuole processato il bake, insieme ad un’indirizzo email dove poter ricevere la notifica di baking compiuto, con un link per scaricare il risultato. 
-\\
-A questo punto un webserver si occuperà di ascoltare la richiesta, ed elaborarla chiedendo a Blender il baking delle lightmap sulla scena passata nella richiesta. 
-\\
-A processo ultimato verrà inviata una mail di notifica all’indirizzo dell’utente, che potrà dunque scaricare il risultato, e visualizzarlo all’interno di un servizio di navigazione. 
-\\
-Quest’ultimo presenta diverse modalità per la navigazione, da quella in prima persona con o senza visore cardboard per la realtà virtuale, alla visuale dall’alto.
-\\
-La presenza di un servizio di baking remoto fa si che agli occhi dell’utente la procedura sia completamente automatizzata, rendendo quindi trasparenti tutti i dettagli circa Blender, e i passi svolti per eseguire un bake.
-\\
-Il problemi affrontati nel corso nella realizzazione di questo sistema hanno riguardato principalmente il servizio di baking. In particolare è stato necessario realizzare una procedura completamente automatizzata, implementando i passi che devono essere svolti dal webserver e da Blender, nel momento in cui viene invocato per processare il bake.
+La realizzazione del servizio di bake è quella che ha richiesto maggiore sforzo produttivo. In particolare è stato necessario realizzare una procedura completamente automatizzata, implementando i passi che devono essere svolti dal webserver e da Blender, nel momento in cui viene invocato per processare il bake.
 \\
 La differenza tecnologica tra il servizio editor, basato interamente su ThreeJS, e Blender, ha fatto si che per adattare in Blender una scena creata nell’editor è stato necessario implementare una mappatura esplicita dei parametri. In particolare, a fronte di una richiesta di bake da parte dell’utente, il servizio di baking effettuerà una conversione delle strutture ThreeJS che compongono la scena, in strutture di Blender corrispondenti. 
 \\
+Un sistema di questo tipo ben si presta con la creazione e il design di interni di abitazioni. Ad esempio uno studio di architettura potrebbe permettere al cliente la navigazione virtuale del progetto di un’appartamento da lui commissionato. Inoltre si può pensare di utilizzare l'abitazione virtuale per individuare il setup di arredo che più si preferisce per ogni stanza, ed eventualmente commissionare direttamente l'ordine ad un fornitore di elementi d'arredo.
+Il sistema può inoltre avere una sua utilità all'interno del mondo videoludico; in particolare si potrebbe utilizzare come editor di ambientazioni, da importare direttamente all'interno di un videogioco.
+Il sistema potrebbe essere utilizzato anche per la creazione di tour virtuali di musei. In particolare si potrebbe realizzare un catalogo di strutture virtuali, contenente ad esempio delle riproduzioni di musei, selezionabili e navigabili dall'utente.
 \\
-Il lavoro mostrato all’interno del presente elaborato di tesi è stato interamente svolto in congiunta con il collega sopra citato, e solo per fini illustrativi ognuno si focalizzerà su un’aspetto differente. In particolare il sottoscritto darà più risalto alle tematiche inerenti il servizio editor, mentre il collega si occuperà più nel dettaglio delle tematiche inerenti il servizio di navigazione. 
 \\
-Queste differenze si riassumo principalmente in un capitolo di tesi differente per ognuno, il sesto, a differenza del resto del contenuto che non presenterà variazioni. 
-\\
-La tesi è dunque articolata nel modo seguente:
-\begin{itemize}
-\item Il primo capitolo descriverà lo stato dell’arte delle tecniche utilizzate per la realizzazione del sistema.
-\item Il secondo capitolo si concentrerà su una descrizione di tutte le tecnologie utilizzate.
-\item Il terzo capitolo focalizzerà l’attenzione sulla soluzione al problema di avere un ciclo di render computazionalmente oneroso, nella fruizione di scene fotorealistiche. 
-\item Il quarto capitolo esporrà l’architettura generale del sistema, fornendo una descrizione dello stato attuale dei tre servizi realizzati e del formato di descrizione scelto per le scene 3D. 
-\item Il quinto capitolo si occuperà interamente del servizio di bake, descrivendone il funzionamento e i dettagli realizzativi.
-\item Il sesto capitolo è invece quello in cui verrà descritto l’editor, e in cui verranno discussi i dettagli realizzativi circa le funzionalità più importanti offerte.
-\item Il settimo capitolo mostrerà un esempio completo di utilizzo del sistema da parte dell’utente.
-\item L’ottavo capitolo si concentrerà sui risultati inerenti alle attività di test a cui è stato sottoposto il sistema.
-\end{itemize}
+Il presente lavoro di tesi si articola in nove capitoli.
+Il primo capitolo descrive lo stato dell’arte delle tecniche utilizzate per la realizzazione del sistema, mentre il secondo si concentra su una descrizione di tutte le tecnologie utilizzate.
+Il terzo capitolo focalizza invece l’attenzione sulla soluzione al problema di avere un ciclo di render computazionalmente oneroso, nella fruizione di scene fotorealistiche. 
+Nel quarto capitolo viene esposta l’architettura generale del sistema, fornendo una descrizione dello stato attuale dei tre servizi realizzati e del formato di descrizione scelto per le scene 3D. 
+Il quinto capitolo si occupa interamente del servizio di bake, descrivendone il funzionamento e i dettagli realizzativi. Il sesto capitolo è invece quello in cui viene descritto l’editor, e in cui vengono discussi i dettagli realizzativi circa le funzionalità più importanti offerte.
+Con il settimo capitolo viene mostrato un esempio completo di utilizzo del sistema da parte dell’utente.
+All'interno dell'ottavo capitolo vengono mostrati risultati inerenti alle attività di test a cui è stato sottoposto il sistema.
+Il capitolo nove chiude l'elaborato, traendo delle conclusioni sul lavoro svolto, e sugli obiettivi raggiunti.

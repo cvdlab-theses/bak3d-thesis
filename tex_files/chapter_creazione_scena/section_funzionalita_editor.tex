@@ -290,13 +290,13 @@ mesh.material = material\;
 
 \end{algorithm}
 \newpage
-Come è possibile osservare dallo pseudocodice, la procedura consiste sostanzialmente nell’istanziazione di un oggetto \texttt{THREE.CubeCamera} , nel posizionamento dello stesso in corrrispondenza della mesh, e nell’utilizzo del target di render della CubeCamera come envmap di riflessione o rifrazione. L’oggetto \texttt{WebGLRenderTargetCube} è dunque esso stesso l’envmap, che verrà quindi assegnata all’attributo \texttt{envMap} del materiale che verrà associato alla mesh.
+Come è possibile osservare dallo pseudocodice, la procedura consiste sostanzialmente nell’istanziazione di un oggetto \texttt{THREE.CubeCamera} , nel posizionamento dello stesso in corrrispondenza della mesh, e nell’utilizzo del target di render della CubeCamera come envmap di riflessione o rifrazione. L’oggetto \texttt{WebGLRenderTargetCube} è dunque esso stesso l’envmap, che verrà quindi assegnata all’attributo \texttt{envMap} del nuovo materiale associato alla mesh.
 \\
 Infatti il materiale non sarà quello originale della mesh, ma ne verrà creato uno nuovo di tipo Basic, nel quale oltre all’envmap verranno copiate tutte le eventuali texture appartenenti al precedente materiale. Il BasicMaterial permette di avere un materiale che non dipende dalle fonti luminose all’interno della scena, e quindi utilizzabile all’interno di una scena che non ne presenta.
 \\ 
 L’utilizzo di una tecnica di questo tipo presenta dei vantaggi dal punto di vista della memoria occupata all’interno del file JSON.
 \\ 
-Infatti se per un certo oggetto venisse creata un’envmap con questa tecnica, l’esportazione della scena comporterebbe l’inserimento nella descrizione dell’oggetto non del base64 di un’envmap, ma solamente le informazioni della cubeCamera che ha generato il WebGLRenderTargetCube per quell’oggetto. Tali informazioni sono decisamente più contenute di un data URL di un’immagine, e comprendono:
+Infatti se per un certo oggetto venisse creata un’envmap con questa tecnica, l’esportazione della scena comporterebbe l’inserimento nella descrizione dell’oggetto non del data URL di un’envmap, ma solamente le informazioni della cubeCamera che ha generato il WebGLRenderTargetCube per quell’oggetto. Tali informazioni sono decisamente più contenute di un data URL di un’immagine, e comprendono:
 \begin{itemize}
 \item Mapping: tipo di envmap (rifrazione o riflessione).
 \item Near e Far della CubeCamera.
@@ -309,11 +309,11 @@ Memorizzare questo tipo di informazioni all’interno del JSON ha richiesto dell
 \\
 La prima modifica è stata aggiungere all’interno della funzione di conversione un riconoscimento per oggetti di tipo CubeCamera. Infatti, a differenza degli altri oggetti della scena, il tipo THREE.CubeCamera non veniva riconosciuto, e pertanto tradotto in Object3D. In questo modo è stato possibile inserire nel JSON la descrizione della CubeCamera, e delle relative PerspectiveCamera. Così come per il processo di esportazione, è stato necessario aggiungere un supporto al riconoscimento delle CubeCamera anche in fase di importazione.
 \\ 
-Una seconda modifica ha riguardato l’inserimento all’interno del JSON dell’attributo mapping, per memorizzare il tipo di envmap che dovrà essere generata dalla cubecamera.
+Una seconda modifica ha riguardato l’inserimento all’interno del JSON dell’attributo mapping, per memorizzare il tipo di envmap che dovrà essere generata dalla CubeCamera.
 \\
 Un ultima attività di modifica ha riguardato la risoluzione della CubeCamera, e quindi in generale delle envmap. Nonostante le attività di test, mostrate nel capitolo \ref{sec:chapter_prove_sperimentali_mirror_envmap} , abbiano mostrato un netto efficientamento delle prestazioni utilizzando le envmap per gli effetti di riflessione o rifrazione, per garantire l’utilizzo di un’elevato numero di queste anche su architetture meno performanti è stato necessario individuare una risoluzione per la CubeCamera che garantisse un buon rapporto qualità/prestazioni. Diverse sperimentazioni hanno dimostrato come il giusto compromesso fosse una risoluzione di 512x512.
 \\
-Infine, per quanto riguarda il posizionamente della CubeCamera all’interno della scena, è stato necessario trovare un modo mediante cui poter memorizzare all’interno del JSON le relazioni tra CubeCamera e Mesh associata. A riguardo si è scelto di adottare una soluzione che non richiedesse l’aggiunta di alcuna informazione aggiuntiva all’interno del JSON; in particolare si è fatto uso delle gerarchie all’interno della scena: se una CubeCamera è associata ad una determinata mesh, tale mesh sarà il padre della CubeCamera. 
+Infine, per quanto riguarda il posizionamento della CubeCamera all’interno della scena, è stato necessario trovare un modo mediante cui poter memorizzare all’interno del JSON le relazioni tra CubeCamera e Mesh associata. A riguardo si è scelto di adottare una soluzione che non richiedesse l’aggiunta di alcuna informazione aggiuntiva all’interno del JSON; in particolare si è fatto uso delle gerarchie all’interno della scena: se una CubeCamera è associata ad una determinata mesh, tale mesh sarà il padre della CubeCamera. 
 
 \subsection{Miglioramenti all’usabilità del servizio}
 \label{sec:chapter_creazione_scena_funzionalita_editor_usabilita}
@@ -324,14 +324,14 @@ In questo paragrafo verranno descritte alcune delle funzionalità integrate all�
 \item Una mappa per la vista planimetrica della scena.
 \item Un helper per il selezionamento degli oggetti all’interno della scena.
 \end{itemize}
-Per quanto riguarda la prima funzionalità, ossia l’indicatore di progresso, il funzionamento è piuttosto semplice. Dopo il caricamento del file JSON di una scena all’interno dell’editor, una volta tradotto il file nel corrispondente oggetto \texttt{THREE.Scene} , tale oggetto viene passato ad un metodo \texttt{set\_scene()} , il quale si prende carico di trasferire ogni oggetto della scena importata all’interno di quella associata all’editor. Siccome al metodo set\_scene viene dato in input l’oggetto scena completo, è possibile stabilire immediatamente il numero totale di oggetti che contiene; quindi per ogni oggetto trasferito da questa scena a quella dell’editor, è possibile calcolare una percentuale degli oggetti trasferiti su quelli totali. Tale percentuale viene quindi mostrata nella window dell’editor. 
+Per quanto riguarda la prima funzionalità, ossia l’indicatore di progresso, i dettagli di funzionamento sono i seguenti. Dopo il caricamento del file JSON di una scena all’interno dell’editor, una volta tradotto il file nel corrispondente oggetto \texttt{THREE.Scene}, tale oggetto viene passato ad un metodo \texttt{set\_scene()}, il quale si prende carico di trasferire ogni oggetto della scena importata all’interno di quella associata all’editor. Siccome al metodo set\_scene viene dato in input l’oggetto scena completo, è possibile stabilire immediatamente il numero totale di oggetti che contiene; quindi per ogni oggetto trasferito da questa scena a quella dell’editor, è possibile calcolare una percentuale degli oggetti trasferiti su quelli totali. Tale percentuale viene quindi mostrata nella window dell’editor. 
 \\
 \\
-L’aggiunta degli shortcut da tastiera è anch’essa una procedura non troppo complessa. 
+L’aggiunta degli shortcut da tastiera è una procedura che si articola nei seguenti passaggi:
 \\
-In un elemento HTML è possibile impostare delle funzioni che verranno chiamate al verificarsi di un determinato evento sull’elemento. Tale impostazione avviene invocando sull’elemento il metodo \texttt{addEventListener()} , il quale prende come input il tipo di evento per il quale l’elemento deve mettersi in ascolto, e una funzione che implementa i passi di elaborazione per la gestione dell’evento.
+In un elemento HTML è possibile impostare delle funzioni che verranno chiamate al verificarsi di un determinato evento sull’elemento. Tale impostazione avviene invocando sull’elemento il metodo \texttt{addEventListener()}, il quale prende come input il tipo di evento per il quale l’elemento deve mettersi in ascolto, e una funzione che implementa i passi di elaborazione per la gestione dell’evento.
 \\
-Per realizzare delle scorciatoglie da tastiera sono state individuate alcune delle funzionalità di uso frequente all’interno dell’editor:
+Per realizzare degli shortcut da tastiera sono state individuate alcune delle funzionalità di uso frequente all’interno dell’editor:
 \begin{itemize}
 \item Rimuovere un’elemento.
 \item Duplicare un’elemento.
@@ -342,7 +342,7 @@ Dopodichè l’elemento HTML \texttt{window} rappresentante la pagina dell’edi
 \\
 Per la realizzazione di una mappa con visuale dall’alto si è utilizzato lo stesso meccanismo per mezzo del quale è possibile osservare la vista 3D della scena durante l’utilzzo dell’editor.
 \\
-In particolare la vista 3D è ottenuta mediante un'elemento HTML che funge da \texttt{canvas} , al quale è associato un oggetto \texttt{THREE.WebGLRenderer} ; tale oggetto renderer si occuperà, ad ogni ciclo di render, di disegnare sulla canvas la scena dal punto di vista della camera associata al renderer.
+In particolare la vista 3D è ottenuta mediante un'elemento HTML che funge da \texttt{canvas}, al quale è associato un oggetto \texttt{THREE.WebGLRenderer}; tale oggetto renderer si occuperà, ad ogni ciclo di render, di disegnare sulla canvas la scena dal punto di vista della camera associata al renderer.
 \\
 Per la realizzazione di una mappa 2D è quindi possibile creare una nuova canvas più piccola e posizionarla all’interno dell’editor.
 \\ 
@@ -355,7 +355,7 @@ Per quanto riguarda l’ultima funzionalità, ossia l’helper di selezione, vie
 \\
 Se per le shortcut da tastiera l’evento per cui mettersi in ascolto è la pressione di un tasto, in questo caso l’evento scatenante sarà il movimento del mouse.
 \\
-Alla lettura del movimento del muose, l’editor invocherà la funzione \texttt{on\_mousemove()} , passando come argomento l’evento appena catturato. Tale funzione estrarrà dall’evento la coordinate del mouse, e tale coordinata indicherà la direzione verso cui lanciare un raggio a partire dalla posizione dell’osservatore (per l’invio di raggi attraverso la scena di fa utilizzo della classe \texttt{THREE.RayCaster()} ). Il raggio attraverserà la scena, incontrando o meno degli oggetti lungo la traiettoria. Se il raggio incontrerà degli oggetti, solamente il primo colliso verrà preso in considerazione. A questo punto l’oggetto potrà essere preselezionato o meno, in base ad alcune condizioni:
+Alla lettura del movimento del mouse, l’editor invocherà la funzione \texttt{on\_mousemove()}, passando come argomento l’evento appena catturato. Tale funzione estrarrà dall’evento la coordinate del mouse, e tale coordinata indicherà la direzione verso cui lanciare un raggio a partire dalla posizione dell’osservatore (per l’invio di raggi attraverso la scena di fa utilizzo della classe \texttt{THREE.RayCaster()}). Il raggio attraverserà la scena, incontrando o meno degli oggetti lungo la traiettoria. Se il raggio incontrerà degli oggetti, solamente il primo colliso verrà preso in considerazione. A questo punto l’oggetto potrà essere preselezionato o meno, in base ad alcune condizioni:
 \begin{itemize}
 \item Se l’oggetto è già selezionato, non verrà svolta alcuna operazione.
 \item Se l’oggetto non è selezionato, allora verrà effettuata una preselezione dello stesso, utilizzando un \texttt{THREE.BoxHelper()} per evidenziare l’area della scena occupata dall’oggetto.  

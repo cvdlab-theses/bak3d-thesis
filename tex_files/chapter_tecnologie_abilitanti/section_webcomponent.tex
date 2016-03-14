@@ -61,7 +61,7 @@ Come discusso in precedenza, le lifecycle callback risultano uno strumento utile
 \item \emph {createdCallback} - Il comportamento dell’elemento quando viene registrato.
 \item \emph {attachedCallback} - Il comportamento dell’elemento quando viene inserito nel DOM.
 \item \emph {detachedCallback} - Il comportamento dell’elemento quando viene rimosso dal DOM.
-\item \emph {attributeChangedCallback(attributeName)} - il comportamento dell’elemento quando un suo attributo viene modificato.
+\item \emph {attributeChangedCallback(attributeName)} - Il comportamento dell’elemento quando un suo attributo viene modificato.
 \end{itemize}
 \emph{createdCallback} viene invocata in modo sincrono alla creazione dell’elemento, le altre callback sono invece chiamate in modo asincrono. Le callback asincrone solitamente sfruttano \texttt{MutationObserver} per mettersi in ascolto dei cambiamenti sul DOM; questo consente alle callbacks di essere invocate prima di altri elementi come layout, stile, o altri eventi; in questo modo si evitano problemi, come il caricamento di contenuto senza stile, prima che la callbacks abbiano modo di reagire alle modifiche sul DOM.
 Per la definizione di metodi o proprietà, possono essere utilizzati dei metodi getter e setter:

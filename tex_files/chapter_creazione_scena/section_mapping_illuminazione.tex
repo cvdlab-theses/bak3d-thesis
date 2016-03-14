@@ -2,7 +2,7 @@
 \label{sec:chapter_creazione_scena_mapping_illuminazione}
 Nel paragrafo \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri} , si è discusso circa la realizzazione di una mappatura esplicita dei parametri tra ThreeJS e Blender. 
 \\
-Inoltre sono stati individuati quei parametri in grado di conferire alle SpotLight di ThreeJS delle caratteristiche, per quanto riguarda la luce diretta, simili a quelle della Spot Lamp di Blender. Si è parlato inoltre di come questi parametri vengano preconfigurati all’interno dell’Editor. In particolare, nel momento in cui l’utente clicca sull’opzione per inserimento di una SpotLight all’interno della scena, una nuovo oggetto di tipo \texttt{THREE.SpotLight} viene creato; prima dell’inserimento vengono preimpostati i parametri \texttt{distance} , \texttt{exponent}, e \texttt{decay} , come discusso in \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri} .
+Inoltre sono stati individuati quei parametri in grado di conferire alle SpotLight di ThreeJS delle caratteristiche, per quanto riguarda la luce diretta, simili a quelle della Spot Lamp di Blender. Si è parlato inoltre di come questi parametri vengano preconfigurati all’interno dell’Editor. In particolare, nel momento in cui l’utente clicca sull’opzione per inserimento di una SpotLight all’interno della scena, un nuovo oggetto di tipo \texttt{THREE.SpotLight} viene creato; prima dell’inserimento vengono preimpostati i parametri \texttt{distance} , \texttt{exponent}, e \texttt{decay} , come discusso in \ref{sec:chapter_baking_service_pipeline_baking_mapp_parametri} .
 \\ 
 L’adattamento delle SpotLight di ThreeJS alle Spot Lamp di Blender non si limita alle caratteristiche di irradiazione diretta, ma riguarda anche il modo in cui la sorgente luminosa può essere utilizzata all’interno della scena. 
 \\
@@ -35,7 +35,7 @@ Di conseguenza la luce è tecnicamente ancorata ad un target fisso, in quanto il
  \label{fig:editor_6}
 \end{figure} 
 
-La procedura sopra descritta ha permesso di adattare il fascio di irradiazione delle sorgenti luminose, ma siccome ogni luce in ThreeJS è composta anche da un’oggetto \texttt{Helper} della luce, ossia un wireframe che serve ad individuare posizione ed orientamento del fascio luminoso nello spazio, si è reso necessario risolvere alcuni problemi di ThreeJS legati all’orientamento degli’Helper delle SpotLight e delle DirectionalLight.
+La procedura sopra descritta ha permesso di adattare il fascio di irradiazione delle sorgenti luminose, ma siccome ogni luce in ThreeJS è composta anche da un’oggetto \texttt{Helper} della luce, ossia un wireframe che serve ad individuare posizione ed orientamento del fascio luminoso nello spazio, si è reso necessario risolvere alcuni problemi di ThreeJS legati all’orientamento degli helper delle SpotLight e delle DirectionalLight.
 \\ 
 In particolare adattando una luce con il metodo sopra esposto, il relativo helper non seguiva appieno i movimenti del fascio luminoso.
 \\

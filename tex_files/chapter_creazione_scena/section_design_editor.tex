@@ -6,15 +6,15 @@ Seguendo questa caratteristica di design, dettata dalla filosofia di Polymer, al
 \\
 In particolare l’applicazione è organizzata in componenti, i quali a loro volta sono organizzati in altri componenti.
 \\
-I componenti principali all'interno dell'editor sono il \emph{pannello delle opzioni} (o \emph{sidebar} ), e l’\emph{editor threejs} . Inoltre vi è anche un componente secondario, per il catalogo di prodotti.
+I componenti principali all'interno dell'editor sono il \emph{pannello delle opzioni} (o \emph{sidebar}), e l’\emph{editor threejs}. Inoltre vi è anche un componente secondario, per il catalogo di prodotti.
 \\
-Il pannello delle opzioni è diviso in altri componenti, ossia pannelli, ognuno per una funzionalità specifica; questi sono il \emph{pannello main} , il \emph{pannello scena} , il \emph{pannello per gli inserimenti} , e il \emph{pannello contestuale all’oggetto selezionato} .
+Il pannello delle opzioni è diviso in altri componenti, ossia pannelli, ognuno per una funzionalità specifica; questi sono il \emph{pannello main} , il \emph{pannello scena} , il \emph{pannello per gli inserimenti}, e il \emph{pannello contestuale all’oggetto selezionato}.
 \\
 \\
-Il pannello main si decompone nel \emph{pannello dei file} , e in quello \emph{di progetto} . 
+Il pannello main si decompone nel \emph{pannello dei file}, e in quello \emph{di progetto}. 
 Il pannello dei file racchiude tutte le funzionalità per l’importazione e il salvataggio di oggetti o scene, e per l’apertura del catalogo di prodotti.
 \\
-Il pannello di progetto si decompone a sua volta nel \emph{pannello di bake} , con le relative funzionalità di bake già discusse nel paragrafo \ref{sec:chapter_creazione_scena_funzionalita_editor_bake} , e i pannelli per la gestione della \emph{griglia} e della \emph{modalità di trasformazione} degli oggetti, e un’ultimo pannello con le \emph{statistiche} di scena (come il numero di vertici contenuti).
+Il pannello di progetto si decompone a sua volta nel \emph{pannello di bake}, con le relative funzionalità di bake già discusse nel paragrafo \ref{sec:chapter_creazione_scena_funzionalita_editor_bake} , e i pannelli per la gestione della \emph{griglia} e della \emph{modalità di trasformazione} degli oggetti, e un’ultimo pannello con le \emph{statistiche} di scena (come il numero di vertici contenuti).
 \\
 \\
 Il pannello scena contiene la lista degli oggetti all’interno della scena. 
@@ -25,6 +25,6 @@ Il pannello per gli inserimenti si divide in quattro diversi pannelli, che diffe
 \\
 Per quanto riguarda l’ultimo pannello, ovvero quello contestuale, è organizzato in maniera differente a seconda del modello ThreeJS selezionato.
 \\ 
-Se il modello è una mesh, allora il pannello si decompone in due ulteriori pannelli: \emph{Mesh} e \emph{Material} . Il pannello Mesh contiene tutte le funzionalità per trasformare la geometria della mesh, o configurare alcune impostazioni di bake. Il pannello Mesh contiene invece le funzionalità per modificare i materiali o texturizzare il modello.
+Se il modello è una mesh, allora il pannello si decompone in due ulteriori pannelli: \emph{Mesh} e \emph{Material}. Il pannello Mesh contiene tutte le funzionalità per trasformare la geometria della mesh, o configurare alcune impostazioni di bake. Il pannello Material contiene invece le funzionalità per modificare i materiali o texturizzare il modello.
 \\
 Se invece il modello selezionato è una luce, allora il pannello sarà decomposto nei pannelli \emph{Mesh} e \emph{Light} , il primo contenente le funzionalità per muovere la fonte luminosa all’interno della scena, il secondo per modificare le proprietà di illuminazione, come intensità luminosa o colore. 
