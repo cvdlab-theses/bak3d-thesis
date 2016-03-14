@@ -26,22 +26,24 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.1}{\ignorespaces Performance al variare degli oggetti}}{173}{table.caption.99}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.2}{\ignorespaces Performance al variare del sampling}}{175}{table.caption.102}
+\contentsline {table}{\numberline {8.1}{\ignorespaces Performance al variare degli oggetti}}{212}{table.caption.130}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.3}{\ignorespaces Performance al variare delle luci}}{179}{table.caption.108}
+\contentsline {table}{\numberline {8.2}{\ignorespaces Performance al variare del sampling}}{214}{table.caption.133}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.4}{\ignorespaces Confronto dimensioni input-output}}{181}{table.caption.109}
+\contentsline {table}{\numberline {8.3}{\ignorespaces Performance al variare delle luci}}{218}{table.caption.139}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.5}{\ignorespaces Dimensioni output variando sampling}}{183}{table.caption.111}
+\contentsline {table}{\numberline {8.4}{\ignorespaces Confronto dimensioni input-output}}{220}{table.caption.140}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{187}{table.caption.113}
+\contentsline {table}{\numberline {8.5}{\ignorespaces Dimensioni output variando sampling}}{222}{table.caption.142}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{188}{table.caption.114}
+\contentsline {table}{\numberline {8.6}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 1).\relax }}{226}{table.caption.144}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{194}{table.caption.121}
+\contentsline {table}{\numberline {8.7}{\ignorespaces Numero di luci e fluidit\IeC {\`a} (architettura 2).\relax }}{227}{table.caption.145}
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {7.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{194}{table.caption.122}
+\contentsline {table}{\numberline {8.8}{\ignorespaces Three.Mirror e fluidit\IeC {\`a} (architettura 1).\relax }}{233}{table.caption.152}
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {8.9}{\ignorespaces Env map e fluidit\IeC {\`a} (architettura 1).\relax }}{233}{table.caption.153}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
