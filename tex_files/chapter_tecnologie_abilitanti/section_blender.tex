@@ -22,6 +22,7 @@ Nel presente lavoro di tesi è stato scelto questo motore di rendering in quanto
  \caption[Cycles render e Blender render]{Confronto tra ombre e luci ottenute mediante Blender render (Unbiased) e Cycles render (Biased)}
  \label{fig:tecnologie_abilitanti_bias_unbias}
 \end{figure}
+\\
 Per modificare i materiali degli oggetti, le texture, ed il rendering in generale, Blender permette una metodologia di programmazione molto potente e flessibile, grazie al Node Editor. Tale strumento ha permesso di lavorare con il Cycles Renderer con estrema facilità ed è stato essenziale per permettere la creazioni di materiali complessi. \cite{node_editor1,node_editor3}
 \\
 \begin{figure}[htb]
@@ -30,6 +31,7 @@ Per modificare i materiali degli oggetti, le texture, ed il rendering in general
  \caption[Blender Node Editor]{Il Node Editor di Blender}
  \label{fig:tecnologie_abilitanti_node_editor}
 \end{figure}
+\\
 Cycles correntemente supporta un integratore path tracing che funziona bene per la maggior parte degli effetti luce, ma non è cosi adatto per effetti caustici ed alcune complesse situazioni di luce. I raggi vengono lanciati dalla camera verso la scena, rimbalzando sulle superfici incontrate fino a quando viene raggiunta una fonte di luce come una lampada, un oggetto che emette luce, o lo sfondo della scena. 
 Le luci vengono individuate sia tramite sample indiretto, in cui i raggi seguono il proprio percorso ottico fino a quando incontrano una fonte di luce, sia tramite sample di luce diretto, in cui si prende una luce e viene direzionato il raggio verso di essa.
 \\
@@ -45,6 +47,7 @@ Questo rende il singolo sample molto veloce da calcolare, ma ne richiede un nume
  \caption[Integratore path tracer classico]{Integratore path tracer classico in cui il raggio di luce rimbalza in una sola direzione}
  \label{fig:tecnologie_abilitanti_sferaluce1}
 \end{figure}
+\\
 L’integratore path tracer ramificato (formalmente chiamato integratore non progressivo) prevede un approccio differente, in cui il raggio quando colpisce un oggetto  viene diviso in più raggi con direzioni randomiche. Sia la direzione che il numero di raggi in cui viene diviso sono dipendenti dal tipo di materiale di cui è costituito l’oggetto intersecato.
 \\
 Blender permette nel dettaglio di effettuare, tramite questo integratore, una più precisa parametrizzazione del sample voluto, permettendo di :
@@ -63,6 +66,7 @@ Ad esempio in una scena in cui sono presenti solo oggetti con materiale diffuse,
  \caption[Integratore path tracer ramificato]{Integratore path tracer ramificato in cui il raggio di luce rimbalza in più direzione}
  \label{fig:tecnologie_abilitanti_sferaluce2}
 \end{figure}
+\\
 Per il presente lavoro di tesi è stato preferito utilizzare l’approccio di path tracing classico per facilitare all’ utilizzatore dell’ applicazione creata l’avvio di questo algoritmo. Egli infatti indicherà solamente un valore di sample senza dover necessariamente conoscere il funzionamento dell’ algoritmo. Algoritmo che avrebbe dovuto comprendere nel caso in cui avesse utilizzato l’approccio ramificato.
 Oltre al samples esistono ulteriori parametri per effettuare il rendering ma questi verrano analizzati nel dettaglio nei capitoli successivi.
 \\
